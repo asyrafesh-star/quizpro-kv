@@ -56,3 +56,8 @@ async function viewSessionHistory(code){
 async function exportCloudClass(){if(!cloudClass)return cloudStatus('Pilih kelas dahulu.',true);await cloudAction(async()=>{const d=await call('adminExportClass',pin,cloudClass);$('cloudExportResult').innerHTML=`<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.name)} — buka laporan Google Sheets</a>`;});}
 async function refreshCloud(){try{await loadCloudDashboard();cloudStatus('Rekod terkini dimuatkan.');}catch(e){cloudStatus(e.message,true);}}
 async function assignLegacySession(code){if(!cloudClass)return cloudStatus('Pilih kelas dahulu.',true);await cloudAction(()=>call('adminAssignLegacySession',pin,code,cloudClass));}
+// One outstanding read per screen prevents slow responses from piling up.
+for(const key of ['refreshTeacherLive','refreshProjector','pollPlayer']){
+  const original=window[key];let pending=false;
+  window[key]=async function(...args){if(pending)return;pending=true;try{return await original(...args);}finally{pending=false;}};
+}
