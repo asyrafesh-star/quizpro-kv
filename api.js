@@ -6,7 +6,7 @@ const quizBridge = (() => {
   window.addEventListener('message', event => {
     const msg = event.data;
     if (!msg || msg.channel !== channel) return;
-    if (!/^https:\/\/([a-z0-9-]+\.)?script\.googleusercontent\.com$/.test(event.origin) && event.origin !== 'https://script.google.com') return;
+    if (!/^https:\/\/([a-z0-9-]+[.-])?script\.googleusercontent\.com$/.test(event.origin) && event.origin !== 'https://script.google.com') return;
     if (msg.type === 'quiz-ready' && ready) { remote = event.source; remoteOrigin = event.origin; ready.resolve(); return; }
     if (event.source !== remote || event.origin !== remoteOrigin || msg.type !== 'quiz-result') return;
     const task = pending.get(msg.id); if (!task) return;
