@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>QuizPro KV</title>
-  <script src="config.js?v=6"></script>
-  <script src="api.js?v=6"></script>
+  <script src="config.js?v=7"></script>
+  <script src="api.js?v=7"></script>
   <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
+.cloud-workspace{background:linear-gradient(135deg,#102647,#233d70 64%,#205b74);color:white;border:0;padding:26px}.cloud-head,.cloud-section-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.cloud-head h2{font-size:28px;margin:6px 0}.cloud-head p{color:#cbdaf3;font-size:14px;max-width:580px}.cloud-head a{color:#d6f4ff;white-space:nowrap;font-size:14px}.cloud-eyebrow{font-size:11px;font-weight:850;letter-spacing:.13em;color:#5672a2}.cloud-workspace .cloud-eyebrow{color:#8ce3e7}.class-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0 12px}.class-tile{margin:0;background:#ffffff0d;border:1px solid #ffffff38;box-shadow:none;text-align:left;padding:20px;color:white}.class-tile span,.class-tile strong,.class-tile small{display:block}.class-tile span{font-size:11px;letter-spacing:.13em;color:#bdd0ef}.class-tile strong{font-size:27px;margin:7px 0}.class-tile small{font-size:12px;font-weight:500;color:#d5e3fb}.class-tile.active{border-color:#67e8d8;background:#38c5b424;box-shadow:0 0 0 2px #56dbcb33}.cloud-workspace .muted{color:#c2d2ed}.cloud-tabs{display:flex;flex-wrap:wrap;gap:6px}.cloud-workspace .status{background:#ffffff10;color:#d5f8ee;border:1px solid #ffffff22}.cloud-workspace .status.error{background:#7f1d1d;color:#fee2e2}.cloud-save{display:flex;gap:12px;align-items:flex-end;margin:16px 0}.cloud-save>div{flex:1}.cloud-save button{margin:0 0 0 4px}.quiz-item{display:flex;gap:16px;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.quiz-item p{margin:5px 0 0}.quiz-item button{white-space:nowrap}.cloud-empty{padding:22px;border:1px dashed #c8d7ea;background:#f4f8fd;border-radius:12px;margin:14px 0;color:var(--muted);font-size:14px}.cloud-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.cloud-stats>div{padding:17px;border-radius:12px;background:#eef4fd}.cloud-stats strong{display:block;font-size:28px;color:#234f94}.cloud-stats span{font-size:12px;color:var(--muted)}.roster-chips{display:flex;gap:8px;flex-wrap:wrap;padding:14px 0}.roster-chips span{padding:7px 12px;border-radius:20px;background:#edf3fc;font-size:13px}.history-detail{border:1px solid #c8d7ec;padding:18px;border-radius:14px;background:#f8fbff;margin:16px 0}details{margin-top:16px}summary{cursor:pointer;font-weight:650}.cloud-section-head h2{margin-top:6px}#cloudExportResult{margin:10px 0;font-size:14px}@media(max-width:600px){.cloud-head,.cloud-section-head,.cloud-save{align-items:flex-start;flex-direction:column}.class-tile{padding:15px}.class-tile strong{font-size:22px}.cloud-stats{gap:6px}.cloud-stats>div{padding:12px}.quiz-item{align-items:flex-start;flex-direction:column}.cloud-save{gap:10px}.cloud-save>div{width:100%}}
+
     :root{--ink:#14213d;--muted:#5e6d87;--blue:#2563eb;--pale:#eaf1ff;--line:#dce5f5;--green:#137a52;--red:#dc2626;--navy:#111b35}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#dce9ff 0,transparent 35%),radial-gradient(circle at 90% 10%,#d9fff3 0,transparent 30%),#f4f7fc;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
     .wrap{max-width:980px;margin:auto;padding:18px}.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
@@ -82,6 +84,30 @@
   </section>
 
   <section id="adminView" class="hidden">
+<div id="cloudWorkspace" class="card cloud-workspace">
+  <div class="cloud-head"><div><span class="cloud-eyebrow">RUANG KELAS SAYA</span><h2 id="selectedClassLabel">Pilih kelas untuk bermula</h2><p>Pelajar dikenali semula melalui nombor pengenalan. Rekod kuiz kekal mengikut kelas.</p></div><a id="cloudDriveLink" target="_blank" rel="noopener">☁ Rekod Google Sheets</a></div>
+  <div id="classCards" class="class-cards"></div>
+  <p id="activeCloudSession" class="muted"></p>
+  <div class="cloud-tabs"><button class="secondary" onclick="document.getElementById('cloudLibrary').scrollIntoView({behavior:'smooth'})">Perpustakaan kuiz</button><button class="secondary" onclick="document.getElementById('cloudResults').scrollIntoView({behavior:'smooth'})">Markah & sejarah</button><button class="secondary" onclick="refreshCloud()">↻ Muat semula rekod</button></div>
+  <div id="cloudStatus" class="status">Pilih kelas, pilih set kuiz, kemudian mulakan sesi.</div>
+</div>
+<div id="cloudLibrary" class="card">
+  <div class="cloud-section-head"><div><span class="cloud-eyebrow">GUNA SEMULA TANPA IMPORT BERULANG</span><h2>Perpustakaan kuiz</h2></div><span class="pill">Tersimpan di cloud</span></div>
+  <p id="loadedQuizLabel" class="muted"></p>
+  <div class="cloud-save"><div><label for="libraryTitle">Nama set kuiz</label><input id="libraryTitle" type="text" maxlength="120" placeholder="Contoh: Bab 1 — Asas Komputer"></div><button class="cloud-action" onclick="saveLibraryQuiz()">Simpan sebagai set kuiz</button></div>
+  <p class="muted">Import Excel melalui bahagian “Import soalan Excel”, kemudian simpan set di sini. Set tersimpan boleh digunakan untuk kedua-dua kelas. Simpan semula menghasilkan salinan baharu.</p>
+  <div id="libraryList"></div>
+</div>
+<div id="cloudResults" class="card">
+  <span class="cloud-eyebrow">PRESTASI KELAS</span><h2>Markah terkumpul & sejarah sesi</h2>
+  <div class="cloud-stats"><div><strong id="classRosterCount">—</strong><span>Pelajar berdaftar</span></div><div><strong id="classQuizCount">—</strong><span>Sesi tamat</span></div><div><strong>Σ</strong><span>Jumlah semua kuiz</span></div></div>
+  <p class="muted">Setiap sesi yang tamat menyumbang sekali kepada jumlah. Ulangan kuiz dalam sesi baharu turut dikira. Markah dua kelas diasingkan.</p>
+  <div id="classRanking"><p class="muted">Pilih kelas untuk melihat markah.</p></div>
+  <button class="cloud-action secondary" onclick="exportCloudClass()">Simpan laporan kelas ke Drive</button><div id="cloudExportResult"></div>
+  <details><summary>Senarai pelajar kelas</summary><div id="classRoster"></div></details>
+  <h3>Sejarah kuiz</h3><div id="historyList"></div><div id="sessionHistoryDetail"></div><div id="legacyHistory"></div>
+</div>
+
     <div class="card">
       <h2>1. Tetapan kuiz</h2>
       <div class="grid">
@@ -167,7 +193,7 @@ async function adminLogin() {
     pin = $('adminPin').value;
     await call('adminLogin', pin);
     sessionStorage.setItem('quizproPin', pin);
-    showView('admin'); await loadAdminData(); startAdminPolling(); notice('Log masuk berjaya.');
+    showView('admin'); await loadAdminData(); await loadCloudDashboard(); startAdminPolling(); notice('Log masuk berjaya.');
   } catch(e) { notice(e.message, true); }
 }
 async function loadAdminData() {
@@ -236,7 +262,7 @@ async function importExcel() {
       };
     });
     const result = await call('adminImportQuestions', pin, rows);
-    $('importSummary').textContent = `Berjaya import ${result.imported} soalan.`;
+    $('importSummary').textContent = `Berjaya import ${result.imported} soalan. Simpan sebagai set kuiz dalam perpustakaan untuk guna semula.`; $('libraryTitle').value = file.name.replace(/\.[^.]+$/, ''); await loadCloudDashboard();
     await loadAdminData(); notice('Import berjaya.');
   } catch(e) { notice(e.message, true); }
 }
@@ -254,9 +280,9 @@ async function startSession() {
   try {
     if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.');
     await call('adminSaveSettings', pin, {quizTitle:$('quizTitle').value, defaultSeconds:$('defaultSeconds').value, defaultPoints:$('defaultPoints').value, revealSeconds:$('revealSeconds').value, nextMode:$('nextMode').value});
-    const res = await call('adminStartSession', pin); sessionCode = res.code; sessionStorage.setItem('quizproSessionCode', sessionCode);
+    const res = await call('adminStartSession', pin, cloudClass); sessionCode = res.code; sessionStorage.setItem('quizproSessionCode', sessionCode);
     $('teacherLiveCard').classList.add('hidden');
-    renderSession(res.status, routeUrl('student') + '&join=' + encodeURIComponent(res.code)); startAdminPolling(); notice('Sesi baharu sudah dibuat. Minta pelajar scan QR.');
+    renderSession(res.status, routeUrl('student') + '&join=' + encodeURIComponent(res.code)); startAdminPolling(); await loadCloudDashboard(); notice('Sesi '+res.className+' sudah dibuat. Minta pelajar scan QR.');
   } catch(e) { notice(e.message, true); }
 }
 function renderSession(status, url) {
@@ -450,7 +476,7 @@ async function createAnalysisSpreadsheet() {
 }
 
 async function endSession() {
-  try { if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.'); await call('adminEndSession', pin); notice('Sesi telah ditamatkan.'); await loadAdminData(); await refreshLeaderboard(); }
+  try { if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.'); await call('adminEndSession', pin); notice('Sesi telah ditamatkan.'); await loadAdminData(); await refreshLeaderboard(); await loadCloudDashboard(); }
   catch(e) { notice(e.message, true); }
 }
 async function joinGame() {
@@ -548,5 +574,6 @@ async function answer(choice, qNo) {
 }
 applyInitialRoute();
 </script>
+<script src="cloud.js?v=7"></script>
 </body>
 </html>
