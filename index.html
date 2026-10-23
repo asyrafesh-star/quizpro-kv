@@ -420,6 +420,7 @@ async function refreshTeacherLive() {
   if (!pin) return;
   try {
     const d = await call('adminLiveData', pin);
+    if (typeof cloudData !== 'undefined' && cloudData && d.status === 'finished' && cloudData.activeStatus !== 'finished') { cloudData.activeStatus = 'finished'; loadCloudDashboard().catch(e => cloudStatus(e.message, true)); }
     if (d.code) sessionCode = String(d.code);
     const q = d.question, symbols = { A:'▲', B:'◆', C:'●', D:'■' }, revealing = d.status === 'reveal', ready = d.status === 'ready';
     let presentationQuestion = '<div class="teacher-question"><div class="pill">SEDIA UNTUK BERMULA</div><div class="teacher-qtitle">Tekan “Mula kuiz” untuk memaparkan soalan pertama.</div></div>';
