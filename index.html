@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <title>QuizPro KV</title>
+  <script src="config.js"></script>
+  <script src="api.js"></script>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    :root{--ink:#14213d;--muted:#5e6d87;--blue:#2563eb;--pale:#eaf1ff;--line:#dce5f5;--green:#137a52;--red:#dc2626;--navy:#111b35}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#dce9ff 0,transparent 35%),radial-gradient(circle at 90% 10%,#d9fff3 0,transparent 30%),#f4f7fc;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:980px;margin:auto;padding:18px}.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+    h1{font-size:clamp(24px,4vw,34px);margin:0}h2{margin:0 0 12px;font-size:21px}p{margin:7px 0}.muted{color:var(--muted);font-size:14px}
+    .card{background:linear-gradient(145deg,#fff,#f9fbff);border:1px solid var(--line);border-radius:20px;padding:20px;margin:12px 0;box-shadow:0 12px 35px #1b315014}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.full{grid-column:1/-1}
+    label{display:block;font-weight:650;margin:9px 0 5px}input,button{font:inherit}input[type=text],input[type=number],input[type=password],input[type=file]{width:100%;padding:11px 12px;border:1px solid #c9d3e2;border-radius:10px;background:#fff}
+    button{border:0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);box-shadow:0 7px 16px #3157d52c;color:white;padding:11px 15px;font-weight:750;cursor:pointer;margin:5px 5px 5px 0;transition:transform .16s,box-shadow .16s}button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 20px #3157d53d}button.secondary{background:#e8edf7;color:var(--ink);box-shadow:none}button.danger{background:linear-gradient(135deg,#ef4444,#b91c1c)}button:disabled{opacity:.45;cursor:not-allowed}
+    .pill{display:inline-block;background:var(--pale);color:var(--blue);padding:5px 10px;border-radius:99px;font-size:13px;font-weight:700}
+    .hidden{display:none!important}.status{padding:10px 12px;background:#eef8f3;border-radius:10px;color:var(--green);margin:10px 0}.error{background:#fff0ef;color:var(--red)}
+    .options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.opt{background:#f7f9fd;color:var(--ink);border:1px solid var(--line);text-align:left;padding:16px;border-radius:12px;min-height:58px}.opt:active{transform:scale(.99)}
+    .big{font-size:clamp(20px,4vw,28px);font-weight:800}.timer{font-size:25px;font-weight:800;color:var(--blue)}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:9px;border-bottom:1px solid var(--line)}.tablewrap{overflow:auto}
+    img.questionImage{display:block;max-width:100%;max-height:320px;object-fit:contain;margin:12px auto;border-radius:12px}
+    #qr{width:180px;height:180px;object-fit:contain}.center{text-align:center}.adminbar{display:flex;gap:8px;flex-wrap:wrap}
+    .teacher-screen{background:#111827;color:#f8fafc;border-radius:16px;padding:18px;aspect-ratio:16/9;min-height:420px;overflow:auto}
+    .teacher-screen-head{font-size:clamp(22px,3vw,34px);font-weight:850;margin-bottom:14px}
+    .teacher-screen-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.95fr);gap:12px}
+    .teacher-question,.teacher-board{background:#273449;border-radius:14px;padding:14px;min-width:0}
+    .teacher-qtitle{font-size:clamp(20px,2.6vw,29px);font-weight:800;margin:10px 0 14px;line-height:1.25}
+    .teacher-choice{background:#3b4b62;border-radius:9px;padding:7px 10px;margin:8px 0;font-size:clamp(13px,1.5vw,17px)}
+    .teacher-countdown{width:66px;height:66px;border:5px solid #22c55e;border-radius:50%;display:grid;place-items:center;font-size:28px;margin:12px auto}
+    .teacher-board h3{font-size:22px;margin:8px 0 12px}.teacher-rank{display:flex;justify-content:space-between;gap:10px;margin:10px 0}.teacher-rank span:last-child{color:#86efac;font-weight:800}
+    .student-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+    .student-letter{min-height:clamp(145px,24vh,220px)!important;font-size:clamp(42px,9vw,76px)!important;font-weight:900!important;text-align:center!important;display:grid;place-items:center;padding:12px!important;color:#fff!important;border:2px solid #ffffff55!important;border-radius:18px!important;box-shadow:inset 0 1px #ffffff2a,0 12px 22px #17243a25!important}.student-letter.choice-A{background:linear-gradient(145deg,#fb2b50,#dc123d)!important}.student-letter.choice-B{background:linear-gradient(145deg,#2584ef,#1461cf)!important}.student-letter.choice-C{background:linear-gradient(145deg,#f7bb08,#dc9200)!important}.student-letter.choice-D{background:linear-gradient(145deg,#20a516,#11790d)!important}.student-letter.selected{background:linear-gradient(145deg,#242424,#000)!important;border-color:#cbd5e1!important;box-shadow:0 0 0 5px #00000035,0 14px 25px #0000003d!important}.student-letter.correct{background:linear-gradient(145deg,#ffb020,#f06d00)!important;border-color:#ffedd5!important;box-shadow:0 0 0 5px #fb923c44,0 14px 25px #f973163d!important}.student-letter.expired{background:linear-gradient(145deg,#ef4444,#b91c1c)!important;border-color:#fecaca!important}.student-letter:disabled{opacity:1!important}
+    body.projector-mode{overflow:hidden}.projector-mode .wrap{max-width:none;padding:0}.projector-mode .wrap>.brand{display:none}.projector-page{height:100vh;min-height:100vh;overflow:hidden;background:#111827;color:#f8fafc;padding:18px}.projector-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.projector-toolbar button{background:#e8edf7;color:var(--ink)}.projector-screen{max-width:1500px;margin:auto}.projector-title{font-size:clamp(28px,4vw,48px);font-weight:900;margin:0 0 14px}.projector-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,.8fr);gap:16px}.projector-question,.projector-board{background:#273449;border-radius:18px;padding:clamp(18px,3vw,34px)}.projector-question-text{font-size:clamp(26px,3.5vw,54px);font-weight:850;line-height:1.2;margin:14px 0}.projector-choice{background:#3b4b62;border:3px solid transparent;border-radius:12px;padding:12px 16px;margin:11px 0;font-size:clamp(18px,2vw,31px)}.projector-choice.correct{border-color:#4ade80;background:#14532d}.projector-timer{font-size:clamp(20px,2.4vw,34px);font-weight:900;color:#f8fafc;text-align:center;margin:10px 0 5px}.projector-timer-track{height:clamp(16px,2.2vh,24px);width:100%;background:#475569;border-radius:999px;overflow:hidden;box-shadow:inset 0 2px 5px #0005;margin:8px 0 14px}.projector-timer-bar{height:100%;width:100%;border-radius:999px;background:#22c55e;transition:width .18s linear,background .18s linear}.projector-board h2{font-size:clamp(22px,2vw,34px)}.projector-rank{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #40516a;font-size:clamp(17px,1.6vw,25px)}.projector-rank b:last-child{color:#86efac}.projector-empty{min-height:60vh;display:grid;place-items:center;text-align:center;font-size:clamp(28px,5vw,64px);font-weight:850}.projector-image{display:block;max-width:100%;max-height:300px;object-fit:contain;margin:14px auto;border-radius:12px}
+    .projector-grid{display:block}.projector-question{background:linear-gradient(135deg,#532b8a,#7c3aed 54%,#4f1d95);box-shadow:0 20px 55px #0000003d}.projector-question .pill{background:#fff;color:#38275b;font-weight:850}.projector-choice{display:flex;align-items:center;gap:15px;color:#fff;font-weight:800;border:0;min-height:64px;box-shadow:inset 0 1px #ffffff28}.projector-choice.choice-A{background:linear-gradient(135deg,#fb2b50,#dc123d)}.projector-choice.choice-B{background:linear-gradient(135deg,#2584ef,#1461cf)}.projector-choice.choice-C{background:linear-gradient(135deg,#f7bb08,#dc9200)}.projector-choice.choice-D{background:linear-gradient(135deg,#20a516,#11790d)}.projector-choice.correct{outline:5px solid #fff;outline-offset:2px;background:linear-gradient(135deg,#ffb020,#f06d00)}.projector-symbol{display:inline-grid;place-items:center;width:38px;min-width:38px;font-size:32px;color:#fff}.projector-image-frame{display:grid;place-items:center;max-width:min(560px,100%);margin:16px auto;padding:10px;background:#fff;border-radius:12px;box-shadow:0 12px 24px #00000028}.projector-image-frame .projector-image{margin:0}.teacher-symbol{display:inline-block;min-width:28px;font-size:20px;color:#f8fafc}
+    .timer-green{color:#22c55e!important;border-color:#22c55e!important}.timer-yellow{color:#eab308!important;border-color:#eab308!important}.timer-orange{color:#f97316!important;border-color:#f97316!important}.timer-red{color:#ef4444!important;border-color:#ef4444!important;animation:timerPulse .65s infinite alternate}@keyframes timerPulse{from{filter:brightness(1)}to{filter:brightness(1.7)}}
+    .teacher-controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.teacher-controls button{margin:0}.teacher-choice.choice-A{background:linear-gradient(135deg,#fb2b50,#dc123d)}.teacher-choice.choice-B{background:linear-gradient(135deg,#2584ef,#1461cf)}.teacher-choice.choice-C{background:linear-gradient(135deg,#f7bb08,#dc9200)}.teacher-choice.choice-D{background:linear-gradient(135deg,#20a516,#11790d)}.teacher-screen{overflow:hidden}.projector-page{padding:clamp(8px,1.4vw,18px)}.projector-question{padding:clamp(10px,1.8vw,28px)}.projector-question-text{font-size:clamp(22px,3vw,46px);margin:8px 0}.projector-choice{min-height:clamp(44px,7vh,64px);margin:clamp(5px,0.8vh,10px) 0;padding:clamp(8px,1vw,14px)}.projector-image{max-height:20vh}.projector-image-frame{margin:8px auto}
+    @media(max-width:600px){.wrap{padding:10px}.card{padding:15px}.grid,.options{grid-template-columns:1fr}.brand{align-items:flex-start;flex-direction:column}.teacher-screen{aspect-ratio:auto;min-height:0}.teacher-screen-grid{grid-template-columns:1fr}.student-answer-grid{gap:10px}.student-letter{min-height:clamp(125px,20vh,175px)!important}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <div><div class="pill">PLATFORM KUIZ KELAS</div><h1 id="appTitle">QuizPro KV</h1><p class="muted">Kuiz live • Markah automatik • Mesra telefon</p></div>
+    <button class="secondary" onclick="showView('home')">Laman utama</button>
+  </header>
+  <div id="notice" class="hidden"></div>
+
+  <section id="homeView" class="card">
+    <h2>Selamat datang</h2>
+    <p>Pilih sama ada anda cikgu atau pelajar.</p>
+    <button onclick="showView('student')">Saya pelajar — sertai kuiz</button>
+    <button class="secondary" onclick="showView('adminLogin')">Panel cikgu</button>
+    <p class="muted">Untuk pelajar: masukkan kod permainan yang dipaparkan oleh cikgu atau gunakan pautan QR sesi.</p>
+  </section>
+
+  <section id="studentView" class="card hidden">
+    <h2>Sertai permainan</h2>
+    <div class="grid">
+      <div><label for="joinCode">Kod permainan</label><input id="joinCode" type="text" inputmode="numeric" maxlength="6" placeholder="Contoh: 123456"></div>
+      <div><label for="studentName">Nama penuh</label><input id="studentName" type="text" maxlength="80" placeholder="Nama seperti rekod kolej"></div>
+      <div class="full"><label for="studentId">Nombor Kad Pengenalan (12 digit)</label><input id="studentId" type="text" inputmode="numeric" autocomplete="off" maxlength="12" pattern="[0-9]{12}" placeholder="Contoh: 000000000000"></div>
+    </div>
+    <button onclick="joinGame()">Daftar dan masuk</button><button class="secondary" onclick="showView('home')">Kembali</button>
+  </section>
+
+  <section id="playerView" class="card hidden">
+    <div class="brand"><div><div class="pill" id="playerState">MENUNGGU</div><h2 id="playerHeading">Hai!</h2></div><div class="center"><div class="muted">Jumlah markah</div><div class="big" id="playerPoints">0</div><button id="playerMusicToggle" class="secondary" onclick="toggleSuspenseMusic('player')">Muzik: ON selepas sertai</button></div></div>
+    <div id="playerContent"><p>Cikgu akan memulakan soalan. Sila tunggu.</p></div>
+  </section>
+
+  <section id="projectorView" class="projector-page hidden">
+    <div class="projector-toolbar"><span class="pill">PAPARAN PROJECTOR</span><div><button id="soundToggle" class="secondary" onclick="toggleSuspenseMusic('projector')">Muzik: OFF</button><button id="projectorPauseBtn" class="secondary hidden" onclick="togglePauseProjector()">Pause</button><button id="projectorNextBtn" class="secondary hidden" onclick="nextQuestionProjector()">Soalan seterusnya</button><button onclick="goToRoute('menu')">Menu utama</button></div></div>
+    <div id="projectorContent" class="projector-screen"><div class="projector-empty">Memuatkan paparan kuiz…</div></div>
+  </section>
+
+  <section id="adminLoginView" class="card hidden">
+    <h2>Log masuk cikgu</h2><label for="adminPin">PIN pentadbir</label><input id="adminPin" type="password" placeholder="Masukkan PIN pentadbir">
+    <button onclick="adminLogin()">Log masuk</button>
+  </section>
+
+  <section id="adminView" class="hidden">
+    <div class="card">
+      <h2>1. Tetapan kuiz</h2>
+      <div class="grid">
+        <div class="full"><label for="quizTitle">Nama kuiz</label><input id="quizTitle" type="text" value="Kuiz Kelas"></div>
+        <div><label for="defaultSeconds">Masa lalai (saat)</label><input id="defaultSeconds" type="number" min="5" max="600" value="30"></div>
+        <div><label for="defaultPoints">Markah maksimum lalai</label><input id="defaultPoints" type="number" min="1" max="100" value="5"></div>
+        <div><label for="revealSeconds">Masa paparan keputusan (saat)</label><input id="revealSeconds" type="number" min="1" max="120" value="15"></div>
+        <div><label for="nextMode">Soalan seterusnya</label><select id="nextMode" style="width:100%;padding:11px 12px;border:1px solid #c9d3e2;border-radius:10px;background:#fff"><option value="auto">Automatik selepas masa keputusan</option><option value="manual">Manual — cikgu tekan seterusnya</option></select></div>
+      </div>
+      <button onclick="saveSettings()">Simpan tetapan</button>
+    </div>
+    <div class="card">
+      <h2>2. Import soalan Excel</h2>
+      <p class="muted">Fail .xlsx atau .xls. Tajuk lajur yang diterima: No, Soalan, A, B, C, D, Jawapan, Masa, Markah, Gambar. Jawapan mesti A/B/C/D. Masa dan Markah boleh dikosongkan untuk guna nilai lalai.</p>
+      <label for="excelFile">Pilih fail Excel</label><input id="excelFile" type="file" accept=".xlsx,.xls,.csv">
+      <button onclick="importExcel()">Import soalan</button>
+      <div id="importSummary" class="muted"></div>
+    </div>
+    <div class="card">
+      <h2>3. Gambar soalan</h2>
+      <p class="muted">Pilih gambar satu demi satu untuk dimuat naik ke Google Drive. Salin URL yang terhasil ke lajur Gambar bagi soalan berkaitan. Untuk gambar yang sudah berada di Drive, pastikan akses pautan dibenarkan.</p>
+      <label for="imageFile">Pilih gambar</label><input id="imageFile" type="file" accept="image/*">
+      <button onclick="uploadImage()">Muat naik gambar</button>
+      <div id="imageResult" class="muted"></div>
+    </div>
+    <div class="card">
+      <div class="row-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><h2 style="margin:0">4. Bank soalan</h2><button id="toggleQuestionBankBtn" class="secondary" type="button" onclick="toggleQuestionBank()">Sembunyikan soalan</button></div>
+      <div id="questionBankBody"><div id="questionTable" class="tablewrap muted">Log masuk untuk melihat soalan.</div>
+      <p class="muted">Edit masa/markah dengan mengubah nilai dalam Excel dan import semula. Ini membantu elak suntingan tidak sengaja semasa kuiz berlangsung.</p></div>
+    </div>
+    <div class="card">
+      <h2>5. Sesi permainan</h2>
+      <div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
+      <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
+    </div>
+    <div class="card">
+      <h2>6. Leaderboard</h2><button class="secondary" onclick="refreshLeaderboard()">Kemas kini ranking</button> <button onclick="createAnalysisSpreadsheet()">Bina Spreadsheet Analisis</button><div id="analysisSpreadsheetLink" class="status"></div><div id="leaderboardPanel" class="tablewrap"></div>
+    </div>
+    <div id="teacherLiveCard" class="card hidden">
+      <h2>7. Paparan projector — untuk pelajar</h2>
+      <div id="teacherLivePanel"><p class="muted">Paparan soalan akan aktif apabila kuiz dimulakan.</p></div>
+    </div>
+  </section>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let pin = sessionStorage.getItem('quizproPin') || '', sessionCode = sessionStorage.getItem('quizproSessionCode') || '', playerId = '', playerName = '', poller = null, adminPoller = null, lastPlayerStatus = '', currentPlayerQuestion = 0;
+let playerCountdownTimer = null, playerTimerEndsAt = 0, playerTimerPhase = '', playerTimerQuestion = 0, selectedChoice = '', playerTimerPaused = false, playerPausedRemainingMs = 0, playerTimerTotal = 30;
+let projectorCountdownTimer = null, projectorTimerEndsAt = 0, projectorTimerPaused = false, projectorPausedRemainingMs = 0, projectorTimerTotal = 30, projectorMusicActive = false;
+const musicEngines = { projector:{enabled:false,context:null,lastTick:0}, player:{enabled:false,context:null,lastTick:0} };
+let lastProjectorReadyQuestion = 0, lastPlayerVibrationSecond = null, playerVibrationFinished = false;
+let previewActivationTimer = null, previewActivationQuestion = 0;
+const params = new URLSearchParams(location.search);
+const INITIAL_ROUTE = params.get('view') || params.get('route') || params.get('mode') || 'menu';
+
+function showView(name) {
+  ['home','student','player','projector','adminLogin','admin'].forEach(v => $(v+'View').classList.toggle('hidden', v !== name));
+  document.body.classList.toggle('projector-mode', name === 'projector');
+  clearNotice();
+}
+function routeUrl(route) {
+  const url = new URL(location.href);
+  url.search = '';
+  url.searchParams.set('view', route);
+  return url.toString();
+}
+function goToRoute(route) { location.assign(routeUrl(route)); }
+function goToProjector() { goToRoute('projector'); }
+function applyInitialRoute() {
+  if (params.get('join')) { $('joinCode').value = params.get('join'); showView('student'); return; }
+  if (INITIAL_ROUTE === 'projector') { showView('projector'); startProjectorPolling(); return; }
+  if (INITIAL_ROUTE === 'admin') { showView('adminLogin'); return; }
+  if (INITIAL_ROUTE === 'student') { showView('student'); return; }
+  showView('home');
+}
+function notice(msg, bad=false) {
+  $('notice').className = 'status' + (bad ? ' error' : '');
+  $('notice').textContent = msg; $('notice').classList.remove('hidden');
+}
+function clearNotice(){ $('notice').classList.add('hidden'); }
+async function adminLogin() {
+  try {
+    pin = $('adminPin').value;
+    await call('adminLogin', pin);
+    sessionStorage.setItem('quizproPin', pin);
+    showView('admin'); await loadAdminData(); startAdminPolling(); notice('Log masuk berjaya.');
+  } catch(e) { notice(e.message, true); }
+}
+async function loadAdminData() {
+  try {
+    const data = await call('adminGetData', pin);
+    $('quizTitle').value = data.settings.quizTitle || 'Kuiz Kelas';
+    $('defaultSeconds').value = data.settings.defaultSeconds || 30;
+    $('defaultPoints').value = data.settings.defaultPoints || 5;
+    $('revealSeconds').value = data.settings.revealSeconds || 15;
+    $('nextMode').value = data.settings.nextMode || 'auto';
+    renderQuestions(data.questions);
+    if (data.settings.sessionCode) {
+      sessionCode = String(data.settings.sessionCode);
+      renderSession(data.settings.sessionStatus, routeUrl('student') + '&join=' + encodeURIComponent(sessionCode));
+      $('teacherLiveCard').classList.toggle('hidden', String(data.settings.sessionStatus) === 'waiting');
+    }
+  } catch(e) { notice(e.message, true); }
+}
+
+function toggleQuestionBank() {
+  const body = $('questionBankBody'), btn = $('toggleQuestionBankBtn');
+  if (!body || !btn) return;
+  const willHide = !body.classList.contains('hidden');
+  body.classList.toggle('hidden', willHide);
+  btn.textContent = willHide ? 'Paparkan soalan' : 'Sembunyikan soalan';
+}
+
+function renderQuestions(qs) {
+  if (!qs.length) { $('questionTable').textContent = 'Belum ada soalan. Import fail Excel dahulu.'; return; }
+  $('questionTable').innerHTML = '<table><thead><tr><th>No</th><th>Soalan</th><th>Masa</th><th>Markah</th><th>Gambar</th></tr></thead><tbody>' +
+    qs.map(q => `<tr><td>${esc(q.no)}</td><td>${esc(q.question)}</td><td>${esc(q.seconds)}s</td><td>${esc(q.points)}</td><td>${q.image ? 'Ada' : '—'}</td></tr>`).join('') + '</tbody></table>';
+}
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+async function saveSettings() {
+  try {
+    await call('adminSaveSettings', pin, {quizTitle:$('quizTitle').value, defaultSeconds:$('defaultSeconds').value, defaultPoints:$('defaultPoints').value, revealSeconds:$('revealSeconds').value, nextMode:$('nextMode').value});
+    notice('Tetapan berjaya disimpan.');
+  } catch(e) { notice(e.message, true); }
+}
+function normalizeKey(k) {
+  return String(k || '').trim().toLowerCase().replace(/[\s_\-()]/g,'');
+}
+async function importExcel() {
+  const file = $('excelFile').files[0]; if (!file) return notice('Pilih fail Excel dahulu.', true);
+  try {
+    const data = await file.arrayBuffer();
+    const wb = XLSX.read(data, {type:'array'});
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const raw = XLSX.utils.sheet_to_json(ws, {defval:''});
+    if (!raw.length) throw new Error('Fail tiada baris data.');
+    const rows = raw.map(row => {
+      const obj = {};
+      Object.keys(row).forEach(k => obj[normalizeKey(k)] = row[k]);
+      const pick = (...names) => { for (const n of names) if (obj[normalizeKey(n)] !== undefined) return obj[normalizeKey(n)]; return ''; };
+      return {
+        No:pick('No','Bil','Bilangan'),
+        Soalan:pick('Soalan','Question','Soalan Kuiz'),
+        A:pick('A','Pilihan A','Option A'),
+        B:pick('B','Pilihan B','Option B'),
+        C:pick('C','Pilihan C','Option C'),
+        D:pick('D','Pilihan D','Option D'),
+        Jawapan:pick('Jawapan','Correct','Jawapan Betul'),
+        Masa:pick('Masa','Seconds','Masa (saat)'),
+        Markah:pick('Markah','Points','Mata'),
+        Gambar:pick('Gambar','Image','Imej','Image URL')
+      };
+    });
+    const result = await call('adminImportQuestions', pin, rows);
+    $('importSummary').textContent = `Berjaya import ${result.imported} soalan.`;
+    await loadAdminData(); notice('Import berjaya.');
+  } catch(e) { notice(e.message, true); }
+}
+async function uploadImage() {
+  const f = $('imageFile').files[0]; if (!f) return notice('Pilih gambar dahulu.', true);
+  try {
+    const dataUrl = await new Promise((resolve,reject) => { const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(f); });
+    const base64 = dataUrl.split(',')[1];
+    const result = await call('adminUploadImage', pin, base64, f.name, f.type);
+    $('imageResult').innerHTML = `URL gambar: <a href="${esc(result.url)}">buka gambar</a><br><input type="text" readonly value="${esc(result.url)}" onclick="this.select()">`;
+    notice('Gambar dimuat naik. Letakkan URL dalam lajur Gambar.');
+  } catch(e) { notice(e.message, true); }
+}
+async function startSession() {
+  try {
+    if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.');
+    await call('adminSaveSettings', pin, {quizTitle:$('quizTitle').value, defaultSeconds:$('defaultSeconds').value, defaultPoints:$('defaultPoints').value, revealSeconds:$('revealSeconds').value, nextMode:$('nextMode').value});
+    const res = await call('adminStartSession', pin); sessionCode = res.code; sessionStorage.setItem('quizproSessionCode', sessionCode);
+    $('teacherLiveCard').classList.add('hidden');
+    renderSession(res.status, routeUrl('student') + '&join=' + encodeURIComponent(res.code)); startAdminPolling(); notice('Sesi baharu sudah dibuat. Minta pelajar scan QR.');
+  } catch(e) { notice(e.message, true); }
+}
+function renderSession(status, url) {
+  $('sessionPanel').innerHTML = `<p>Status: <b>${esc(status)}</b></p><p>Kod permainan: <span class="big">${esc(sessionCode)}</span></p><p><a href="${esc(url)}">Buka halaman pelajar</a></p><div class="center"><img id="qr" alt="QR sesi kuiz" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}"><p class="muted">QR menggunakan servis pihak ketiga untuk menjana imej kod.</p></div>`;
+}
+async function launchQuestion() {
+  try {
+    // Start projector audio from the teacher's click gesture; browser audio policy allows this.
+    if (!musicEngines.projector.enabled) await toggleSuspenseMusic('projector');
+    if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.');
+    const res = await call('adminLaunchQuestion', pin);
+    if (res.finished) { notice('Semua soalan selesai. Sesi tamat.'); await refreshLeaderboard(); }
+    else {
+      // Keep the projector preview inline in the teacher panel; do not navigate away.
+      $('teacherLiveCard').classList.remove('hidden');
+      startAdminPolling();
+      await refreshTeacherLive();
+    }
+    await loadAdminData(); await refreshTeacherLive();
+  } catch(e) { notice(e.message, true); }
+}
+function startAdminPolling() {
+  if (adminPoller) clearInterval(adminPoller);
+  refreshTeacherLive();
+  adminPoller = setInterval(refreshTeacherLive, 2000);
+}
+function startProjectorPolling() {
+  if (poller) clearInterval(poller);
+  refreshProjector();
+  poller = setInterval(refreshProjector, 1000);
+}
+async function toggleSuspenseMusic(kind) {
+  const engine = musicEngines[kind];
+  try {
+    if (!engine.context) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) throw new Error('Pelayar ini tidak menyokong audio.');
+      engine.context = new AC();
+    }
+    await engine.context.resume();
+    engine.enabled = !engine.enabled;
+    engine.lastTick = 0;
+    const button = $(kind === 'projector' ? 'soundToggle' : 'playerMusicToggle');
+    if (button) button.textContent = engine.enabled ? 'Muzik: ON' : 'Muzik: OFF';
+  } catch(e) { notice(e.message, true); }
+}
+function musicPulse(kind, remaining, total, paused, active) {
+  const engine = musicEngines[kind];
+  if (!engine.enabled || !engine.context || !active || paused || remaining <= 0) return;
+  const nowMs = performance.now(), ratio = total > 0 ? remaining / total : 0;
+  const interval = ratio > .66 ? 1050 : ratio > .35 ? 700 : ratio > .15 ? 390 : 190;
+  if (nowMs - engine.lastTick < interval) return;
+  engine.lastTick = nowMs;
+  const ctx = engine.context, now = ctx.currentTime;
+  const osc = ctx.createOscillator(), gain = ctx.createGain();
+  const progress = Math.max(0, Math.min(1, 1 - ratio));
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(95 + progress * 430, now);
+  osc.frequency.exponentialRampToValueAtTime(150 + progress * 650, now + 0.11);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.035, now + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+  osc.connect(gain).connect(ctx.destination); osc.start(now); osc.stop(now + 0.2);
+}
+function timerColorClass(remaining, total) {
+  const ratio = total > 0 ? remaining / total : 0;
+  return ratio > .6 ? 'timer-green' : ratio > .35 ? 'timer-yellow' : ratio > .15 ? 'timer-orange' : 'timer-red';
+}
+function applyTimerColor(el, remaining, total) {
+  if (!el) return;
+  el.classList.remove('timer-green','timer-yellow','timer-orange','timer-red');
+  el.classList.add(timerColorClass(remaining,total));
+}
+function startProjectorCountdown(endsAt, total, paused, pausedRemainingMs, active) {
+  if (projectorCountdownTimer) clearInterval(projectorCountdownTimer);
+  projectorTimerEndsAt = endsAt || 0; projectorTimerTotal = total || 30;
+  projectorTimerPaused = !!paused; projectorPausedRemainingMs = pausedRemainingMs || 0; projectorMusicActive = !!active;
+  projectorCountdownTimer = setInterval(updateProjectorCountdown, 180);
+  updateProjectorCountdown(active);
+}
+function updateProjectorCountdown(active = true) {
+  // Projektor hanya menunjukkan bar; nombor masa dipaparkan pada telefon pelajar sahaja.
+  const remaining = projectorTimerPaused ? Math.max(0, Math.ceil(projectorPausedRemainingMs / 1000)) : Math.max(0, Math.ceil((projectorTimerEndsAt - Date.now()) / 1000));
+  const bar = $('projectorTimerBar');
+  if (bar) {
+    const ratio = projectorTimerPaused ? (projectorTimerTotal ? projectorPausedRemainingMs / (projectorTimerTotal * 1000) : 0) : (projectorTimerTotal ? (projectorTimerEndsAt - Date.now()) / (projectorTimerTotal * 1000) : 0);
+    const left = Math.max(0, Math.min(1, ratio));
+    const hue = Math.round(left * 120); // green at full, red at zero
+    bar.style.width = `${left * 100}%`;
+    bar.style.background = `hsl(${hue} 82% 45%)`;
+  }
+  musicPulse('projector', remaining, projectorTimerTotal, projectorTimerPaused, projectorMusicActive && !projectorTimerPaused);
+}
+async function refreshProjector() {
+  try {
+    const d = await call('projectorState');
+    $('appTitle').textContent = d.title || 'QuizPro KV';
+    if (!d.question) {
+      $('projectorPauseBtn').classList.add('hidden'); $('projectorNextBtn').classList.add('hidden');
+      if (projectorCountdownTimer) clearInterval(projectorCountdownTimer);
+      projectorCountdownTimer = null; projectorTimerEndsAt = 0;
+      const message = d.status === 'finished' ? 'Kuiz telah tamat' : d.status === 'leaderboard' ? 'Sila tunggu soalan seterusnya' : 'Menunggu kuiz dimulakan';
+      $('projectorContent').innerHTML = `<div class="projector-empty">${esc(message)}</div>`;
+      return;
+    }
+    const q = d.question, reveal = d.status === 'reveal', ready = d.status === 'ready';
+    const remaining = ready ? 0 : (q.paused ? Math.ceil(q.pausedRemainingMs / 1000) : Math.max(0, Math.ceil((q.endsAt - Date.now()) / 1000)));
+    const phaseLabel = ready ? `SOALAN ${q.no}/${q.total} · SEDIA` : reveal ? `JAWAPAN BETUL — ${q.nextMode === 'manual' ? 'MENUNGGU CIKGU' : `SOALAN SETERUSNYA ${remaining}s`}` : `SOALAN ${q.no} / ${q.total}`;
+    const image = q.image ? `<div class="projector-image-frame"><img class="projector-image" src="${esc(q.image)}" alt="Gambar soalan"></div>` : '';
+    const symbols = { A:'▲', B:'◆', C:'●', D:'■' };
+    const choices = ['A','B','C','D'].map(k => `<div class="projector-choice choice-${k}${reveal && q.correct === k ? ' correct' : ''}"><span class="projector-symbol">${symbols[k]}</span><span>${esc(q[k])}</span>${reveal && q.correct === k ? ' <span>✓</span>' : ''}</div>`).join('');
+    const timerMarkup = `<div class="projector-timer-track"><div class="projector-timer-bar" id="projectorTimerBar"></div></div>`;
+    $('projectorContent').innerHTML = `<div class="projector-screen"><h1 class="projector-title">${esc(d.title || 'QuizPro KV')}</h1><div class="projector-question"><div class="pill">${phaseLabel}${q.paused ? ' · PAUSE' : ''}</div><div class="projector-question-text">${esc(q.question)}</div>${image}${timerMarkup}${choices}</div></div>`;
+    const pBtn = $('projectorPauseBtn'), nBtn = $('projectorNextBtn');
+    pBtn.classList.toggle('hidden', !pin); pBtn.disabled = !(d.status === 'question' || d.status === 'reveal'); pBtn.textContent = q.paused ? 'Teruskan' : 'Pause';
+    nBtn.classList.toggle('hidden', !pin || q.nextMode !== 'manual'); nBtn.disabled = !(reveal && !q.paused);
+    if (!ready) startProjectorCountdown(q.endsAt, reveal ? q.revealSeconds : q.seconds, q.paused, q.pausedRemainingMs, !reveal);
+
+  } catch (e) {
+    $('projectorContent').innerHTML = '<div class="projector-empty">Tidak dapat memuatkan paparan projector.</div>';
+  }
+}
+
+async function togglePauseProjector() {
+  try { if (!pin) throw new Error('Log masuk cikgu dahulu pada panel cikgu.'); await call('adminTogglePause', pin); await refreshProjector(); }
+  catch(e) { notice(e.message, true); }
+}
+async function nextQuestionProjector() {
+  try { if (!pin) throw new Error('Log masuk cikgu dahulu pada panel cikgu.'); const d = await call('adminNextQuestion', pin); if (d.finished) notice('Semua soalan selesai. Kuiz tamat.'); await refreshProjector(); }
+  catch(e) { notice(e.message, true); }
+}
+
+async function refreshTeacherLive() {
+  if (!pin) return;
+  try {
+    const d = await call('adminLiveData', pin);
+    if (d.code) sessionCode = String(d.code);
+    const q = d.question, symbols = { A:'▲', B:'◆', C:'●', D:'■' }, revealing = d.status === 'reveal', ready = d.status === 'ready';
+    let presentationQuestion = '<div class="teacher-question"><div class="pill">SEDIA UNTUK BERMULA</div><div class="teacher-qtitle">Tekan “Mula kuiz” untuk memaparkan soalan pertama.</div></div>';
+    if (q) {
+      const left = ready ? 0 : q.paused ? Math.ceil(q.pausedRemainingMs/1000) : Math.max(0, Math.ceil((q.endsAt - Date.now()) / 1000));
+      const totalForBar = revealing ? q.revealSeconds : q.seconds;
+      const barRatio = ready ? 1 : q.paused ? Math.max(0, Math.min(1, (q.pausedRemainingMs || 0) / (totalForBar * 1000))) : Math.max(0, Math.min(1, (q.endsAt - Date.now()) / (totalForBar * 1000)));
+      const barHue = Math.round(barRatio * 120);
+      presentationQuestion = `<div class="teacher-question"><div style="color:#93c5fd;font-weight:700">${ready ? 'SEDIA MEMAPARKAN SOALAN' : revealing ? 'JAWAPAN BETUL' : `SOALAN ${q.no}/${q.total}`}${q.paused ? ' · PAUSE' : ''}</div><div class="teacher-qtitle">${esc(q.question)}</div><div class="projector-timer-track"><div class="projector-timer-bar" style="width:${barRatio * 100}%;background:hsl(${barHue} 82% 45%)"></div></div>${['A','B','C','D'].map(k=>`<div class="teacher-choice choice-${k}"><span class="teacher-symbol">${symbols[k]}</span> ${esc(q[k])}${revealing && q.correct===k ? ' <strong style="color:#fff">✓ JAWAPAN BETUL</strong>' : ''}</div>`).join('')}</div>`;
+    }
+    $('teacherLivePanel').innerHTML = `<div class="teacher-screen"><div class="teacher-screen-head">PAPARAN PROJECTOR</div>${presentationQuestion}<div class="teacher-controls"><span class="muted">Status: ${esc(d.status)}${d.paused ? ' (dijeda)' : ''}</span></div></div>`;
+    if (d.status === 'reveal') await refreshLeaderboard();
+    const active = ['question','reveal'].includes(d.status);
+    $('pauseResumeBtn').disabled = !active;
+    $('pauseResumeBtn').textContent = d.paused ? 'Teruskan' : 'Pause';
+    $('nextQuestionBtn').disabled = !(revealing && !d.paused && d.settings && d.settings.nextMode === 'manual');
+    $('nextQuestionBtn').classList.toggle('hidden', !(d.settings && d.settings.nextMode === 'manual'));
+  } catch(e) { notice('Tidak dapat mengemas kini paparan cikgu: ' + e.message, true); }
+}
+async function togglePause() {
+  try { const d = await call('adminTogglePause', pin); notice(d.paused ? 'Kuiz dijeda untuk semua pelajar.' : 'Kuiz diteruskan untuk semua pelajar.'); await refreshTeacherLive(); }
+  catch(e) { notice(e.message, true); }
+}
+async function nextQuestion() {
+  try {
+    const d = await call('adminNextQuestion', pin);
+    if (d.finished) { notice('Semua soalan selesai. Kuiz tamat.'); await refreshLeaderboard(); }
+    else { notice('Soalan seterusnya disediakan.'); await refreshTeacherLive(); }
+  } catch(e) { notice(e.message, true); }
+}
+
+async function showLeaderboard() {
+  if (!pin && !playerId) return notice('Sila log masuk sebagai cikgu dahulu.', true);
+  if (!sessionCode) {
+    try { const d = await call('adminGetData', pin); sessionCode = String(d.settings.sessionCode || ''); } catch(e) {}
+  }
+  if (!sessionCode) return notice('Belum ada sesi aktif.', true);
+  await refreshLeaderboard();
+  // Leaderboard hanya dipaparkan pada panel cikgu.
+}
+async function refreshLeaderboard() {
+  if (!sessionCode) return;
+  try {
+    const list = await call('leaderboard', sessionCode);
+    $('leaderboardPanel').innerHTML = list.length ? '<table><thead><tr><th>#</th><th>Nama</th><th>Markah</th><th>Betul</th><th>Dijawab</th></tr></thead><tbody>'+list.map(p=>`<tr><td>${p.rank}</td><td>${esc(p.name)}</td><td><b>${p.points}</b></td><td>${p.correct}</td><td>${p.answered}</td></tr>`).join('')+'</tbody></table>' : '<p class="muted">Belum ada peserta.</p>';
+  } catch(e) { notice(e.message, true); }
+}
+async function createAnalysisSpreadsheet() {
+  try {
+    if (!pin) throw new Error('Log masuk cikgu dahulu.');
+    const result = await call('adminCreateAnalysisSpreadsheet', pin);
+    $('analysisSpreadsheetLink').innerHTML = `Spreadsheet analisis siap: <a href="${esc(result.url)}" target="_blank" rel="noopener">${esc(result.name)} — buka spreadsheet</a>`;
+    notice('Spreadsheet analisis berjaya dibuat.');
+  } catch(e) { notice('Gagal membuat spreadsheet analisis: ' + e.message, true); }
+}
+
+async function endSession() {
+  try { if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.'); await call('adminEndSession', pin); notice('Sesi telah ditamatkan.'); await loadAdminData(); await refreshLeaderboard(); }
+  catch(e) { notice(e.message, true); }
+}
+async function joinGame() {
+  try {
+    // Give supported phones a direct user-gesture to unlock vibration; iOS Safari may not support Vibration API.
+    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(100);
+    // Audio is enabled after the student's explicit join tap; they can switch it off later.
+    if (!musicEngines.player.enabled) await toggleSuspenseMusic('player');
+    sessionCode = $('joinCode').value.trim();
+    const res = await call('joinSession', sessionCode, $('studentName').value, $('studentId').value);
+    playerId = res.playerId; playerName = res.name; currentPlayerQuestion = 0;
+    $('playerMusicToggle').textContent = musicEngines.player.enabled ? 'Muzik: ON' : 'Muzik: OFF';
+    $('playerHeading').textContent = 'Hai, ' + playerName;
+    showView('player'); startPolling(); notice('Pendaftaran berjaya.');
+  } catch(e) { notice(e.message, true); }
+}
+function startPolling() {
+  if (poller) clearInterval(poller);
+  pollPlayer(); poller = setInterval(pollPlayer, 2000);
+}
+async function pollPlayer() {
+  if (!playerId) return;
+  try {
+    const [state, ps] = await Promise.all([call('publicState', sessionCode), call('playerStatus', sessionCode, playerId)]);
+    if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
+    $('appTitle').textContent = state.title || 'QuizPro KV';
+    $('playerPoints').textContent = ps.totalPoints;
+    $('playerState').textContent = String(state.status).toUpperCase();
+    if (state.status === 'waiting') $('playerContent').innerHTML = '<p class="big">Sila tunggu cikgu memulakan soalan.</p>';
+    else if (state.status === 'ready') { $('playerContent').innerHTML = '<p class="big center">Soalan seterusnya sedang disediakan…</p>'; }
+    else if ((state.status === 'question' || state.status === 'reveal') && state.question) renderPlayerQuestion(state.question, ps, state.status);
+    else if (state.status === 'leaderboard') { $('playerContent').innerHTML = '<p class="big">Sila tunggu soalan seterusnya.</p>'; } else if (state.status === 'finished') $('playerContent').innerHTML = '<p class="big">Kuiz tamat. Terima kasih!</p><p>Jumlah markah anda: '+ps.totalPoints+'</p>';
+  } catch(e) { /* transient polling error; next poll retries */ }
+}
+function renderPlayerQuestion(q, ps, phase) {
+  if (q.no !== currentPlayerQuestion) {
+    currentPlayerQuestion = Number(q.no); selectedChoice = ''; lastPlayerVibrationSecond = null; playerVibrationFinished = false;
+    if (playerCountdownTimer) { clearInterval(playerCountdownTimer); playerCountdownTimer = null; }
+    const symbols = { A:'▲', B:'◆', C:'●', D:'■' };
+    $('playerContent').innerHTML = `<p class="muted center">SOALAN ${q.no} / ${q.total}</p><div class="timer center" id="countdown"></div><div class="student-answer-grid">${['A','B','C','D'].map(k=>`<button class="student-letter choice-${k}" id="opt${k}" aria-label="Jawapan ${k}" onclick="answer('${k}',${q.no})">${symbols[k]}</button>`).join('')}</div><div id="answerFeedback"></div>`;
+  }
+  const choice = selectedChoice || (Number(ps.currentQuestion) === Number(q.no) ? (ps.currentChoice || '') : '');
+  if (choice) setAnswerState('selected', choice, 'Jawapan anda telah direkodkan.');
+  if (phase === 'reveal') {
+    const correct = ps.lastResult && ps.lastResult.questionNo === q.no && ps.lastResult.correct;
+    if (choice && correct) setAnswerState('correct', choice, 'Jawapan anda betul.');
+    else if (choice) setAnswerState('locked', choice, 'Jawapan sedang dipaparkan pada projector.');
+    else setAnswerState('expired', '', 'Masa tamat. Tunggu soalan seterusnya.');
+  }
+  startPlayerCountdown(q.no, q.endsAt, phase, q.seconds, q.paused, q.pausedRemainingMs, q.revealSeconds);
+}
+function startPlayerCountdown(questionNo, endsAt, phase, total, paused, pausedRemainingMs, revealSeconds) {
+  playerTimerQuestion = questionNo; playerTimerEndsAt = endsAt || 0; playerTimerPhase = phase;
+  playerTimerTotal = phase === 'reveal' ? (revealSeconds || 15) : (total || 30);
+  playerTimerPaused = !!paused; playerPausedRemainingMs = pausedRemainingMs || 0;
+  if (playerCountdownTimer) clearInterval(playerCountdownTimer);
+  playerCountdownTimer = setInterval(updatePlayerCountdown, 180);
+  updatePlayerCountdown();
+}
+function updatePlayerCountdown() {
+  const timer = $('countdown'); if (!timer) return;
+  const remaining = playerTimerPaused ? Math.max(0, Math.ceil(playerPausedRemainingMs/1000)) : Math.max(0, Math.ceil((playerTimerEndsAt - Date.now()) / 1000));
+  timer.textContent = playerTimerPaused ? `PAUSE · ${remaining} saat` : playerTimerPhase === 'reveal' ? `Soalan seterusnya: ${remaining} saat` : (remaining ? `Masa: ${remaining} saat` : 'Masa tamat');
+  applyTimerColor(timer, remaining, playerTimerTotal);
+  if (playerTimerPhase === 'question' && !playerTimerPaused && typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+    if (remaining === 5 && lastPlayerVibrationSecond !== 5) { navigator.vibrate(180); lastPlayerVibrationSecond = 5; }
+    if (remaining <= 0 && !playerVibrationFinished) { navigator.vibrate([250, 100, 250]); playerVibrationFinished = true; }
+    if (remaining > 5) { lastPlayerVibrationSecond = null; playerVibrationFinished = false; }
+  }
+  musicPulse('player', remaining, playerTimerTotal, playerTimerPaused, playerTimerPhase === 'question');
+  if (playerTimerPhase !== 'reveal' && remaining <= 0 && !selectedChoice) setAnswerState('expired', '', 'Masa tamat. Tunggu soalan seterusnya.');
+}
+function setAnswerState(state, choice, message) {
+  ['A','B','C','D'].forEach(k => {
+    const button = $('opt' + k); if (!button) return;
+    button.classList.toggle('selected', (state === 'selected' || state === 'locked') && k === choice);
+    button.classList.toggle('correct', state === 'correct' && k === choice);
+    button.classList.toggle('expired', state === 'expired');
+    if (state === 'selected' || state === 'locked' || state === 'correct' || state === 'expired') button.disabled = true;
+  });
+  const feedback = $('answerFeedback');
+  if (feedback && message) { feedback.textContent = message; feedback.className = 'status'; }
+}
+async function answer(choice, qNo) {
+  if (Number(qNo) !== Number(currentPlayerQuestion) || selectedChoice || playerTimerPaused || !playerTimerEndsAt || Date.now() >= playerTimerEndsAt) return;
+  selectedChoice = choice;
+  setAnswerState('selected', choice, 'Jawapan anda telah direkodkan.');
+  try {
+    await call('submitAnswer', sessionCode, playerId, choice);
+  } catch(e) {
+    const timedOut = /tamat|belum bermula/i.test(e.message);
+    if (timedOut) { selectedChoice = ''; setAnswerState('expired', '', 'Masa tamat. Tunggu soalan seterusnya.'); }
+    else { selectedChoice = ''; $('answerFeedback').textContent = e.message; $('answerFeedback').className='status error'; }
+  }
+}
+applyInitialRoute();
+</script>
+</body>
+</html>
