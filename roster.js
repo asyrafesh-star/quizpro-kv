@@ -1,15 +1,15 @@
 let rosterLookupTimer,rosterLookupGeneration=0,attendancePending=false,attendanceGeneration=0;
 function scheduleRosterLookup(){
   clearTimeout(rosterLookupTimer);const generation=++rosterLookupGeneration;
-  const name=$('studentName'),status=$('rosterLookupStatus');name.readOnly=false;name.value='';
+  const name=$('studentName'),status=$('rosterLookupStatus');name.readOnly=true;name.value='';
   const ic=$('studentId').value.replace(/\D/g,''),code=$('joinCode').value.trim();
   if(ic.length!==12||code.length!==6){status.textContent='Isi kod permainan dan IC 12 digit untuk semak nama.';return;}
   status.textContent='Menyemak nama…';
   rosterLookupTimer=setTimeout(async()=>{try{
     const d=await call('studentRosterName',code,ic);if(generation!==rosterLookupGeneration)return;
     if(d.found){name.value=d.name;name.readOnly=true;status.textContent='✓ Nama dijumpai · '+d.className;}
-    else status.textContent='Nama belum dijumpai. Semak kod dan IC, atau isi nama penuh.';
-  }catch(e){if(generation===rosterLookupGeneration)status.textContent='Semakan nama gagal. Cuba semula atau isi nama penuh.';}},350);
+    else status.textContent='IC tidak dijumpai. Semak kod permainan dan IC, atau hubungi cikgu.';
+  }catch(e){if(generation===rosterLookupGeneration)status.textContent='Semakan nama gagal. Cuba semula atau hubungi cikgu.';}},350);
 }
 $('studentId').addEventListener('input',scheduleRosterLookup);$('joinCode').addEventListener('input',scheduleRosterLookup);
 function attendanceTable(list){return list.length?'<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th><th>IC akhir</th></tr></thead><tbody>'+list.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.name)}</td><td>•••• ${esc(p.idSuffix)}</td></tr>`).join('')+'</tbody></table></div>':'<p class="muted">Tiada pelajar.</p>';}

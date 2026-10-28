@@ -47,6 +47,7 @@
 .quiz-image{margin:12px auto;text-align:center;max-width:100%}.quiz-image img{display:block;max-width:100%;height:auto;object-fit:contain;margin:auto;border-radius:10px;background:#fff}.quiz-image img[hidden]{display:none}.quiz-image-projector img{max-height:24vh}.quiz-image-teacher img{max-height:260px}.quiz-image-bank{width:130px;min-width:100px;margin:0}.quiz-image-bank img{max-height:90px;max-width:130px}.quiz-image-link{display:inline-block;font-size:12px;margin-top:5px;color:#93c5fd}.quiz-image-bank .quiz-image-link{color:#2563eb}.quiz-image-error{font-size:13px;line-height:1.4;background:#fff3d1;color:#704900;padding:8px;border-radius:8px;margin:6px 0}.teacher-screen{aspect-ratio:auto;min-height:0;overflow:visible}.projector-page{overflow-y:auto}
 
 .attendance-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.attendance-grid table{font-size:13px}.attendance-grid h3{padding:12px;border-radius:10px;background:#eef2ff}#presentHeading{color:#087443;background:#e8f7ef}#absentHeading{color:#9a5900;background:#fff5df}#attendanceCard{margin:24px 0}#rosterLookupStatus{display:block;margin-top:6px;color:#42516b}@media(max-width:700px){.attendance-grid{grid-template-columns:1fr}}
+.reset-panel{margin:24px 0;padding:16px;border:1px solid #fecaca;border-radius:14px;background:#fffafa}.reset-panel h3{margin-top:0}.delete-history-btn{font-size:13px;padding:8px 12px}
 </style>
 </head>
 <body>
@@ -112,7 +113,7 @@
   <div id="classRanking"><p class="muted">Pilih kelas untuk melihat markah.</p></div>
   <button class="cloud-action secondary" onclick="exportCloudClass()">Simpan laporan kelas ke Drive</button><div id="cloudExportResult"></div>
   <details><summary>Senarai pelajar kelas</summary><div id="classRoster"></div></details>
-  <h3>Sejarah kuiz</h3><div id="historyList"></div><div id="sessionHistoryDetail"></div><div id="legacyHistory"></div>
+  <div class="reset-panel"><h3>Urus sejarah & markah</h3><p class="muted">Padam sesi akan membuang sumbangannya daripada markah terkumpul. Reset kelas mengosongkan sejarah dan markah kelas tersebut. Tamatkan sesi aktif dahulu.</p><button class="danger reset-action" onclick="resetSelectedClass()">Reset sejarah & markah kelas dipilih</button><button class="danger reset-action" onclick="resetAllClasses()">Reset semua kelas</button><button id="restoreRecordsBtn" class="secondary reset-action" onclick="restoreLastRecords()" disabled>Pulihkan pemadaman terakhir</button><p id="resetStatus" class="muted" aria-live="polite"></p></div><h3>Sejarah kuiz</h3><div id="historyList"></div><div id="sessionHistoryDetail"></div><div id="legacyHistory"></div>
 </div>
 
     <div class="card">
@@ -584,7 +585,8 @@ async function answer(choice, qNo) {
 applyInitialRoute();
 </script>
 <script src="cloud.js?v=8"></script>
-<script src="roster.js?v=20261028a"></script>
+<script src="roster.js?v=20261028b"></script>
+<script src="reset.js?v=20261028a"></script>
 </body>
 </html>
 
