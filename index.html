@@ -55,6 +55,8 @@
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
 <script src="answer-controls.js?v=20261028a"></script>
+<link rel="stylesheet" href="apple-theme.css?v=20261028a">
+<script src="piano.js?v=20261028a"></script>
 </head>
 <body>
 <div class="wrap">
@@ -65,11 +67,11 @@
   <div id="notice" class="hidden"></div>
 
   <section id="homeView" class="card">
-    <h2>Selamat datang</h2>
-    <p>Pilih sama ada anda cikgu atau pelajar.</p>
+    <div class="welcome-eyebrow">BELAJAR. BERMAIN. BERJAYA.</div><h2>Setiap soalan,<br>satu langkah ke depan.</h2>
+    <p class="welcome-intro">Ruang kuiz untuk kelas anda. Sertai permainan dan lihat kemajuan bersama.</p>
     <button onclick="showView('student')">Saya pelajar — sertai kuiz</button>
     <button class="secondary" onclick="showView('adminLogin')">Panel cikgu</button>
-    <p class="muted">Untuk pelajar: masukkan kod permainan yang dipaparkan oleh cikgu atau gunakan pautan QR sesi.</p>
+    <p class="muted">Untuk pelajar: masukkan kod permainan yang dipaparkan oleh cikgu atau gunakan pautan QR sesi.</p><div class="piano-preview"><span>♪ Piano lembut</span><button class="secondary" id="pianoPreview" onclick="previewPiano()">Dengar contoh</button><small>Melodi tenang sepanjang soalan.</small></div>
   </section>
 
   <section id="studentView" class="card hidden">
@@ -85,12 +87,12 @@
   </section>
 
   <section id="playerView" class="card hidden">
-    <div class="brand"><div><div class="pill" id="playerState">MENUNGGU</div><h2 id="playerHeading">Hai!</h2></div><div class="center"><div class="muted">Jumlah markah</div><div class="big" id="playerPoints">0</div><button id="playerMusicToggle" class="secondary" onclick="toggleSuspenseMusic('player')">Muzik: ON selepas sertai</button></div></div>
+    <div class="brand"><div><div class="pill" id="playerState">MENUNGGU</div><h2 id="playerHeading">Hai!</h2></div><div class="center"><div class="muted">Jumlah markah</div><div class="big" id="playerPoints">0</div><button id="playerMusicToggle" class="secondary" onclick="toggleSuspenseMusic('player')">Piano: ON selepas sertai</button></div></div>
     <div id="playerAnswerStats" aria-live="polite"></div><div id="playerContent"><p>Cikgu akan memulakan soalan. Sila tunggu.</p></div>
   </section>
 
   <section id="projectorView" class="projector-page hidden">
-    <div class="projector-toolbar"><span class="pill">PAPARAN PROJECTOR</span><div><button id="soundToggle" class="secondary" onclick="toggleSuspenseMusic('projector')">Muzik: OFF</button><button id="projectorPauseBtn" class="secondary hidden" onclick="togglePauseProjector()">Pause</button><button id="projectorNextBtn" class="secondary hidden" onclick="nextQuestionProjector()">Soalan seterusnya</button><button onclick="goToRoute('menu')">Menu utama</button></div></div>
+    <div class="projector-toolbar"><span class="pill">PAPARAN PROJECTOR</span><div><button id="soundToggle" class="secondary" onclick="toggleSuspenseMusic('projector')">Piano: OFF</button><button id="projectorPauseBtn" class="secondary hidden" onclick="togglePauseProjector()">Pause</button><button id="projectorNextBtn" class="secondary hidden" onclick="nextQuestionProjector()">Soalan seterusnya</button><button onclick="goToRoute('menu')">Menu utama</button></div></div>
     <div id="projectorContent" class="projector-screen"><div class="projector-empty">Memuatkan paparan kuiz…</div></div>
   </section>
 
@@ -330,39 +332,7 @@ function startProjectorPolling() {
   refreshProjector();
   poller = setInterval(refreshProjector, 1000);
 }
-async function toggleSuspenseMusic(kind) {
-  const engine = musicEngines[kind];
-  try {
-    if (!engine.context) {
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) throw new Error('Pelayar ini tidak menyokong audio.');
-      engine.context = new AC();
-    }
-    await engine.context.resume();
-    engine.enabled = !engine.enabled;
-    engine.lastTick = 0;
-    const button = $(kind === 'projector' ? 'soundToggle' : 'playerMusicToggle');
-    if (button) button.textContent = engine.enabled ? 'Muzik: ON' : 'Muzik: OFF';
-  } catch(e) { notice(e.message, true); }
-}
-function musicPulse(kind, remaining, total, paused, active) {
-  const engine = musicEngines[kind];
-  if (!engine.enabled || !engine.context || !active || paused || remaining <= 0) return;
-  const nowMs = performance.now(), ratio = total > 0 ? remaining / total : 0;
-  const interval = ratio > .66 ? 1050 : ratio > .35 ? 700 : ratio > .15 ? 390 : 190;
-  if (nowMs - engine.lastTick < interval) return;
-  engine.lastTick = nowMs;
-  const ctx = engine.context, now = ctx.currentTime;
-  const osc = ctx.createOscillator(), gain = ctx.createGain();
-  const progress = Math.max(0, Math.min(1, 1 - ratio));
-  osc.type = 'sawtooth';
-  osc.frequency.setValueAtTime(95 + progress * 430, now);
-  osc.frequency.exponentialRampToValueAtTime(150 + progress * 650, now + 0.11);
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(0.035, now + 0.015);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-  osc.connect(gain).connect(ctx.destination); osc.start(now); osc.stop(now + 0.2);
-}
+
 function timerColorClass(remaining, total) {
   const ratio = total > 0 ? remaining / total : 0;
   return ratio > .6 ? 'timer-green' : ratio > .35 ? 'timer-yellow' : ratio > .15 ? 'timer-orange' : 'timer-red';
@@ -508,7 +478,7 @@ async function joinGame() {
     sessionCode = $('joinCode').value.trim();
     const res = await call('joinSession', sessionCode, $('studentName').value, $('studentId').value);
     playerId = res.playerId; playerName = res.name; currentPlayerQuestion = 0; selectedChoice=''; savePlayerResume();
-    $('playerMusicToggle').textContent = musicEngines.player.enabled ? 'Muzik: ON' : 'Muzik: OFF';
+    $('playerMusicToggle').textContent = musicEngines.player.enabled ? 'Muzik: ON' : 'Piano: OFF';
     $('playerHeading').textContent = 'Hai, ' + playerName;
     showView('player'); startPolling(); notice(res.existing?'Permainan disambung. Jawapan dan markah dikekalkan.':'Pendaftaran berjaya.');
   } catch(e) { notice(e.message, true); }finally{joiningGame=false;joinButton.disabled=false;}
