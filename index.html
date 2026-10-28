@@ -515,7 +515,7 @@ function startPolling() {
 async function pollPlayer() {
   if (!playerId) return;
   try {
-    const snapshot=await call('playerSnapshot',sessionCode,playerId);const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
+    const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
     if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
     $('appTitle').textContent = state.title || 'QuizPro KV';
     $('playerPoints').textContent = ps.totalPoints;let race=document.getElementById('playerRace');if(!race){race=document.createElement('div');race.id='playerRace';document.getElementById('playerView').append(race);}race.innerHTML=raceMarkup(snapshot.leaderboard,snapshot.maxPoints);
@@ -593,7 +593,7 @@ applyInitialRoute();
 <script src="roster.js?v=20261028c"></script>
 <script src="reset.js?v=20261028a"></script>
 <script src="fullscreen.js?v=20261028b"></script>
-<script src="resume.js?v=20261028a"></script>
+<script src="resume.js?v=20261028b"></script>
 </body>
 </html>
 
