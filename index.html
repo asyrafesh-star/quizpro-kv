@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>QuizPro KV</title>
+  <script src="images.js?v=20261028"></script>
   <script src="config.js?v=7"></script>
   <script src="api.js?v=7"></script>
   <base target="_top">
@@ -42,6 +43,8 @@
 .cloud-head>div,.cloud-save>div{min-width:0}.cloud-save input{min-width:0}@media(max-width:760px){.cloud-head,.cloud-section-head,.cloud-save{align-items:flex-start;flex-direction:column}.cloud-save>div{width:100%}.cloud-tabs button{font-size:13px}}
 .teacher-screen{width:100%;max-width:100%;min-width:0}@media(max-width:760px){.teacher-screen{aspect-ratio:auto;min-height:0}}
 
+
+.quiz-image{margin:12px auto;text-align:center;max-width:100%}.quiz-image img{display:block;max-width:100%;height:auto;object-fit:contain;margin:auto;border-radius:10px;background:#fff}.quiz-image img[hidden]{display:none}.quiz-image-projector img{max-height:24vh}.quiz-image-teacher img{max-height:260px}.quiz-image-bank{width:130px;min-width:100px;margin:0}.quiz-image-bank img{max-height:90px;max-width:130px}.quiz-image-link{display:inline-block;font-size:12px;margin-top:5px;color:#93c5fd}.quiz-image-bank .quiz-image-link{color:#2563eb}.quiz-image-error{font-size:13px;line-height:1.4;background:#fff3d1;color:#704900;padding:8px;border-radius:8px;margin:6px 0}.teacher-screen{aspect-ratio:auto;min-height:0;overflow:visible}.projector-page{overflow-y:auto}
 </style>
 </head>
 <body>
@@ -226,7 +229,7 @@ function toggleQuestionBank() {
 function renderQuestions(qs) {
   if (!qs.length) { $('questionTable').textContent = 'Belum ada soalan. Import fail Excel dahulu.'; return; }
   $('questionTable').innerHTML = '<table><thead><tr><th>No</th><th>Soalan</th><th>Masa</th><th>Markah</th><th>Gambar</th></tr></thead><tbody>' +
-    qs.map(q => `<tr><td>${esc(q.no)}</td><td>${esc(q.question)}</td><td>${esc(q.seconds)}s</td><td>${esc(q.points)}</td><td>${q.image ? 'Ada' : '—'}</td></tr>`).join('') + '</tbody></table>';
+    qs.map(q => `<tr><td>${esc(q.no)}</td><td>${esc(q.question)}</td><td>${esc(q.seconds)}s</td><td>${esc(q.points)}</td><td>${q.image ? questionImageMarkup(q.image, 'bank', q.no) : '—'}</td></tr>`).join('') + '</tbody></table>';
 }
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 async function saveSettings() {
@@ -393,7 +396,7 @@ async function refreshProjector() {
     const q = d.question, reveal = d.status === 'reveal', ready = d.status === 'ready';
     const remaining = ready ? 0 : (q.paused ? Math.ceil(q.pausedRemainingMs / 1000) : Math.max(0, Math.ceil((q.endsAt - Date.now()) / 1000)));
     const phaseLabel = ready ? `SOALAN ${q.no}/${q.total} · SEDIA` : reveal ? `JAWAPAN BETUL — ${q.nextMode === 'manual' ? 'MENUNGGU CIKGU' : `SOALAN SETERUSNYA ${remaining}s`}` : `SOALAN ${q.no} / ${q.total}`;
-    const image = q.image ? `<div class="projector-image-frame"><img class="projector-image" src="${esc(q.image)}" alt="Gambar soalan"></div>` : '';
+    const image = questionImageMarkup(q.image, 'projector', q.no);
     const symbols = { A:'▲', B:'◆', C:'●', D:'■' };
     const choices = ['A','B','C','D'].map(k => `<div class="projector-choice choice-${k}${reveal && q.correct === k ? ' correct' : ''}"><span class="projector-symbol">${symbols[k]}</span><span>${esc(q[k])}</span>${reveal && q.correct === k ? ' <span>✓</span>' : ''}</div>`).join('');
     const timerMarkup = `<div class="projector-timer-track"><div class="projector-timer-bar" id="projectorTimerBar"></div></div>`;
@@ -431,7 +434,7 @@ async function refreshTeacherLive() {
       const totalForBar = revealing ? q.revealSeconds : q.seconds;
       const barRatio = ready ? 1 : q.paused ? Math.max(0, Math.min(1, (q.pausedRemainingMs || 0) / (totalForBar * 1000))) : Math.max(0, Math.min(1, (q.endsAt - Date.now()) / (totalForBar * 1000)));
       const barHue = Math.round(barRatio * 120);
-      presentationQuestion = `<div class="teacher-question"><div style="color:#93c5fd;font-weight:700">${ready ? 'SEDIA MEMAPARKAN SOALAN' : revealing ? 'JAWAPAN BETUL' : `SOALAN ${q.no}/${q.total}`}${q.paused ? ' · PAUSE' : ''}</div><div class="teacher-qtitle">${esc(q.question)}</div><div class="projector-timer-track"><div class="projector-timer-bar" style="width:${barRatio * 100}%;background:hsl(${barHue} 82% 45%)"></div></div>${['A','B','C','D'].map(k=>`<div class="teacher-choice choice-${k}"><span class="teacher-symbol">${symbols[k]}</span> ${esc(q[k])}${revealing && q.correct===k ? ' <strong style="color:#fff">✓ JAWAPAN BETUL</strong>' : ''}</div>`).join('')}</div>`;
+      presentationQuestion = `<div class="teacher-question"><div style="color:#93c5fd;font-weight:700">${ready ? 'SEDIA MEMAPARKAN SOALAN' : revealing ? 'JAWAPAN BETUL' : `SOALAN ${q.no}/${q.total}`}${q.paused ? ' · PAUSE' : ''}</div><div class="teacher-qtitle">${esc(q.question)}</div>${questionImageMarkup(q.image, 'teacher', q.no)}<div class="projector-timer-track"><div class="projector-timer-bar" style="width:${barRatio * 100}%;background:hsl(${barHue} 82% 45%)"></div></div>${['A','B','C','D'].map(k=>`<div class="teacher-choice choice-${k}"><span class="teacher-symbol">${symbols[k]}</span> ${esc(q[k])}${revealing && q.correct===k ? ' <strong style="color:#fff">✓ JAWAPAN BETUL</strong>' : ''}</div>`).join('')}</div>`;
     }
     $('teacherLivePanel').innerHTML = `<div class="teacher-screen"><div class="teacher-screen-head">PAPARAN PROJECTOR</div>${presentationQuestion}<div class="teacher-controls"><span class="muted">Status: ${esc(d.status)}${d.paused ? ' (dijeda)' : ''}</span></div></div>`;
     if (d.status === 'reveal') await refreshLeaderboard();
@@ -581,3 +584,4 @@ applyInitialRoute();
 <script src="cloud.js?v=8"></script>
 </body>
 </html>
+
