@@ -1,0 +1,11 @@
+.section-fullscreen-toolbar{display:flex;justify-content:flex-end;position:relative;z-index:5;margin:-3px 0 10px}
+.section-fullscreen-button{font-size:13px;padding:8px 12px;margin:0;white-space:nowrap;box-shadow:none}
+.fullscreen-section:fullscreen,.section-fullscreen-fallback{width:100vw!important;max-width:none!important;height:100dvh!important;margin:0!important;border:0!important;border-radius:0!important;padding:clamp(16px,3vw,40px)!important;overflow:auto!important;background:#f4f7fc;box-sizing:border-box}
+.fullscreen-section:fullscreen::backdrop{background:#f4f7fc}
+.fullscreen-section:fullscreen>.section-fullscreen-toolbar,.section-fullscreen-fallback>.section-fullscreen-toolbar{position:sticky;top:-1px;z-index:30;background:#f4f7fc;padding:8px 0;margin-top:-8px}
+.section-fullscreen-fallback{position:fixed!important;inset:0!important;z-index:10000!important}
+body.section-fullscreen-open{overflow:hidden}
+.fullscreen-section:fullscreen .tablewrap,.section-fullscreen-fallback .tablewrap{max-height:none}
+#projectorView:fullscreen,#projectorView.section-fullscreen-fallback{background:#0b1225}
+#projectorView:fullscreen>.section-fullscreen-toolbar,#projectorView.section-fullscreen-fallback>.section-fullscreen-toolbar{background:#0b1225}
+@media(max-width:600px){.section-fullscreen-button{font-size:12px}.fullscreen-section:fullscreen,.section-fullscreen-fallback{padding:14px!important}}
