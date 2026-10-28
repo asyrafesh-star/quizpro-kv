@@ -51,7 +51,9 @@
 </style>
 <link rel="stylesheet" href="fullscreen.css?v=20261028a">
 <link rel="stylesheet" href="race.css?v=20261028a">
-<script src="race-render.js?v=20261028a"></script>
+<script src="metrics.js?v=20261028a"></script>
+<script src="race-render.js?v=20261028b"></script>
+<link rel="stylesheet" href="metrics.css?v=20261028a">
 </head>
 <body>
 <div class="wrap">
@@ -81,7 +83,7 @@
 
   <section id="playerView" class="card hidden">
     <div class="brand"><div><div class="pill" id="playerState">MENUNGGU</div><h2 id="playerHeading">Hai!</h2></div><div class="center"><div class="muted">Jumlah markah</div><div class="big" id="playerPoints">0</div><button id="playerMusicToggle" class="secondary" onclick="toggleSuspenseMusic('player')">Muzik: ON selepas sertai</button></div></div>
-    <div id="playerContent"><p>Cikgu akan memulakan soalan. Sila tunggu.</p></div>
+    <div id="playerAnswerStats" aria-live="polite"></div><div id="playerContent"><p>Cikgu akan memulakan soalan. Sila tunggu.</p></div>
   </section>
 
   <section id="projectorView" class="projector-page hidden">
@@ -476,7 +478,7 @@ async function refreshLeaderboard() {
   if (!sessionCode) return;
   try {
     const list = await call('leaderboard', sessionCode);
-    $('leaderboardPanel').innerHTML = list.length ? '<table><thead><tr><th>#</th><th>Nama</th><th>Markah</th><th>Betul</th><th>Dijawab</th></tr></thead><tbody>'+list.map(p=>`<tr><td>${p.rank}</td><td>${esc(p.name)}</td><td><b>${p.points}</b></td><td>${p.correct}</td><td>${p.answered}</td></tr>`).join('')+'</tbody></table>' : '<p class="muted">Belum ada peserta.</p>';
+    $('leaderboardPanel').innerHTML = metricsRankingTable(list);
   } catch(e) { notice(e.message, true); }
 }
 async function createAnalysisSpreadsheet() {
@@ -518,7 +520,7 @@ async function pollPlayer() {
     const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
     if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
     $('appTitle').textContent = state.title || 'QuizPro KV';
-    $('playerPoints').textContent = ps.totalPoints;let race=document.getElementById('playerRace');if(!race){race=document.createElement('div');race.id='playerRace';document.getElementById('playerView').append(race);}race.innerHTML=raceMarkup(snapshot.leaderboard,snapshot.maxPoints);
+    $('playerPoints').textContent = ps.totalPoints;$('playerAnswerStats').innerHTML=answerStatsMarkup(ps);let race=document.getElementById('playerRace');if(!race){race=document.createElement('div');race.id='playerRace';document.getElementById('playerView').append(race);}race.innerHTML=raceMarkup(snapshot.leaderboard,snapshot.maxPoints);
     $('playerState').textContent = String(state.status).toUpperCase();
     if (state.status === 'waiting') $('playerContent').innerHTML = '<p class="big">Sila tunggu cikgu memulakan soalan.</p>';
     else if (state.status === 'ready') { $('playerContent').innerHTML = '<p class="big center">Soalan seterusnya sedang disediakan…</p>'; }
@@ -589,13 +591,14 @@ async function answer(choice, qNo) {
 }
 applyInitialRoute();
 </script>
-<script src="cloud.js?v=8"></script>
+<script src="cloud.js?v=metrics20261028"></script>
 <script src="roster.js?v=20261028c"></script>
 <script src="reset.js?v=20261028a"></script>
 <script src="fullscreen.js?v=20261028b"></script>
 <script src="resume.js?v=20261028b"></script>
 </body>
 </html>
+
 
 
 

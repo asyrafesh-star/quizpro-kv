@@ -34,7 +34,7 @@ async function loadClassSummary(){
     $('classRoster').innerHTML=d.roster.length?`<div class="roster-chips">${d.roster.map(p=>`<span>${esc(p.name)}</span>`).join('')}</div>`:'<p class="muted">Nama pelajar akan disimpan secara automatik apabila mereka menyertai kuiz kelas ini.</p>';
   }catch(e){if(generation===cloudGeneration)cloudStatus(e.message,true);}
 }
-function rankingTable(list,total=false){return list.length?'<div class="tablewrap"><table><thead><tr><th>#</th><th>Pelajar</th><th>'+ (total?'Jumlah markah':'Markah sesi')+'</th><th>Betul</th>'+(total?'<th>Kuiz</th>':'')+'</tr></thead><tbody>'+list.map(p=>`<tr><td>${p.rank}</td><td>${esc(p.name)}</td><td><b>${p.points}</b></td><td>${p.correct}</td>${total?`<td>${p.sessions}</td>`:''}</tr>`).join('')+'</tbody></table></div>':'<p class="muted">Belum ada keputusan. Markah terkumpul dikira selepas sesi tamat.</p>';}
+function rankingTable(list,total=false){return metricsRankingTable(list,total,true);}
 async function cloudAction(action){
   if(cloudBusy)return;cloudBusy=true;document.querySelectorAll('.cloud-action').forEach(b=>b.disabled=true);
   cloudStatus('Sedang menyimpan ke cloud…');
@@ -61,3 +61,4 @@ for(const key of ['refreshTeacherLive','refreshProjector','pollPlayer']){
   const original=window[key];let pending=false;
   window[key]=async function(...args){if(pending)return;pending=true;try{return await original(...args);}finally{pending=false;}};
 }
+
