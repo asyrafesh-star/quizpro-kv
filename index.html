@@ -45,6 +45,8 @@
 
 
 .quiz-image{margin:12px auto;text-align:center;max-width:100%}.quiz-image img{display:block;max-width:100%;height:auto;object-fit:contain;margin:auto;border-radius:10px;background:#fff}.quiz-image img[hidden]{display:none}.quiz-image-projector img{max-height:24vh}.quiz-image-teacher img{max-height:260px}.quiz-image-bank{width:130px;min-width:100px;margin:0}.quiz-image-bank img{max-height:90px;max-width:130px}.quiz-image-link{display:inline-block;font-size:12px;margin-top:5px;color:#93c5fd}.quiz-image-bank .quiz-image-link{color:#2563eb}.quiz-image-error{font-size:13px;line-height:1.4;background:#fff3d1;color:#704900;padding:8px;border-radius:8px;margin:6px 0}.teacher-screen{aspect-ratio:auto;min-height:0;overflow:visible}.projector-page{overflow-y:auto}
+
+.attendance-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.attendance-grid table{font-size:13px}.attendance-grid h3{padding:12px;border-radius:10px;background:#eef2ff}#presentHeading{color:#087443;background:#e8f7ef}#absentHeading{color:#9a5900;background:#fff5df}#attendanceCard{margin:24px 0}#rosterLookupStatus{display:block;margin-top:6px;color:#42516b}@media(max-width:700px){.attendance-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -67,7 +69,7 @@
     <h2>Sertai permainan</h2>
     <div class="grid">
       <div><label for="joinCode">Kod permainan</label><input id="joinCode" type="text" inputmode="numeric" maxlength="6" placeholder="Contoh: 123456"></div>
-      <div><label for="studentName">Nama penuh</label><input id="studentName" type="text" maxlength="80" placeholder="Nama seperti rekod kolej"></div>
+      <div><label for="studentName">Nama penuh</label><input id="studentName" type="text" maxlength="80" placeholder="Nama akan keluar selepas isi IC"><small id="rosterLookupStatus" aria-live="polite"></small></div>
       <div class="full"><label for="studentId">Nombor Kad Pengenalan (12 digit)</label><input id="studentId" type="text" inputmode="numeric" autocomplete="off" maxlength="12" pattern="[0-9]{12}" placeholder="Contoh: 000000000000"></div>
     </div>
     <button onclick="joinGame()">Daftar dan masuk</button><button class="secondary" onclick="showView('home')">Kembali</button>
@@ -144,7 +146,7 @@
       <p class="muted">Edit masa/markah dengan mengubah nilai dalam Excel dan import semula. Ini membantu elak suntingan tidak sengaja semasa kuiz berlangsung.</p></div>
     </div>
     <div class="card">
-      <h2>5. Sesi permainan</h2>
+      <section id="attendanceCard"><h2>Kehadiran kuiz kelas</h2><p id="attendanceStatus" class="muted">Pilih kelas untuk melihat senarai.</p><div class="attendance-grid"><div><h3 id="presentHeading">Sudah masuk kuiz (0)</h3><div id="attendancePresent"></div></div><div><h3 id="absentHeading">Belum masuk (0)</h3><div id="attendanceAbsent"></div></div></div></section><h2>5. Sesi permainan</h2>
       <div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
       <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
@@ -582,6 +584,7 @@ async function answer(choice, qNo) {
 applyInitialRoute();
 </script>
 <script src="cloud.js?v=8"></script>
+<script src="roster.js?v=20261028a"></script>
 </body>
 </html>
 
