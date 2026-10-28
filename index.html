@@ -53,7 +53,7 @@
 <link rel="stylesheet" href="race.css?v=20261028a">
 <script src="metrics.js?v=20261028a"></script>
 <script src="race-render.js?v=20261028b"></script>
-<link rel="stylesheet" href="metrics.css?v=20261028a">
+<link rel="stylesheet" href="metrics.css?v=20261028b">
 </head>
 <body>
 <div class="wrap">
@@ -75,8 +75,10 @@
     <h2>Sertai permainan</h2>
     <div class="grid">
       <div><label for="joinCode">Kod permainan</label><input id="joinCode" type="text" inputmode="numeric" maxlength="6" placeholder="Contoh: 123456"></div>
-      <div><label for="studentName">Nama penuh</label><input id="studentName" type="text" maxlength="80" placeholder="Nama akan keluar selepas isi IC"><small id="rosterLookupStatus" aria-live="polite"></small></div>
-      <div class="full"><label for="studentId">Nombor Kad Pengenalan (12 digit)</label><input id="studentId" type="text" inputmode="numeric" autocomplete="off" maxlength="12" pattern="[0-9]{12}" placeholder="Contoh: 000000000000"></div>
+<div><label for="studentId">Nombor Kad Pengenalan (12 digit)</label><input id="studentId" type="text" inputmode="numeric" autocomplete="off" maxlength="12" pattern="[0-9]{12}" placeholder="Contoh: 000000000000"></div>
+<div class="full"><label for="studentName">Nama penuh (automatik)</label><input id="studentName" readonly aria-readonly="true" type="text" maxlength="80" placeholder="Nama akan dipaparkan selepas IC disemak"><small id="rosterLookupStatus" aria-live="polite"></small></div>
+      
+      
     </div>
     <button onclick="joinGame()">Daftar dan masuk</button><button class="secondary" onclick="showView('home')">Kembali</button>
   </section>
