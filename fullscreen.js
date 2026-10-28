@@ -42,7 +42,7 @@
     button.addEventListener('click',()=>toggleSection(section));bar.append(button);section.prepend(bar);buttons.set(section,button);
   });
   document.addEventListener('fullscreenchange',updateButtons);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&fallbackSection){e.preventDefault();clearFallback();}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&current()){e.preventDefault();exitSection().catch(()=>{});}});
   new MutationObserver(()=>{const section=current();if(section?.classList.contains('hidden'))exitSection();}).observe(document.querySelector('.wrap'),{attributes:true,attributeFilter:['class'],subtree:true});
   updateButtons();
 })();
