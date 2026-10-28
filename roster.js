@@ -25,4 +25,4 @@ async function refreshAttendance(){
 }
 const originalClassSelect=window.selectCloudClass;
 window.selectCloudClass=async function(id){attendanceGeneration++;$('attendancePresent').innerHTML='';$('attendanceAbsent').innerHTML='';$('attendanceStatus').textContent='Memuatkan kehadiran…';await originalClassSelect(id);await refreshAttendance();};
-setInterval(()=>{if(!$('adminView').classList.contains('hidden'))refreshAttendance();},8000);
+setInterval(()=>{if(!$('adminView').classList.contains('hidden'))refreshAttendance();},2000);
