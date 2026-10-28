@@ -54,6 +54,7 @@
 <script src="metrics.js?v=20261028a"></script>
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
+<script src="answer-controls.js?v=20261028a"></script>
 </head>
 <body>
 <div class="wrap">
@@ -519,7 +520,7 @@ function startPolling() {
 async function pollPlayer() {
   if (!playerId) return;
   try {
-    const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
+    const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
     if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
     $('appTitle').textContent = state.title || 'QuizPro KV';
     $('playerPoints').textContent = ps.totalPoints;$('playerAnswerStats').innerHTML=answerStatsMarkup(ps);let race=document.getElementById('playerRace');if(!race){race=document.createElement('div');race.id='playerRace';document.getElementById('playerView').append(race);}race.innerHTML=raceMarkup(snapshot.leaderboard,snapshot.maxPoints);
@@ -530,23 +531,7 @@ async function pollPlayer() {
     else if (state.status === 'leaderboard') { $('playerContent').innerHTML = '<p class="big">Sila tunggu soalan seterusnya.</p>'; } else if (state.status === 'finished') $('playerContent').innerHTML = '<p class="big">Kuiz tamat. Terima kasih!</p><p>Jumlah markah anda: '+ps.totalPoints+'</p>';
   } catch(e) { /* transient polling error; next poll retries */ }
 }
-function renderPlayerQuestion(q, ps, phase) {
-  if (q.no !== currentPlayerQuestion) {
-    currentPlayerQuestion = Number(q.no); selectedChoice = ''; lastPlayerVibrationSecond = null; playerVibrationFinished = false;
-    if (playerCountdownTimer) { clearInterval(playerCountdownTimer); playerCountdownTimer = null; }
-    const symbols = { A:'▲', B:'◆', C:'●', D:'■' };
-    $('playerContent').innerHTML = `<p class="muted center">SOALAN ${q.no} / ${q.total}</p><div class="timer center" id="countdown"></div><div class="student-answer-grid">${['A','B','C','D'].map(k=>`<button class="student-letter choice-${k}" id="opt${k}" aria-label="Jawapan ${k}" onclick="answer('${k}',${q.no})">${symbols[k]}</button>`).join('')}</div><div id="answerFeedback"></div>`;
-  }
-  const choice = selectedChoice || (Number(ps.currentQuestion) === Number(q.no) ? (ps.currentChoice || '') : '');
-  if (choice) setAnswerState('selected', choice, 'Jawapan anda telah direkodkan.');
-  if (phase === 'reveal') {
-    const correct = ps.lastResult && ps.lastResult.questionNo === q.no && ps.lastResult.correct;
-    if (choice && correct) setAnswerState('correct', choice, 'Jawapan anda betul.');
-    else if (choice) setAnswerState('locked', choice, 'Jawapan sedang dipaparkan pada projector.');
-    else setAnswerState('expired', '', 'Masa tamat. Tunggu soalan seterusnya.');
-  }
-  startPlayerCountdown(q.no, q.endsAt, phase, q.seconds, q.paused, q.pausedRemainingMs, q.revealSeconds);
-}
+// Updated renderPlayerQuestion in answer-controls.js.
 function startPlayerCountdown(questionNo, endsAt, phase, total, paused, pausedRemainingMs, revealSeconds) {
   playerTimerQuestion = questionNo; playerTimerEndsAt = endsAt || 0; playerTimerPhase = phase;
   playerTimerTotal = phase === 'reveal' ? (revealSeconds || 15) : (total || 30);
@@ -557,7 +542,7 @@ function startPlayerCountdown(questionNo, endsAt, phase, total, paused, pausedRe
 }
 function updatePlayerCountdown() {
   const timer = $('countdown'); if (!timer) return;
-  const remaining = playerTimerPaused ? Math.max(0, Math.ceil(playerPausedRemainingMs/1000)) : Math.max(0, Math.ceil((playerTimerEndsAt - Date.now()) / 1000));
+  const remaining = playerTimerPaused ? Math.max(0, Math.ceil(playerPausedRemainingMs/1000)) : Math.max(0, Math.ceil((playerTimerEndsAt - studentNow()) / 1000));
   timer.textContent = playerTimerPaused ? `PAUSE · ${remaining} saat` : playerTimerPhase === 'reveal' ? `Soalan seterusnya: ${remaining} saat` : (remaining ? `Masa: ${remaining} saat` : 'Masa tamat');
   applyTimerColor(timer, remaining, playerTimerTotal);
   if (playerTimerPhase === 'question' && !playerTimerPaused && typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
@@ -568,29 +553,8 @@ function updatePlayerCountdown() {
   musicPulse('player', remaining, playerTimerTotal, playerTimerPaused, playerTimerPhase === 'question');
   if (playerTimerPhase !== 'reveal' && remaining <= 0 && !selectedChoice) setAnswerState('expired', '', 'Masa tamat. Tunggu soalan seterusnya.');
 }
-function setAnswerState(state, choice, message) {
-  ['A','B','C','D'].forEach(k => {
-    const button = $('opt' + k); if (!button) return;
-    button.classList.toggle('selected', (state === 'selected' || state === 'locked') && k === choice);
-    button.classList.toggle('correct', state === 'correct' && k === choice);
-    button.classList.toggle('expired', state === 'expired');
-    if (state === 'selected' || state === 'locked' || state === 'correct' || state === 'expired') button.disabled = true;
-  });
-  const feedback = $('answerFeedback');
-  if (feedback && message) { feedback.textContent = message; feedback.className = 'status'; }
-}
-async function answer(choice, qNo) {
-  if (Number(qNo) !== Number(currentPlayerQuestion) || selectedChoice || playerTimerPaused || !playerTimerEndsAt || Date.now() >= playerTimerEndsAt) return;
-  selectedChoice = choice;
-  setAnswerState('selected', choice, 'Jawapan anda telah direkodkan.');
-  try {
-    await call('submitAnswer', sessionCode, playerId, choice);
-  } catch(e) {
-    const timedOut = /tamat|belum bermula/i.test(e.message);
-    if (timedOut) { selectedChoice = ''; setAnswerState('expired', '', 'Masa tamat. Tunggu soalan seterusnya.'); }
-    else { selectedChoice = ''; $('answerFeedback').textContent = e.message; $('answerFeedback').className='status error'; }
-  }
-}
+// Updated setAnswerState in answer-controls.js.
+// Updated answer in answer-controls.js.
 applyInitialRoute();
 </script>
 <script src="cloud.js?v=metrics20261028"></script>
@@ -600,6 +564,7 @@ applyInitialRoute();
 <script src="resume.js?v=20261028b"></script>
 </body>
 </html>
+
 
 
 
