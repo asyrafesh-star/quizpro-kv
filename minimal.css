@@ -1,0 +1,10 @@
+body.phone-minimal .wrap>.brand,body.phone-minimal #notice,#playerView>.brand,#playerAnswerStats,#playerRace,#playerPodium,#studentConnection{display:none!important}
+body.phone-minimal .wrap{max-width:none;padding:10px}body.phone-minimal #playerView{margin:0;padding:10px;min-height:calc(100dvh - 20px);border:0;box-shadow:none;background:transparent}
+#playerView>.section-fullscreen-toolbar{display:none!important}
+#playerContent .student-answer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0}
+#playerContent .student-letter{min-height:110px!important;font-size:18px!important;text-align:left!important;display:flex!important;align-items:center;justify-content:flex-start;gap:14px}
+.phone-question-number{font-size:12px;color:#6e6e73;margin:8px 0}.phone-question{font-size:clamp(21px,4vw,30px);line-height:1.35;margin:16px 0}.phone-choice-key{font-size:26px;font-weight:800;min-width:28px}.phone-choice-text{font-size:18px;line-height:1.35}.phone-minimal #countdown{font-size:16px;text-align:right;margin:8px 0 14px}.phone-minimal .quiz-image img{max-height:180px}.projector-empty h1{font-size:clamp(28px,5vw,56px)}.projector-empty .muted{font-size:clamp(16px,2vw,24px)}
+@media(max-width:600px){#playerContent .student-answer-grid{grid-template-columns:1fr;gap:10px}#playerContent .student-letter{min-height:75px!important}}
+#answerFeedback{font-size:13px;text-align:center;min-height:38px;margin:10px 0 0;padding:8px}
+.projector-title,.projector-page .race-board,.teacher-screen .race-board{display:none!important}
+.projector-toolbar{display:none!important}

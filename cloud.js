@@ -62,3 +62,4 @@ for(const key of ['refreshTeacherLive','refreshProjector','pollPlayer']){
   window[key]=async function(...args){if(pending)return;pending=true;try{return await original(...args);}finally{pending=false;}};
 }
 
+

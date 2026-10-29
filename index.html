@@ -5,7 +5,7 @@
   <title>QuizPro KV</title>
   <script src="images.js?v=20261028"></script>
   <script src="config.js?v=7"></script>
-  <script src="api.js?v=7"></script>
+  <script src="api.js?v=20261029c"></script>
   <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -54,10 +54,11 @@
 <script src="metrics.js?v=20261028sync"></script>
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
-<script src="answer-controls.js?v=20261029a"></script>
+<script src="answer-controls.js?v=performance20261029"></script>
 <link rel="stylesheet" href="apple-theme.css?v=20261028a">
 <script src="piano.js?v=20261028a"></script>
 <script src="classroom-core.js?v=20261029a"></script><link rel="stylesheet" href="classroom.css?v=20261029a">
+<link rel="stylesheet" href="minimal.css?v=20261029c">
 </head>
 <body>
 <div class="wrap">
@@ -163,7 +164,7 @@
       <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
     <div class="card">
-      <h2>6. Leaderboard</h2><button class="secondary" onclick="refreshLeaderboard()">Kemas kini ranking</button> <button onclick="createAnalysisSpreadsheet()">Bina Spreadsheet Analisis</button><div id="analysisSpreadsheetLink" class="status"></div><div id="leaderboardPanel" class="tablewrap"></div>
+      <h2>6. Keputusan selepas tamat</h2><p class="muted">Markah diproses sekali apabila kuiz tamat. Tiada ranking langsung semasa soalan berjalan.</p><button class="secondary" onclick="refreshLeaderboard()">Kemas kini ranking</button> <button onclick="createAnalysisSpreadsheet()">Bina Spreadsheet Analisis</button><div id="analysisSpreadsheetLink" class="status"></div><div id="leaderboardPanel" class="tablewrap"></div>
     </div>
     <div id="teacherLiveCard" class="card hidden">
       <h2>7. Paparan projector — untuk pelajar</h2>
@@ -185,6 +186,7 @@ const INITIAL_ROUTE = params.get('view') || params.get('route') || params.get('m
 function showView(name) {
   ['home','student','player','projector','adminLogin','admin'].forEach(v => $(v+'View').classList.toggle('hidden', v !== name));
   document.body.classList.toggle('projector-mode', name === 'projector');
+  document.body.classList.toggle('phone-minimal', name === 'player');
   document.getElementById('resumeCard')?.classList.toggle('hidden',!['home','student'].includes(name));
   clearNotice();
 }
@@ -327,7 +329,7 @@ async function launchQuestion() {
 function startAdminPolling() {
   if (adminPoller) clearInterval(adminPoller);
   refreshTeacherLive();
-  adminPoller = setInterval(refreshTeacherLive, 2000);
+  adminPoller = setInterval(refreshTeacherLive, 3500);
 }
 let projectorBusy=false,projectorRankingBusy=false,projectorRanking=[],projectorRankingCode='',projectorClockOffset=0,projectorLastStamp=0,projectorLastRender='',projectorRankPoller=null;
 const projectorChannel=typeof BroadcastChannel==='function'?new BroadcastChannel('quizpro-projector-v2'):null;
@@ -341,8 +343,8 @@ function publishProjectorState(d){
 if(projectorChannel)projectorChannel.onmessage=event=>{if(INITIAL_ROUTE==='projector'&&event.data)acceptProjectorState(event.data);};
 function startProjectorPolling(){
   if(poller)clearInterval(poller);if(projectorRankPoller)clearInterval(projectorRankPoller);
-  refreshProjector();poller=setInterval(refreshProjector,800);
-  projectorRankPoller=setInterval(refreshProjectorRanking,5000);
+  refreshProjector();poller=setInterval(refreshProjector,3000);
+
 }
 function acceptProjectorState(d){
   if(!d)return;const stamp=Number(d.serverNow)||Date.now();if(stamp<projectorLastStamp)return;projectorLastStamp=stamp;projectorClockOffset=stamp-Date.now();
@@ -356,13 +358,13 @@ function acceptProjectorState(d){
 }
 async function refreshProjector(){
   if(projectorBusy)return;projectorBusy=true;
-  try{const d=await call('projectorState',true);acceptProjectorState(d);if(!projectorRankingBusy&&projectorRankingCode&&!projectorRanking.length)refreshProjectorRanking();}
+  try{const d=await call('projectorState',true);acceptProjectorState(d);if(d.status==='finished'&&!projectorRankingBusy&&projectorRankingCode&&!projectorRanking.length)refreshProjectorRanking();}
   catch(e){if(!projectorLastRender)$('projectorContent').textContent='Sedang menyambung semula paparan projector…';}
   finally{projectorBusy=false;}
 }
 async function refreshProjectorRanking(){
   if(projectorRankingBusy||!projectorRankingCode)return;projectorRankingBusy=true;const code=projectorRankingCode;
-  try{const ranks=await call('leaderboard',code);if(code!==projectorRankingCode)return;projectorRanking=ranks.slice(0,5);const race=$('projectorRace');if(race)race.innerHTML=raceMarkup(projectorRanking,projectorMaxPoints);if(typeof featureProjectorPodium==='function')featureProjectorPodium(featurePodiumStatus,projectorRanking,code);}
+  try{const ranks=await call('leaderboard',code);if(code!==projectorRankingCode)return;projectorRanking=ranks.slice(0,5);const race=$('projectorRace');if(race)race.innerHTML=raceMarkup(projectorRanking,projectorMaxPoints);const final=$('finalRanking');if(final)final.innerHTML=metricsRankingTable(ranks);if(typeof featureProjectorPodium==='function')featureProjectorPodium(featurePodiumStatus,projectorRanking,code);}
   catch(e){}finally{projectorRankingBusy=false;}
 }
 let projectorMaxPoints=0;
@@ -396,33 +398,10 @@ function updateProjectorCountdown(active = true) {
   }
   musicPulse('projector', remaining, projectorTimerTotal, projectorTimerPaused, projectorMusicActive && !projectorTimerPaused);
 }
-async function renderProjectorState(d) {
-  try {
-    $('appTitle').textContent = d.title || 'QuizPro KV';
-    if (!d.question) {
-      $('projectorPauseBtn').classList.add('hidden'); $('projectorNextBtn').classList.add('hidden');
-      if (projectorCountdownTimer) clearInterval(projectorCountdownTimer);
-      projectorCountdownTimer = null; projectorTimerEndsAt = 0;
-      const message = d.status === 'finished' ? 'Kuiz telah tamat' : d.status === 'leaderboard' ? 'Sila tunggu soalan seterusnya' : 'Menunggu kuiz dimulakan';
-      $('projectorContent').innerHTML = `<div class="projector-empty">${esc(message)}</div><div id="projectorRace">${raceMarkup(d.leaderboard||projectorRanking,d.maxPoints)}</div>`;
-      return;
-    }
-    const q = d.question, reveal = d.status === 'reveal', ready = d.status === 'ready';
-    const remaining = ready ? 0 : (q.paused ? Math.ceil(q.pausedRemainingMs / 1000) : Math.max(0, Math.ceil((q.endsAt - projectorNow()) / 1000)));
-    const phaseLabel = ready ? `SOALAN ${q.no}/${q.total} · SEDIA` : reveal ? `JAWAPAN BETUL — ${q.nextMode === 'manual' ? 'MENUNGGU CIKGU' : `SOALAN SETERUSNYA ${remaining}s`}` : `SOALAN ${q.no} / ${q.total}`;
-    const image = questionImageMarkup(q.image, 'projector', q.no);
-    const symbols = { A:'▲', B:'◆', C:'●', D:'■' };
-    const choices = ['A','B','C','D'].map(k => `<div class="projector-choice choice-${k}${reveal && q.correct === k ? ' correct' : ''}"><span class="projector-symbol">${symbols[k]}</span><span>${esc(q[k])}</span>${reveal && q.correct === k ? ' <span>✓</span>' : ''}</div>`).join('');
-    const timerMarkup = `<div class="projector-timer-track"><div class="projector-timer-bar" id="projectorTimerBar"></div></div>`;
-    $('projectorContent').innerHTML = `<div class="projector-screen"><h1 class="projector-title">${esc(d.title || 'QuizPro KV')}</h1><div class="projector-question"><div class="pill">${phaseLabel}${q.paused ? ' · PAUSE' : ''}</div><div class="projector-question-text">${esc(q.question)}</div>${image}${timerMarkup}${choices}</div><div id="projectorRace">${raceMarkup(d.leaderboard||projectorRanking,d.maxPoints)}</div></div>`;
-    const pBtn = $('projectorPauseBtn'), nBtn = $('projectorNextBtn');
-    pBtn.classList.toggle('hidden', !pin); pBtn.disabled = !(d.status === 'question' || d.status === 'reveal'); pBtn.textContent = q.paused ? 'Teruskan' : 'Pause';
-    nBtn.classList.toggle('hidden', !pin || q.nextMode !== 'manual'); nBtn.disabled = !(reveal && !q.paused);
-    if (!ready) startProjectorCountdown(q.endsAt, reveal ? q.revealSeconds : q.seconds, q.paused, q.pausedRemainingMs, !reveal);
-
-  } catch (e) {
-    $('projectorContent').innerHTML = '<div class="projector-empty">Tidak dapat memuatkan paparan projector.</div>';
-  }
+async function renderProjectorState(d){
+  if(projectorCountdownTimer)clearInterval(projectorCountdownTimer);projectorCountdownTimer=null;
+  $('projectorPauseBtn').classList.add('hidden');$('projectorNextBtn').classList.add('hidden');
+  $('projectorContent').innerHTML=d.status==='finished'?'<div class="center"><h1>Keputusan kuiz</h1></div><div id="finalRanking"></div>':'<div class="projector-empty"><div><h1>Kuiz sedang berjalan</h1><p class="muted">Soalan dan jawapan pada telefon pelajar.</p><p class="muted">Markah dipaparkan selepas kuiz tamat.</p></div></div>';
 }
 
 async function togglePauseProjector() {
@@ -452,7 +431,7 @@ async function refreshTeacherLive() {
       const barHue = Math.round(barRatio * 120);
       presentationQuestion = `<div class="teacher-question"><div style="color:#93c5fd;font-weight:700">${ready ? 'SEDIA MEMAPARKAN SOALAN' : revealing ? 'JAWAPAN BETUL' : `SOALAN ${q.no}/${q.total}`}${q.paused ? ' · PAUSE' : ''}</div><div class="teacher-qtitle">${esc(q.question)}</div>${questionImageMarkup(q.image, 'teacher', q.no)}<div class="projector-timer-track"><div class="projector-timer-bar" style="width:${barRatio * 100}%;background:hsl(${barHue} 82% 45%)"></div></div>${['A','B','C','D'].map(k=>`<div class="teacher-choice choice-${k}"><span class="teacher-symbol">${symbols[k]}</span> ${esc(q[k])}${revealing && q.correct===k ? ' <strong style="color:#fff">✓ JAWAPAN BETUL</strong>' : ''}</div>`).join('')}</div>`;
     }
-    $('teacherLivePanel').innerHTML = `<div class="teacher-screen"><div class="teacher-screen-head">PAPARAN PROJECTOR</div>${presentationQuestion}<div id="teacherRace">${raceMarkup(d.leaderboard||projectorRanking,d.maxPoints)}</div><div class="teacher-controls"><span class="muted">Status: ${esc(d.status)}${d.paused ? ' (dijeda)' : ''}</span></div></div>`;
+    $('teacherLivePanel').innerHTML = `<div class="teacher-screen"><div class="teacher-screen-head">PAPARAN PROJECTOR</div>${presentationQuestion}<div id="teacherRace" class="hidden"></div><div class="teacher-controls"><span class="muted">Status: ${esc(d.status)}${d.paused ? ' (dijeda)' : ''}</span></div></div>`;
     if (d.status === 'reveal') await refreshLeaderboard();
     const active = ['question','reveal'].includes(d.status);
     $('pauseResumeBtn').disabled = !active;
@@ -486,7 +465,7 @@ async function refreshLeaderboard() {
   if (!sessionCode) return;
   try {
     const list = await call('leaderboard', sessionCode);
-    $('leaderboardPanel').innerHTML = metricsRankingTable(list);
+    $('leaderboardPanel').innerHTML = list.length?metricsRankingTable(list):'<p class="muted">Keputusan dipaparkan selepas kuiz tamat.</p>';
   } catch(e) { notice(e.message, true); }
 }
 async function createAnalysisSpreadsheet() {
@@ -509,7 +488,7 @@ async function joinGame() {
     // Give supported phones a direct user-gesture to unlock vibration; iOS Safari may not support Vibration API.
     if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(100);
     // Audio is enabled after the student's explicit join tap; they can switch it off later.
-    if (!musicEngines.player.enabled) await toggleSuspenseMusic('player');
+
     sessionCode = $('joinCode').value.trim();
     const res = await call('joinSession', sessionCode, $('studentName').value, $('studentId').value);
     playerId = res.playerId; playerName = res.name; currentPlayerQuestion = 0; selectedChoice=''; savePlayerResume();
@@ -518,25 +497,26 @@ async function joinGame() {
     showView('player'); startPolling(); notice(res.existing?'Permainan disambung. Jawapan dan markah dikekalkan.':'Pendaftaran berjaya.');
   } catch(e) { notice(e.message, true); }finally{joiningGame=false;joinButton.disabled=false;}
 }
-function startPolling() {
-  if (poller) clearInterval(poller);
-  pollPlayer(); poller = setInterval(pollPlayer, 2000);
+let playerPollGeneration=0;
+function startPolling(){
+  if(poller)clearTimeout(poller);lastPlayerStatus='';const generation=++playerPollGeneration;
+  const cycle=async()=>{if(!playerId||generation!==playerPollGeneration)return;await pollPlayer();if(playerId&&generation===playerPollGeneration&&lastPlayerStatus!=='finished')poller=setTimeout(cycle,(document.hidden?6500:1800)+Math.random()*900);};cycle();
 }
 let pollPlayerBusy=false;
 async function pollPlayer() {
-  if (!playerId || pollPlayerBusy) return;
+  if (!playerId || pollPlayerBusy || playerAnswerPending) return;
   pollPlayerBusy=true;
   try {
     const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId,!document.hidden);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
     if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
     $('appTitle').textContent = state.title || 'QuizPro KV';
-    $('playerPoints').textContent = ps.totalPoints;$('playerAnswerStats').innerHTML=answerStatsMarkup(ps,state);let race=document.getElementById('playerRace');if(!race){race=document.createElement('div');race.id='playerRace';document.getElementById('playerView').append(race);}race.innerHTML=raceMarkup(snapshot.leaderboard,snapshot.maxPoints);
-    if(typeof featurePlayerSnapshot==='function')featurePlayerSnapshot(state,ps,snapshot);
+    lastPlayerStatus=String(state.status); // No live scores or leaderboard on student phones.
+
     $('playerState').textContent = String(state.status).toUpperCase();
     if (state.status === 'waiting') $('playerContent').innerHTML = '<p class="big">Sila tunggu cikgu memulakan soalan.</p>';
     else if (state.status === 'ready') { $('playerContent').innerHTML = '<p class="big center">Soalan seterusnya sedang disediakan…</p>'; }
     else if ((state.status === 'question' || state.status === 'reveal') && state.question) renderPlayerQuestion(state.question, ps, state.status);
-    else if (state.status === 'leaderboard') { $('playerContent').innerHTML = '<p class="big">Sila tunggu soalan seterusnya.</p>'; } else if (state.status === 'finished') $('playerContent').innerHTML = '<p class="big">Kuiz tamat. Terima kasih!</p><p>Jumlah markah anda: '+ps.totalPoints+'</p>';
+    else if (state.status === 'leaderboard') { $('playerContent').innerHTML = '<p class="big">Sila tunggu soalan seterusnya.</p>'; } else if (state.status === 'finished') $('playerContent').innerHTML = '<p class="big center">Kuiz tamat. Terima kasih!</p><p class="center muted">Keputusan dipaparkan pada skrin cikgu.</p>';
   } catch(e) { /* transient polling error; next poll retries */ } finally {pollPlayerBusy=false;}
 }
 // Updated renderPlayerQuestion in answer-controls.js.
@@ -565,14 +545,15 @@ function updatePlayerCountdown() {
 // Updated answer in answer-controls.js.
 applyInitialRoute();
 </script>
-<script src="cloud.js?v=metrics20261028"></script>
-<script src="roster.js?v=20261028c"></script>
+<script src="cloud.js?v=performance20261029"></script>
+<script src="roster.js?v=performance20261029"></script>
 <script src="reset.js?v=20261028a"></script>
 <script src="fullscreen.js?v=20261029a"></script>
-<script src="resume.js?v=20261028sync"></script>
-<script src="classroom-ui.js?v=20261029a"></script>
+<script src="resume.js?v=performance20261029"></script>
+<script src="classroom-ui.js?v=performance20261029"></script>
 </body>
 </html>
+
 
 
 

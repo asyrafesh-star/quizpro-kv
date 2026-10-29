@@ -34,4 +34,4 @@ async function previewRosterImport(){
 async function saveRosterImport(){if(!featureRosterRows||cloudClass!==featureRosterClass){featureStatus('rosterImportStatus','Kelas berubah. Buat pratonton semula.',true);return;}$('saveRosterImport').disabled=true;try{const d=await call('adminImportRoster',pin,featureRosterClass,featureRosterRows);featureRosterRows=null;featureStatus('rosterImportStatus',d.added+' ditambah · '+d.updated+' nama dikemas kini · '+d.unchanged+' kekal.');await loadClassSummary();await refreshAttendance();}catch(e){featureStatus('rosterImportStatus',e.message,true);$('saveRosterImport').disabled=false;}}
 featurePanels();
 setInterval(()=>{const el=$('studentConnection'),last=Number(el?.dataset.lastSeen||0);if(playerId&&last&&Date.now()-last>15000)el.textContent='🟡 Sambungan lambat. Jangan tutup halaman; jawapan hanya disimpan selepas pengesahan pelayan.';},3000);
-setInterval(refreshConnections,12000);
+setInterval(refreshConnections,20000);

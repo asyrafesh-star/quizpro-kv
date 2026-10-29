@@ -17,7 +17,7 @@ async function resumeSavedPlayer(){
   if(resumeBusy)return;const saved=storedPlayerResume();if(!saved)return;resumeBusy=true;const button=$('continueGame'),status=$('resumeStatus');if(button)button.disabled=true;if(status)status.textContent='Menyambung ke sesi tersimpan…';
   try{
     // A tap also permits piano playback under browser audio rules.
-    if(!musicEngines.player.enabled)await toggleSuspenseMusic('player');
+    
     const ps=await call('playerStatus',saved.code,saved.playerId);
     if(!ps.valid){if(status)status.textContent='Sesi tersimpan tidak lagi aktif. Sertai sesi baharu menggunakan kod cikgu.';return;}
     if(['finished','idle'].includes(ps.status)){if(status)status.textContent='Kuiz ini sudah tamat. Sertai sesi baharu apabila cikgu memberi kod.';return;}
@@ -26,3 +26,4 @@ async function resumeSavedPlayer(){
   finally{resumeBusy=false;if(button)button.disabled=false;}
 }
 offerPlayerResume();
+

@@ -7,16 +7,13 @@ function renderPlayerQuestion(q,ps,phase){
     currentPlayerQuestion=Number(q.no);lastPlayerVibrationSecond=null;playerVibrationFinished=false;
     if(playerCountdownTimer){clearInterval(playerCountdownTimer);playerCountdownTimer=null;}
     const symbols={A:'▲',B:'◆',C:'●',D:'■'};
-    $('playerContent').innerHTML=`<p class="muted center">SOALAN ${q.no} / ${q.total}</p><div class="timer center" id="countdown"></div><div class="student-answer-grid">${['A','B','C','D'].map(k=>`<button class="student-letter choice-${k}" id="opt${k}" aria-label="Jawapan ${k}" onclick="answer('${k}',${q.no})">${symbols[k]}</button>`).join('')}</div><div id="answerFeedback" role="status" aria-live="polite"></div>`;
+    $('playerContent').innerHTML=`<p class="phone-question-number">SOALAN ${q.no} / ${q.total}</p><h2 class="phone-question">${esc(q.question)}</h2>${questionImageMarkup(q.image,'student',q.no)}<div class="timer center" id="countdown"></div><div class="student-answer-grid">${['A','B','C','D'].map(k=>`<button class="student-letter choice-${k}" id="opt${k}" aria-label="Jawapan ${k}" onclick="answer('${k}',${q.no})"><span class="phone-choice-key">${k}</span><span class="phone-choice-text">${esc(q[k])}</span></button>`).join('')}</div><div id="answerFeedback" role="status" aria-live="polite"></div>`;
   }
   playerTimerPhase=phase;playerTimerPaused=!!q.paused;
   const confirmed=Number(ps.currentQuestion)===Number(q.no)?String(ps.currentChoice||''):'';
   if(confirmed){selectedChoice=confirmed;playerAnswerPending=null;playerAnswerError='';}
   if(phase==='reveal'){
-    const result=ps.lastResult&&Number(ps.lastResult.questionNo)===Number(q.no)?ps.lastResult:null;
-    if(selectedChoice&&result?.correct)setAnswerState('correct',selectedChoice,'Jawapan anda betul.');
-    else if(selectedChoice)setAnswerState('locked',selectedChoice,result?'Jawapan anda salah. Jawapan disimpan; lihat jawapan betul pada projector.':'Jawapan anda telah disimpan. Keputusan dipaparkan pada projector.');
-    else setAnswerState('expired','','Masa tamat. Tiada jawapan direkodkan untuk soalan ini.');
+    if(selectedChoice)setAnswerState('locked',selectedChoice,'✓ Jawapan disimpan.');else setAnswerState('expired','','Masa tamat.');
   }else if(selectedChoice)setAnswerState('selected',selectedChoice,'✓ Jawapan disahkan dan disimpan oleh server.');
   else if(q.paused)setAnswerState('paused','','Kuiz dijeda oleh cikgu. Tunggu untuk menyambung.');
   else if(playerAnswerPending?.questionNo===Number(q.no))setAnswerState('sending',playerAnswerPending.choice,'Sedang menghantar jawapan… tunggu pengesahan.');
