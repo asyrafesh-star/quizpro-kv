@@ -33,7 +33,7 @@
     section.classList.add('section-fullscreen-fallback');document.body.classList.add('section-fullscreen-open');
     updateButtons();buttons.get(section)?.focus({preventScroll:true});
   }
-  sections.forEach((section,index)=>{
+  window.installSectionFullscreen=function(){const sections=[...document.querySelectorAll('.card, #projectorView')].filter(s=>!buttons.has(s));sections.forEach((section,index)=>{
     section.classList.add('fullscreen-section');
     if(!section.id)section.id='quiz-section-'+(index+1);
     const bar=document.createElement('div');bar.className='section-fullscreen-toolbar';
@@ -41,8 +41,11 @@
     button.setAttribute('aria-controls',section.id);button.setAttribute('aria-pressed','false');
     button.addEventListener('click',()=>toggleSection(section));bar.append(button);section.prepend(bar);buttons.set(section,button);
   });
+  updateButtons();};
+  installSectionFullscreen();
   document.addEventListener('fullscreenchange',updateButtons);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&current()){e.preventDefault();exitSection().catch(()=>{});}});
   new MutationObserver(()=>{const section=current();if(section?.classList.contains('hidden'))exitSection();}).observe(document.querySelector('.wrap'),{attributes:true,attributeFilter:['class'],subtree:true});
   updateButtons();
 })();
+

@@ -54,9 +54,10 @@
 <script src="metrics.js?v=20261028sync"></script>
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
-<script src="answer-controls.js?v=20261028a"></script>
+<script src="answer-controls.js?v=20261029a"></script>
 <link rel="stylesheet" href="apple-theme.css?v=20261028a">
 <script src="piano.js?v=20261028a"></script>
+<script src="classroom-core.js?v=20261029a"></script><link rel="stylesheet" href="classroom.css?v=20261029a">
 </head>
 <body>
 <div class="wrap">
@@ -351,6 +352,7 @@ function acceptProjectorState(d){
   const key=JSON.stringify([d.code,d.title,d.status,d.question]);
   if(key!==projectorLastRender){projectorLastRender=key;renderProjectorState(d);}
   const race=$('projectorRace');if(race)race.innerHTML=raceMarkup(projectorRanking,d.maxPoints);
+  if(typeof featureProjectorPodium==='function')featureProjectorPodium(d.status,projectorRanking,d.code);
 }
 async function refreshProjector(){
   if(projectorBusy)return;projectorBusy=true;
@@ -360,7 +362,7 @@ async function refreshProjector(){
 }
 async function refreshProjectorRanking(){
   if(projectorRankingBusy||!projectorRankingCode)return;projectorRankingBusy=true;const code=projectorRankingCode;
-  try{const ranks=await call('leaderboard',code);if(code!==projectorRankingCode)return;projectorRanking=ranks.slice(0,5);const race=$('projectorRace');if(race)race.innerHTML=raceMarkup(projectorRanking,projectorMaxPoints);}
+  try{const ranks=await call('leaderboard',code);if(code!==projectorRankingCode)return;projectorRanking=ranks.slice(0,5);const race=$('projectorRace');if(race)race.innerHTML=raceMarkup(projectorRanking,projectorMaxPoints);if(typeof featureProjectorPodium==='function')featureProjectorPodium(featurePodiumStatus,projectorRanking,code);}
   catch(e){}finally{projectorRankingBusy=false;}
 }
 let projectorMaxPoints=0;
@@ -439,6 +441,7 @@ async function refreshTeacherLive() {
     if (typeof cloudData !== 'undefined' && cloudData && d.status === 'finished' && cloudData.activeStatus !== 'finished') { cloudData.activeStatus = 'finished'; loadCloudDashboard().catch(e => cloudStatus(e.message, true)); }
     if (d.code) sessionCode = String(d.code);
     publishProjectorState(d);
+    if(typeof featureTeacherSnapshot==='function')featureTeacherSnapshot(d);
     if (['finished','idle'].includes(d.status) && adminPoller) {clearInterval(adminPoller);adminPoller=null;}
     const q = d.question, symbols = { A:'▲', B:'◆', C:'●', D:'■' }, revealing = d.status === 'reveal', ready = d.status === 'ready';
     let presentationQuestion = '<div class="teacher-question"><div class="pill">SEDIA UNTUK BERMULA</div><div class="teacher-qtitle">Tekan “Mula kuiz” untuk memaparkan soalan pertama.</div></div>';
@@ -449,7 +452,7 @@ async function refreshTeacherLive() {
       const barHue = Math.round(barRatio * 120);
       presentationQuestion = `<div class="teacher-question"><div style="color:#93c5fd;font-weight:700">${ready ? 'SEDIA MEMAPARKAN SOALAN' : revealing ? 'JAWAPAN BETUL' : `SOALAN ${q.no}/${q.total}`}${q.paused ? ' · PAUSE' : ''}</div><div class="teacher-qtitle">${esc(q.question)}</div>${questionImageMarkup(q.image, 'teacher', q.no)}<div class="projector-timer-track"><div class="projector-timer-bar" style="width:${barRatio * 100}%;background:hsl(${barHue} 82% 45%)"></div></div>${['A','B','C','D'].map(k=>`<div class="teacher-choice choice-${k}"><span class="teacher-symbol">${symbols[k]}</span> ${esc(q[k])}${revealing && q.correct===k ? ' <strong style="color:#fff">✓ JAWAPAN BETUL</strong>' : ''}</div>`).join('')}</div>`;
     }
-    $('teacherLivePanel').innerHTML = `<div class="teacher-screen"><div class="teacher-screen-head">PAPARAN PROJECTOR</div>${presentationQuestion}<div id="projectorRace">${raceMarkup(d.leaderboard||projectorRanking,d.maxPoints)}</div><div class="teacher-controls"><span class="muted">Status: ${esc(d.status)}${d.paused ? ' (dijeda)' : ''}</span></div></div>`;
+    $('teacherLivePanel').innerHTML = `<div class="teacher-screen"><div class="teacher-screen-head">PAPARAN PROJECTOR</div>${presentationQuestion}<div id="teacherRace">${raceMarkup(d.leaderboard||projectorRanking,d.maxPoints)}</div><div class="teacher-controls"><span class="muted">Status: ${esc(d.status)}${d.paused ? ' (dijeda)' : ''}</span></div></div>`;
     if (d.status === 'reveal') await refreshLeaderboard();
     const active = ['question','reveal'].includes(d.status);
     $('pauseResumeBtn').disabled = !active;
@@ -524,10 +527,11 @@ async function pollPlayer() {
   if (!playerId || pollPlayerBusy) return;
   pollPlayerBusy=true;
   try {
-    const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
+    const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId,!document.hidden);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
     if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
     $('appTitle').textContent = state.title || 'QuizPro KV';
     $('playerPoints').textContent = ps.totalPoints;$('playerAnswerStats').innerHTML=answerStatsMarkup(ps,state);let race=document.getElementById('playerRace');if(!race){race=document.createElement('div');race.id='playerRace';document.getElementById('playerView').append(race);}race.innerHTML=raceMarkup(snapshot.leaderboard,snapshot.maxPoints);
+    if(typeof featurePlayerSnapshot==='function')featurePlayerSnapshot(state,ps,snapshot);
     $('playerState').textContent = String(state.status).toUpperCase();
     if (state.status === 'waiting') $('playerContent').innerHTML = '<p class="big">Sila tunggu cikgu memulakan soalan.</p>';
     else if (state.status === 'ready') { $('playerContent').innerHTML = '<p class="big center">Soalan seterusnya sedang disediakan…</p>'; }
@@ -564,10 +568,12 @@ applyInitialRoute();
 <script src="cloud.js?v=metrics20261028"></script>
 <script src="roster.js?v=20261028c"></script>
 <script src="reset.js?v=20261028a"></script>
-<script src="fullscreen.js?v=20261028b"></script>
+<script src="fullscreen.js?v=20261029a"></script>
 <script src="resume.js?v=20261028sync"></script>
+<script src="classroom-ui.js?v=20261029a"></script>
 </body>
 </html>
+
 
 
 
