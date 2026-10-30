@@ -30,4 +30,26 @@ const quizBridge=(()=>{
     });
   };
 })();
-async function call(fn,...args){const data=await quizBridge(fn,args);const site=new URL(location.href);site.search='';site.hash='';if(fn==='adminGetData'&&data)data.webAppUrl=site.href;if(fn==='adminStartSession'&&data){site.searchParams.set('join',data.code);data.url=site.href;}return data;}
+async function legacyCall(fn,...args){const data=await quizBridge(fn,args);const site=new URL(location.href);site.search='';site.hash='';if(fn==='adminGetData'&&data)data.webAppUrl=site.href;if(fn==='adminStartSession'&&data){site.searchParams.set('join',data.code);data.url=site.href;}return data;}
+
+async function call(fn,...args){
+  if(fn==='joinSession'){
+    const token=await quizRealtime.token();
+    const result=await legacyCall(fn,...args,token);
+    if(result.transport==='firebase-v1')await quizRealtime.attach(String(args[0]),result.playerId,result.name);
+    else quizRealtime.stop();return result;
+  }
+  if(fn==='playerStatus'){
+    const token=await quizRealtime.token();
+    const result=await legacyCall(fn,...args);
+    if(!result.valid)return result;
+    // Backend returns session transport; old finished sessions keep their existing path.
+    if(result.transport==='firebase-v1'){
+      const joined=await legacyCall('firebaseResume',args[0],args[1],token);
+      await quizRealtime.attach(String(args[0]),joined.playerId,joined.name);return joined;
+    }return result;
+  }
+  if(quizRealtime.active()&&fn==='playerSnapshot')return quizRealtime.snapshot(String(args[0]),args[1]);
+  if(quizRealtime.active()&&fn==='submitAnswer')return quizRealtime.submit(String(args[0]),args[1],args[2],args[3]);
+  return legacyCall(fn,...args);
+}

@@ -1,5 +1,6 @@
 function savePlayerResume(){try{localStorage.setItem('quizproResume',JSON.stringify({code:sessionCode,playerId,name:playerName}));}catch(e){}}
-function switchQuizPlayer(){
+async function switchQuizPlayer(){
+  if(quizRealtime.active())await quizRealtime.reset();
   try{localStorage.removeItem('quizproResume');}catch(e){}
   if(poller)clearInterval(poller);poller=null;if(playerCountdownTimer)clearInterval(playerCountdownTimer);playerCountdownTimer=null;
   playerId='';playerName='';currentPlayerQuestion=0;selectedChoice='';playerAnswerPending=null;playerAnswerError='';$('studentId').value='';$('studentName').value='';document.getElementById('resumeCard')?.remove();showView('student');notice('Masukkan IC pelajar yang hendak menggunakan peranti ini.');
