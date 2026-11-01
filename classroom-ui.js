@@ -40,11 +40,11 @@ setInterval(refreshConnections,20000);
 (()=>{
  let lastKey='';
  const card=document.createElement('section');card.id='submissionCard';card.className='card';
- card.innerHTML='<h2>Status penghantaran jawapan</h2><p id="submissionQuestion" class="muted">Menunggu soalan.</p><p class="muted">Masa ialah saat sejak soalan bermula hingga jawapan diterima server.</p><p id="submissionUpdated" class="muted" aria-live="polite"></p><div class="attendance-grid"><section><h3 id="submissionSentHeading" style="color:#087443;background:#e8f7ef">Dah hantar (0)</h3><div id="submissionSentRows"></div></section><section><h3 id="submissionPendingHeading" style="color:#9a5900;background:#fff5df">Belum hantar (0)</h3><div id="submissionPendingRows"></div></section></div>';
+ card.innerHTML='<h2>Status penghantaran jawapan</h2><p id="submissionQuestion" class="muted">Menunggu soalan.</p><p class="muted">Masa jawab dikira ketika pelajar menekan pilihan. Masa terima dan kelewatan server dipaparkan berasingan.</p><p id="submissionUpdated" class="muted" aria-live="polite"></p><div class="attendance-grid"><section><h3 id="submissionSentHeading" style="color:#087443;background:#e8f7ef">Dah hantar (0)</h3><div id="submissionSentRows"></div></section><section><h3 id="submissionPendingHeading" style="color:#9a5900;background:#fff5df">Belum hantar (0)</h3><div id="submissionPendingRows"></div></section></div>';
  $('attendanceCard').after(card);
  function table(list,sent){
   if(!list.length)return '<p class="muted">'+(sent?'Belum ada jawapan diterima.':'Tiada peserta menunggu.')+'</p>';
-  return '<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th>'+(sent?'<th>Dihantar selepas</th><th>Waktu diterima</th>':'')+'</tr></thead><tbody>'+list.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td>'+(sent?'<td>'+Number(p.elapsedSeconds).toFixed(2)+' saat</td><td>'+(p.receivedAt?esc(new Date(p.receivedAt).toLocaleTimeString('ms-MY')):'—')+'</td>':'')+'</tr>').join('')+'</tbody></table></div>';
+  return '<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th>'+(sent?'<th>Masa ketika tekan</th><th>Waktu diterima server</th><th>Lewat server</th>':'')+'</tr></thead><tbody>'+list.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td>'+(sent?'<td>'+Number(p.elapsedSeconds).toFixed(2)+' saat</td><td>'+(p.receivedAt?esc(new Date(p.receivedAt).toLocaleTimeString('ms-MY')):'—')+'</td><td>'+(p.delayMs!==null&&p.delayMs!==undefined&&Number.isFinite(Number(p.delayMs))?Math.max(0,Number(p.delayMs))+' ms':'—')+'</td>':'')+'</tr>').join('')+'</tbody></table></div>';
  }
  const previous=featureTeacherSnapshot;
  featureTeacherSnapshot=function(d){

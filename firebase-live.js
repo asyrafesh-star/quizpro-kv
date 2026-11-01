@@ -29,14 +29,15 @@ const quizRealtime=(()=>{
     const state=active.state,answer=active.answers[String(state.currentQuestion)];
     return{state,player:{valid:true,playerId:id,name:active.name,status:state.status,currentQuestion:state.currentQuestion,currentChoice:answer?.choice||'',answeredCurrent:!!answer},serverNow:Date.now()+offset};
   }
-  async function submit(code,id,choice,no){
+  async function submit(code,id,choice,no,tappedAt,startedAt,endsAt){
     const {d}=await sdk();if(!active||active.code!==code||active.id!==id)throw new Error('Sambungan telefon berubah.');
     if(!active.connected)throw new Error('Internet terputus. Sambung semula sebelum menghantar jawapan.');
-    const state=active.state,q=state?.question,old=active.answers[String(no)];
+    const old=active.answers[String(no)];
     if(old)return{ok:true,already:true,questionNo:Number(no),choice:old.choice};
-    if(state?.status!=='question'||q?.paused||Number(q?.no)!==Number(no)||Date.now()+offset>=q.endsAt)throw new Error('Masa tamat atau soalan telah berubah.');
+    const pressTime=Number(tappedAt),startTime=Number(startedAt),endTime=Number(endsAt);
+    if(!Number.isInteger(Number(no))||Number(no)<1||!Number.isFinite(pressTime)||!Number.isFinite(startTime)||!Number.isFinite(endTime)||pressTime<startTime||pressTime>endTime)throw new Error('Masa tamat atau soalan telah berubah.');
     const entry=active,key=String(Number(no)),path=d.ref(db,'sessions/'+code+'/answers/'+auth.currentUser.uid+'/'+Number(no));entry.pending.add(key);
-    try{await d.set(path,{choice,at:d.serverTimestamp(),start:q.startedAt});entry.answers[key]={choice};}
+    try{await d.set(path,{choice,at:d.serverTimestamp(),tapAt:pressTime,start:startTime});entry.answers[key]={choice,at:pressTime,tapAt:pressTime};}
     catch(e){const saved=await d.get(path);if(saved.exists()){entry.answers[key]=saved.val();return{ok:true,already:true,questionNo:Number(no),choice:saved.val().choice};}throw e;}
     finally{entry.pending.delete(key);}
     return{ok:true,questionNo:Number(no),choice};

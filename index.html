@@ -5,8 +5,8 @@
   <title>QuizPro KV</title>
   <script src="images.js?v=20261028"></script>
   <script src="config.js?v=7"></script>
-  <script src="firebase-live.js?v=1"></script>
-  <script src="api.js?v=firebase1"></script>
+  <script src="firebase-live.js?v=tapclock20261101"></script>
+  <script src="api.js?v=tapclock20261101"></script>
   <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -55,7 +55,7 @@
 <script src="metrics.js?v=20261028sync"></script>
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
-<script src="answer-controls.js?v=pendingfix20261101"></script>
+<script src="answer-controls.js?v=tapclock20261101"></script>
 <link rel="stylesheet" href="apple-theme.css?v=20261028a">
 <script src="piano.js?v=20261028a"></script>
 <script src="classroom-core.js?v=20261029a"></script><link rel="stylesheet" href="classroom.css?v=20261029a">
@@ -177,7 +177,7 @@
 <script>
 const $ = id => document.getElementById(id);
 let pin = sessionStorage.getItem('quizproPin') || '', sessionCode = sessionStorage.getItem('quizproSessionCode') || '', playerId = '', playerName = '', poller = null, adminPoller = null, lastPlayerStatus = '', currentPlayerQuestion = 0;
-let playerCountdownTimer = null, playerTimerEndsAt = 0, playerTimerPhase = '', playerTimerQuestion = 0, selectedChoice = '', playerTimerPaused = false, playerPausedRemainingMs = 0, playerTimerTotal = 30;
+let playerCountdownTimer = null, playerTimerStartedAt = 0, playerTimerEndsAt = 0, playerTimerPhase = '', playerTimerQuestion = 0, selectedChoice = '', playerTimerPaused = false, playerPausedRemainingMs = 0, playerTimerTotal = 30;
 let projectorCountdownTimer = null, projectorTimerEndsAt = 0, projectorTimerPaused = false, projectorPausedRemainingMs = 0, projectorTimerTotal = 30, projectorMusicActive = false;
 const musicEngines = { projector:{enabled:false,context:null,lastTick:0}, player:{enabled:false,context:null,lastTick:0} };
 let lastProjectorReadyQuestion = 0, lastPlayerVibrationSecond = null, playerVibrationFinished = false;
@@ -553,7 +553,7 @@ applyInitialRoute();
 <script src="reset.js?v=20261028a"></script>
 <script src="fullscreen.js?v=20261029a"></script>
 <script src="resume.js?v=firebase1"></script>
-<script src="classroom-ui.js?v=scoring20261101"></script>
+<script src="classroom-ui.js?v=tapclock20261101"></script>
 
 <style id="appleTvThemeStyles">
 body.apple-tv-mode{--ink:#f3f6ff;--muted:#a9b5cc;--line:#ffffff24;--pale:#dce7ff;background:radial-gradient(ellipse at 50% -20%,#273d68 0,transparent 48%),radial-gradient(ellipse at 100% 100%,#142a46 0,transparent 42%),#070b13;color:#f3f6ff;padding-bottom:105px}

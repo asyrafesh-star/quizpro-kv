@@ -19,6 +19,7 @@ function renderPlayerQuestion(q,ps,phase){
   else if(playerAnswerPending?.questionNo===Number(q.no))setAnswerState('sending',playerAnswerPending.choice,'Sedang menghantar jawapan… tunggu pengesahan.');
   else if(q.endsAt&&studentNow()>=q.endsAt)setAnswerState('expired','','Masa tamat. Tunggu soalan seterusnya.');
   else setAnswerState(playerAnswerError?'retry':'open','',playerAnswerError||'Pilih satu jawapan.');
+  playerTimerStartedAt=Number(q.startedAt)||0;
   startPlayerCountdown(q.no,q.endsAt,phase,q.seconds,q.paused,q.pausedRemainingMs,q.revealSeconds);
 }
 function setAnswerState(state,choice,message){
@@ -34,11 +35,13 @@ async function answer(choice,qNo){
   qNo=Number(qNo);if(qNo!==Number(currentPlayerQuestion)||selectedChoice||playerAnswerPending)return;
   if(playerTimerPaused){setAnswerState('paused','','Kuiz sedang dijeda.');return;}
   if(playerTimerPhase!=='question'||!playerTimerEndsAt||studentNow()>=playerTimerEndsAt){setAnswerState('expired','','Masa menjawab telah tamat.');return;}
-  const request={questionNo:qNo,choice,code:sessionCode,playerId};playerAnswerPending=request;playerAnswerError='';
+  // Capture the server-synchronized clock at the tap, before any network work.
+  const tappedAt=studentNow();
+  const request={questionNo:qNo,choice,code:sessionCode,playerId,tappedAt,startedAt:playerTimerStartedAt,endsAt:playerTimerEndsAt};playerAnswerPending=request;playerAnswerError='';
   setAnswerState('sending',choice,'Sedang menghantar jawapan… tunggu pengesahan.');
   try{
     let confirmationTimer;
-    const confirmation=call('submitAnswer',request.code,request.playerId,choice,qNo);
+    const confirmation=call('submitAnswer',request.code,request.playerId,choice,qNo,request.tappedAt,request.startedAt,request.endsAt);
     const timeout=new Promise((_,reject)=>{confirmationTimer=setTimeout(()=>reject(new Error('Pengesahan lambat. Menyemak rekod; cuba semula selagi masa masih ada.')),10000);});
     let result;
     try{result=await Promise.race([confirmation,timeout]);}finally{clearTimeout(confirmationTimer);}

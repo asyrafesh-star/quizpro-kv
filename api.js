@@ -50,6 +50,6 @@ async function call(fn,...args){
     }return result;
   }
   if(quizRealtime.active()&&fn==='playerSnapshot')return quizRealtime.snapshot(String(args[0]),args[1]);
-  if(quizRealtime.active()&&fn==='submitAnswer')return quizRealtime.submit(String(args[0]),args[1],args[2],args[3]);
+  if(quizRealtime.active()&&fn==='submitAnswer')return quizRealtime.submit(String(args[0]),args[1],args[2],args[3],args[4],args[5],args[6]);
   return legacyCall(fn,...args);
 }
