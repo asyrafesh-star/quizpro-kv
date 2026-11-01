@@ -36,31 +36,28 @@ featurePanels();
 setInterval(()=>{const el=$('studentConnection'),last=Number(el?.dataset.lastSeen||0);if(playerId&&last&&Date.now()-last>15000)el.textContent='🟡 Sambungan lambat. Jangan tutup halaman; jawapan hanya disimpan selepas pengesahan pelayan.';},3000);
 setInterval(refreshConnections,20000);
 
-/* Teacher-only submission view; uses the existing live request, no student writes. */
+/* Teacher-only submission lists; uses existing live requests. */
 (()=>{
- let selected='sent',snapshot=null,lastKey='';
+ let lastKey='';
  const card=document.createElement('section');card.id='submissionCard';card.className='card';
- card.innerHTML='<h2>Status penghantaran jawapan</h2><p id="submissionQuestion" class="muted">Menunggu soalan.</p><div role="tablist" aria-label="Status jawapan"><button id="submissionSentTab" role="tab" aria-selected="true">Dah hantar (0)</button><button id="submissionPendingTab" class="secondary" role="tab" aria-selected="false">Belum hantar (0)</button></div><p class="muted">Masa ialah saat sejak soalan bermula hingga jawapan diterima server, bukan tempoh kelewatan internet.</p><p id="submissionUpdated" class="muted" aria-live="polite"></p><div id="submissionRows" role="tabpanel"></div>';
+ card.innerHTML='<h2>Status penghantaran jawapan</h2><p id="submissionQuestion" class="muted">Menunggu soalan.</p><p class="muted">Masa ialah saat sejak soalan bermula hingga jawapan diterima server.</p><p id="submissionUpdated" class="muted" aria-live="polite"></p><div class="attendance-grid"><section><h3 id="submissionSentHeading" style="color:#087443;background:#e8f7ef">Dah hantar (0)</h3><div id="submissionSentRows"></div></section><section><h3 id="submissionPendingHeading" style="color:#9a5900;background:#fff5df">Belum hantar (0)</h3><div id="submissionPendingRows"></div></section></div>';
  $('attendanceCard').after(card);
- function render(){
-  if(!snapshot)return;
-  const sent=selected==='sent',list=sent?snapshot.submitted:snapshot.pending;
-  $('submissionSentTab').textContent='Dah hantar ('+snapshot.submitted.length+')';
-  $('submissionPendingTab').textContent='Belum hantar ('+snapshot.pending.length+')';
-  for(const [id,on] of [['submissionSentTab',sent],['submissionPendingTab',!sent]]){$(id).setAttribute('aria-selected',String(on));$(id).classList.toggle('secondary',!on);}
-  const key=JSON.stringify([selected,snapshot.code,snapshot.questionNo,list]);if(key===lastKey)return;lastKey=key;
-  $('submissionRows').innerHTML=list.length?'<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th>'+(sent?'<th>Dihantar selepas</th><th>Waktu diterima</th>':'<th>Status</th>')+'</tr></thead><tbody>'+list.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td>'+(sent?'<td>'+Number(p.elapsedSeconds).toFixed(2)+' saat</td><td>'+(p.receivedAt?esc(new Date(p.receivedAt).toLocaleTimeString('ms-MY')):'—')+'</td>':'<td>Belum hantar</td>')+'</tr>').join('')+'</tbody></table></div>':'<p class="muted">'+(sent?'Belum ada jawapan diterima.':'Semua peserta yang sudah masuk telah menghantar jawapan.')+'</p>';
+ function table(list,sent){
+  if(!list.length)return '<p class="muted">'+(sent?'Belum ada jawapan diterima.':'Tiada peserta menunggu.')+'</p>';
+  return '<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th>'+(sent?'<th>Dihantar selepas</th><th>Waktu diterima</th>':'')+'</tr></thead><tbody>'+list.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td>'+(sent?'<td>'+Number(p.elapsedSeconds).toFixed(2)+' saat</td><td>'+(p.receivedAt?esc(new Date(p.receivedAt).toLocaleTimeString('ms-MY')):'—')+'</td>':'')+'</tr>').join('')+'</tbody></table></div>';
  }
- $('submissionSentTab').onclick=()=>{selected='sent';render();};
- $('submissionPendingTab').onclick=()=>{selected='pending';render();};
  const previous=featureTeacherSnapshot;
  featureTeacherSnapshot=function(d){
   previous(d);const s=d.submissions;
-  if(!s||s.error){$('submissionUpdated').textContent=s?.error||'Status penghantaran belum tersedia.';snapshot=null;lastKey='';$('submissionRows').textContent='';return;}
-  snapshot={...s,submitted:s.submitted||[],pending:s.pending||[]};
+  if(!s||s.error){$('submissionUpdated').textContent=s?.error||'Status penghantaran belum tersedia.';lastKey='';$('submissionSentRows').textContent='';$('submissionPendingRows').textContent='';return;}
+  const submitted=s.submitted||[],pending=s.pending||[];
   $('submissionQuestion').textContent='Sesi '+s.code+' · '+(s.questionNo?'Soalan '+s.questionNo:'Menunggu soalan');
   $('submissionUpdated').textContent='Disemak '+new Date(s.checkedAt||Date.now()).toLocaleTimeString('ms-MY')+' · Kemas kini bersama panel cikgu';
-  render();
+  const key=JSON.stringify([s.code,s.questionNo,submitted,pending]);if(key===lastKey)return;lastKey=key;
+  $('submissionSentHeading').textContent='Dah hantar ('+submitted.length+')';
+  $('submissionPendingHeading').textContent='Belum hantar ('+pending.length+')';
+  $('submissionSentRows').innerHTML=table(submitted,true);
+  $('submissionPendingRows').innerHTML=table(pending,false);
  };
  if(typeof installSectionFullscreen==='function')installSectionFullscreen();
 })();
