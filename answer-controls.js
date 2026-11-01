@@ -37,7 +37,11 @@ async function answer(choice,qNo){
   const request={questionNo:qNo,choice,code:sessionCode,playerId};playerAnswerPending=request;playerAnswerError='';
   setAnswerState('sending',choice,'Sedang menghantar jawapan… tunggu pengesahan.');
   try{
-    const result=await call('submitAnswer',request.code,request.playerId,choice,qNo);
+    let confirmationTimer;
+    const confirmation=call('submitAnswer',request.code,request.playerId,choice,qNo);
+    const timeout=new Promise((_,reject)=>{confirmationTimer=setTimeout(()=>reject(new Error('Pengesahan lambat. Menyemak rekod; cuba semula selagi masa masih ada.')),10000);});
+    let result;
+    try{result=await Promise.race([confirmation,timeout]);}finally{clearTimeout(confirmationTimer);}
     if(playerAnswerPending!==request||qNo!==Number(currentPlayerQuestion)||request.playerId!==playerId||request.code!==sessionCode)return;
     if(!result?.ok||Number(result.questionNo)!==qNo)throw new Error('Server belum mengesahkan jawapan ini.');
     selectedChoice=result.choice||choice;playerAnswerPending=null;playerAnswerError='';setAnswerState('selected',selectedChoice,'✓ Jawapan disahkan dan disimpan oleh server.');pollPlayer();
@@ -50,4 +54,3 @@ async function answer(choice,qNo){
     pollPlayer();
   }
 }
-
