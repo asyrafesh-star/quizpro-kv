@@ -13,7 +13,12 @@ function renderPlayerQuestion(q,ps,phase){
   const confirmed=Number(ps.currentQuestion)===Number(q.no)?String(ps.currentChoice||''):'';
   if(confirmed){selectedChoice=confirmed;playerAnswerPending=null;playerAnswerError='';}
   if(phase==='reveal'){
-    if(selectedChoice)setAnswerState('locked',selectedChoice,'✓ Jawapan disimpan.');else setAnswerState('expired','','Masa tamat.');
+    const correctChoice=['A','B','C','D'].includes(String(q.correct||''))?String(q.correct):'';
+    const answerSymbols={A:'▲',B:'◆',C:'●',D:'■'},answerChoice=selectedChoice||confirmed;
+    const revealMessage=correctChoice
+      ? `Jawapan betul: ${answerSymbols[correctChoice]} ${q[correctChoice]}. ${answerChoice?(answerChoice===correctChoice?'Jawapan anda betul!':`Jawapan anda ${answerSymbols[answerChoice]} salah.`):'Anda tidak menjawab.'}`
+      : 'Jawapan sedang dikemas kini.';
+    setAnswerState('reveal',answerChoice,revealMessage,correctChoice);
   }else if(selectedChoice)setAnswerState('selected',selectedChoice,'✓ Jawapan disahkan dan disimpan oleh server.');
   else if(q.paused)setAnswerState('paused','','Kuiz dijeda oleh cikgu. Tunggu untuk menyambung.');
   else if(playerAnswerPending?.questionNo===Number(q.no))setAnswerState('sending',playerAnswerPending.choice,'Sedang menghantar jawapan… tunggu pengesahan.');
@@ -22,11 +27,11 @@ function renderPlayerQuestion(q,ps,phase){
   playerTimerStartedAt=Number(q.startedAt)||0;
   startPlayerCountdown(q.no,q.endsAt,phase,q.seconds,q.paused,q.pausedRemainingMs,q.revealSeconds);
 }
-function setAnswerState(state,choice,message){
-  const locked=['selected','locked','correct','expired','sending','paused'].includes(state);
+function setAnswerState(state,choice,message,correctChoice=''){
+  const locked=['selected','locked','correct','expired','sending','paused','reveal'].includes(state);
   ['A','B','C','D'].forEach(k=>{const button=$('opt'+k);if(!button)return;
-    button.classList.toggle('selected',['selected','locked','sending'].includes(state)&&k===choice);
-    button.classList.toggle('correct',state==='correct'&&k===choice);button.classList.toggle('expired',state==='expired');
+    button.classList.toggle('selected',['selected','locked','sending','reveal'].includes(state)&&k===choice);
+    button.classList.toggle('correct',(state==='correct'&&k===choice)||(state==='reveal'&&k===correctChoice));button.classList.toggle('expired',state==='expired');
     button.disabled=locked;
   });
   const feedback=$('answerFeedback');if(feedback&&message){feedback.textContent=message;feedback.className='status'+(state==='retry'?' error':'');}
