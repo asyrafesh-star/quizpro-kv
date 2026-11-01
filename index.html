@@ -586,6 +586,108 @@ body.apple-tv-mode #homeView .welcome-intro{color:#46536b}body.apple-tv-mode #ho
 <script>
 (()=>{const dock=document.getElementById('appleTvDock'),header=document.querySelector('header.brand'),wrap=document.querySelector('.wrap');if(!dock||!header||!wrap)return;wrap.insertBefore(dock,header.nextSibling);const icons={Pelajar:'<path d="M3 9.5 12 5l9 4.5-9 4.5-9-4.5Z"/><path d="M7 12v4c2.8 2.2 7.2 2.2 10 0v-4M21 10v5"/>',Guru:'<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8m-4-4v4M7 9h10M7 13h6"/>',Utama:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10Z"/>','Isi kod':'<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M6 9h.01M9 9h.01M12 9h.01M15 9h.01M18 9h.01M6 12h.01M9 12h.01M12 12h.01M15 12h.01M18 12h.01M8 15h8"/>','Isi ID':'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5.5 16c.8-2 4.2-2 5 0m3-5h5m-5 3h5"/>','PIN cikgu':'<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/>','Skrin penuh':'<path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/>','Pilihan jawapan':'<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16.5 9"/>',Soalan:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.6 2.6 0 1 1 4.5 1.8c-1.2 1.1-2 1.4-2 3.2m0 3h.01"/>,'Ruang kelas':'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10Z"/>','Bank kuiz':'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8m-8 4h6"/>',Keputusan:'<path d="M8 21h8m-4-4v4M7 4h10v5a5 5 0 0 1-10 0V4Zm0 2H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4"/>',Analisis:'<path d="M4 19V5m0 14h17M8 15l4-4 3 2 5-6"/>',Senarai:'<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7.5a4 4 0 0 1 0 7.8M20 15a4 4 0 0 1 2 3.5V21"/>',Kehadiran:'<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16.5 9"/>',Jawapan:'<path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/>',Sambungan:'<path d="M5 12.5a11 11 0 0 1 14 0M8 16a6 6 0 0 1 8 0m-5 4h2M2 9a16 16 0 0 1 20 0"/>','Kawalan kuiz':'<path d="M6 9h12a4 4 0 0 1 3.8 5l-1.2 4a2 2 0 0 1-3.2 1l-3.4-2.5h-4L6.6 19a2 2 0 0 1-3.2-1l-1.2-4A4 4 0 0 1 6 9Z"/><path d="M7 12v4m-2-2h4m7-1h.01M18 15h.01"/>','Paparan live':'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4m-5-12 3 3 5-5"/>',Podium:'<circle cx="12" cy="14" r="6"/><path d="m8.5 9 1-6h5l1 6m-3.5 2v3l2 1"/>',Audio:'<path d="M11 5 6 9H3v6h3l5 4V5Zm4 4a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/>','Tutup tema':'<path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.4-6.4-2.1 2.1M7.7 16.3l-2.1 2.1m12.8 0-2.1-2.1M7.7 7.7 5.6 5.6"/><circle cx="12" cy="12" r="4"/>'};function paint(){if(!document.body.classList.contains('apple-tv-mode'))return;dock.querySelectorAll('button[data-action]').forEach(b=>{const spans=b.querySelectorAll('span'),icon=spans[0],label=(spans[1]?.textContent||b.getAttribute('aria-label')||'').trim();if(icon&&!icon.dataset.customIcon){icon.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[label]||icons['Skrin penuh'])+'</svg>';icon.dataset.customIcon='1'}})}paint();new MutationObserver(paint).observe(dock,{childList:true})})();
 </script>
+<style id="appleTvTopMenuPolish">
+body.apple-tv-mode{padding-bottom:24px}
+body.apple-tv-mode #homeView{background:linear-gradient(135deg,#fff,#f1f6ff)!important;color:#172033!important;border:1px solid #d7e1f1!important}
+body.apple-tv-mode #homeView h2,body.apple-tv-mode #homeView .welcome-intro,body.apple-tv-mode #homeView>.muted,body.apple-tv-mode #homeView .piano-preview>span{color:#172033!important}
+body.apple-tv-mode #homeView .welcome-intro{color:#475569!important}body.apple-tv-mode #homeView>.muted,body.apple-tv-mode #homeView .piano-preview small{color:#52627a!important}body.apple-tv-mode #homeView .piano-preview{border-color:#d8e1ef!important}
+.apple-tv-top-menu{display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:4px 0 12px;border-bottom:1px solid #ffffff20}
+.apple-tv-top-menu .tv-menu-trigger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:88px;height:86px;margin:0;padding:6px;border:1px solid #ffffff2b;border-radius:18px;background:linear-gradient(145deg,#263b60,#111a2b);color:#fff;font-size:12px;font-weight:750;box-shadow:0 8px 22px #0004}
+.apple-tv-top-menu .tv-menu-trigger:hover{transform:translateY(-2px);box-shadow:0 12px 26px #0005}
+.apple-tv-top-menu .tv-menu-trigger img{display:block;width:58px;height:58px;object-fit:contain}
+.apple-tv-top-menu .tv-icon-credit{font-size:9px;line-height:1.2;color:#a9b5cc;text-decoration:none;max-width:82px;text-align:center}
+.apple-tv-top-menu .apple-tv-toggle{margin-left:auto}
+body:not(.apple-tv-mode) .apple-tv-top-menu .apple-tv-toggle{background:#e8edf7!important;color:#1d1d1f!important;border-color:#d5dbea!important}
+body.apple-tv-mode .apple-tv-dock{position:static;left:auto;bottom:auto;transform:none;width:max-content;max-width:100%;margin:0 0 18px;padding:9px;gap:8px;border-radius:18px;background:#101827ef;border:1px solid #ffffff24;box-shadow:0 12px 34px #0006;backdrop-filter:blur(18px)}
+body.apple-tv-mode .apple-tv-dock.menu-collapsed{display:none!important}
+body.apple-tv-mode .apple-tv-dock button{min-height:50px;padding:12px 18px;border-radius:15px;font-size:14px}
+body.apple-tv-mode .apple-tv-dock .dock-icon{display:none!important}
+@media(max-width:600px){.apple-tv-top-menu{gap:10px;margin-bottom:10px}.apple-tv-top-menu .tv-menu-trigger{width:78px;height:78px}.apple-tv-top-menu .tv-menu-trigger img{width:52px;height:52px}.apple-tv-top-menu .apple-tv-toggle{padding:9px 12px!important;font-size:12px}}
+</style>
+<script>
+(()=>{
+ const dock=document.getElementById("appleTvDock");
+ const header=document.querySelector("header.brand");
+ const wrap=document.querySelector(".wrap");
+ const toggle=document.getElementById("appleTvToggle");
+ if(!dock||!header||!wrap)return;
+ const row=document.createElement("div");
+ row.className="apple-tv-top-menu";
+ row.setAttribute("aria-label","Menu TV QuizPro");
+ const trigger=document.createElement("button");
+ trigger.type="button";
+ trigger.className="tv-menu-trigger";
+ trigger.setAttribute("aria-controls","appleTvDock");
+ trigger.setAttribute("aria-expanded","false");
+ trigger.setAttribute("aria-label","Buka menu TV");
+ const image=document.createElement("img");
+ image.src="https://cdn-icons-png.flaticon.com/512/16763/16763559.png";
+ image.alt="Ikon televisyen";
+ image.loading="lazy";
+ image.decoding="async";
+ const label=document.createElement("span");
+ label.textContent="Menu";
+ trigger.append(image,label);
+ row.append(trigger);
+ const credit=document.createElement("a");
+ credit.className="tv-icon-credit";
+ credit.href="https://www.flaticon.com/free-icons/television";
+ credit.target="_blank";
+ credit.rel="noopener noreferrer";
+ credit.textContent="Ikon TV: meaicon / Flaticon";
+ row.append(credit);
+ if(toggle)row.append(toggle);
+ header.insertAdjacentElement("afterend",row);
+ row.insertAdjacentElement("afterend",dock);
+ dock.classList.add("menu-collapsed");
+ function closeMenu(){dock.classList.add("menu-collapsed");trigger.setAttribute("aria-expanded","false");trigger.setAttribute("aria-label","Buka menu TV");label.textContent="Menu";}
+ trigger.addEventListener("click",()=>{
+  if(!document.body.classList.contains("apple-tv-mode")&&toggle)toggle.click();
+  const open=dock.classList.contains("menu-collapsed");
+  dock.classList.toggle("menu-collapsed",!open);
+  trigger.setAttribute("aria-expanded",String(open));
+  trigger.setAttribute("aria-label",open?"Tutup menu TV":"Buka menu TV");
+  label.textContent=open?"Tutup":"Menu";
+ });
+ const show=window.showView;
+ if(typeof show==="function")window.showView=function(){const result=show.apply(this,arguments);closeMenu();return result;};
+})();
+<<style id="tvMenuStandaloneFix">
+.apple-tv-top-menu{display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:4px 0 12px;border-bottom:1px solid #ffffff28}
+.apple-tv-top-menu .tv-menu-trigger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:88px;height:86px;margin:0;padding:6px;border:1px solid #ffffff2b;border-radius:18px;background:linear-gradient(145deg,#263b60,#111a2b);color:#fff;font-size:12px;font-weight:750;box-shadow:0 8px 22px #0004}
+.apple-tv-top-menu .tv-menu-trigger img{display:block;width:58px;height:58px;object-fit:contain}
+.apple-tv-top-menu .tv-icon-credit{font-size:9px;line-height:1.2;color:#a9b5cc;text-decoration:none;max-width:82px;text-align:center}
+.apple-tv-top-menu .apple-tv-toggle{margin-left:auto}
+.apple-tv-dock.menu-collapsed{display:none!important}
+body.apple-tv-mode .apple-tv-dock{position:static;left:auto;bottom:auto;transform:none;width:max-content;max-width:100%;margin:0 0 18px;padding:9px;gap:8px;border-radius:18px;background:#101827ef;border:1px solid #ffffff24;box-shadow:0 12px 34px #0006;backdrop-filter:blur(18px)}
+body.apple-tv-mode .apple-tv-dock button{min-height:50px;padding:12px 18px;border-radius:15px;font-size:14px;color:#f8faff}
+body.apple-tv-mode #homeView{background:linear-gradient(135deg,#fff,#f1f6ff)!important;color:#172033!important;border:1px solid #d7e1f1!important}
+body.apple-tv-mode #homeView h2,body.apple-tv-mode #homeView .welcome-intro,body.apple-tv-mode #homeView>.muted,body.apple-tv-mode #homeView .piano-preview>span{color:#172033!important}
+body.apple-tv-mode #homeView .welcome-intro{color:#475569!important}body.apple-tv-mode #homeView>.muted,body.apple-tv-mode #homeView .piano-preview small{color:#52627a!important}
+@media(max-width:600px){.apple-tv-top-menu{gap:10px}.apple-tv-top-menu .tv-menu-trigger{width:78px;height:78px}.apple-tv-top-menu .tv-menu-trigger img{width:52px;height:52px}}
+</style>
+<script>
+(()=>{
+ const header=document.querySelector('header.brand');
+ if(!header||document.querySelector('.apple-tv-top-menu'))return;
+ const row=document.createElement('div'); row.className='apple-tv-top-menu';
+ const trigger=document.createElement('button'); trigger.type='button'; trigger.className='tv-menu-trigger'; trigger.setAttribute('aria-controls','appleTvDock'); trigger.setAttribute('aria-expanded','false');
+ const img=document.createElement('img'); img.src='https://cdn-icons-png.flaticon.com/512/16763/16763559.png'; img.alt='Ikon televisyen'; img.decoding='async';
+ const label=document.createElement('span'); label.textContent='Menu'; trigger.append(img,label); row.append(trigger);
+ const credit=document.createElement('a'); credit.className='tv-icon-credit'; credit.href='https://www.flaticon.com/free-icons/television'; credit.target='_blank'; credit.rel='noopener noreferrer'; credit.textContent='Ikon TV: meaicon / Flaticon'; row.append(credit);
+ const theme=document.createElement('button'); theme.type='button'; theme.className='secondary apple-tv-toggle'; theme.textContent='TV'; theme.setAttribute('aria-label','Tukar tema TV'); row.append(theme);
+ const nav=document.createElement('nav'); nav.id='appleTvDock'; nav.className='apple-tv-dock menu-collapsed'; nav.setAttribute('aria-label','Menu QuizPro');
+ function item(text,action){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',action);return b}
+ nav.append(item('Pelajar',()=>{if(typeof window.showView==='function')window.showView('student');close()}),item('Guru',()=>{if(typeof window.showView==='function')window.showView('adminLogin');close()}),item('Skrin penuh',()=>{const el=document.documentElement;if(!document.fullscreenElement&&el.requestFullscreen)el.requestFullscreen().catch(()=>{});else if(document.exitFullscreen)document.exitFullscreen().catch(()=>{});}));
+ header.insertAdjacentElement('afterend',row);row.insertAdjacentElement('afterend',nav);
+ function setTheme(on){document.body.classList.toggle('apple-tv-mode',on);try{localStorage.setItem('quizpro-apple-tv-theme-v1',on?'1':'0')}catch{}theme.textContent=on?'TV · ON':'TV'}
+ function close(){nav.classList.add('menu-collapsed');trigger.setAttribute('aria-expanded','false');label.textContent='Menu'}
+ theme.addEventListener('click',()=>setTheme(!document.body.classList.contains('apple-tv-mode')));
+ trigger.addEventListener('click',()=>{if(!document.body.classList.contains('apple-tv-mode'))setTheme(true);const open=nav.classList.contains('menu-collapsed');nav.classList.toggle('menu-collapsed',!open);trigger.setAttribute('aria-expanded',String(open));label.textContent=open?'Tutup':'Menu';theme.textContent='TV · ON'});
+ try{if(localStorage.getItem('quizpro-apple-tv-theme-v1')==='1')setTheme(true)}catch{}
+})();
+</script>
+/script>
 
 </body>
 </html>
