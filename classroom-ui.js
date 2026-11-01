@@ -62,3 +62,25 @@ setInterval(refreshConnections,20000);
  if(typeof installSectionFullscreen==='function')installSectionFullscreen();
 })();
 
+/* Five-second reveal followed by a local five-second countdown. */
+(()=>{
+ const style=document.createElement('style');style.textContent='#quizNextCountdown{position:fixed;inset:0;z-index:9999;background:#101b35f5;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:20px;pointer-events:none}#quizNextCountdown[hidden]{display:none}#quizNextCountdown .next-circle{width:min(55vw,240px);aspect-ratio:1;border:10px solid #60a5fa;border-radius:50%;display:grid;place-items:center;font-size:clamp(70px,18vw,140px);font-weight:850}#quizNextCountdown p{font-size:clamp(20px,4vw,32px);margin:0}';document.head.append(style);
+ const overlay=document.createElement('div');overlay.id='quizNextCountdown';overlay.hidden=true;overlay.setAttribute('role','status');overlay.setAttribute('aria-live','polite');overlay.innerHTML='<p>Soalan seterusnya</p><div class="next-circle"></div><p class="next-wait"></p>';document.body.append(overlay);
+ let state=null,last='';
+ const previous=featureTeacherSnapshot;
+ featureTeacherSnapshot=function(d){previous(d);if(!$('adminView').classList.contains('hidden'))state={phase:d.status,endsAt:d.question?.endsAt,paused:d.question?.paused};};
+ const originalCountdown=startPlayerCountdown;
+ startPlayerCountdown=function(...args){originalCountdown(...args);state={phase:args[2],endsAt:args[1],paused:args[4],player:true};};
+ function update(){
+  const visible=!$('adminView').classList.contains('hidden')||!$('playerView').classList.contains('hidden');
+  const remaining=state?.endsAt-((state?.player&&typeof studentNow==='function')?studentNow():Date.now());
+  const show=visible&&state?.phase==='reveal'&&!state.paused&&Number.isFinite(remaining)&&remaining<=5000;
+  overlay.hidden=!show;if(!show){last='';return;}
+  const value=remaining>0?String(Math.ceil(remaining/1000)):'…';if(value!==last){overlay.querySelector('.next-circle').textContent=value;overlay.querySelector('.next-wait').textContent=remaining>0?'Bersedia!':'Menunggu soalan daripada server…';last=value;}
+ }
+ setInterval(update,180);
+ const input=$('revealSeconds');input.value='10';input.readOnly=true;
+ const label=document.querySelector('label[for="revealSeconds"]');if(label)label.textContent='Reveal 5 saat + countdown 5 saat (jumlah 10 saat)';
+ const originalLoad=loadAdminData;loadAdminData=async function(...args){await originalLoad(...args);input.value='10';};
+})();
+
