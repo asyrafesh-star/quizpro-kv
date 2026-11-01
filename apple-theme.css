@@ -13,3 +13,6 @@ input[type=text],input[type=number],input[type=password],input[type=file],select
 /* Keep locked quiz settings readable in the dark Apple TV theme. */
 body.apple-tv-mode input[readonly],body.apple-tv-mode input:disabled,body.apple-tv-mode select{background:#111b2a!important;color:#f4f7ff!important;-webkit-text-fill-color:#f4f7ff!important;border-color:#53627a!important;opacity:1!important}
 body.apple-tv-mode select option{background:#111b2a;color:#f4f7ff}
+/* Keep every fullscreen section on the same dark, high-contrast Apple TV canvas. */
+body.apple-tv-mode .fullscreen-section:fullscreen,body.apple-tv-mode .section-fullscreen-fallback,body.apple-tv-mode #projectorView:fullscreen,body.apple-tv-mode #projectorView.section-fullscreen-fallback{background:radial-gradient(ellipse at 50% -20%,#273d68 0,transparent 48%),radial-gradient(ellipse at 100% 100%,#142a46 0,transparent 42%),#070b13!important;color:#f3f6ff!important;color-scheme:dark}
+body.apple-tv-mode .fullscreen-section:fullscreen>.section-fullscreen-toolbar,body.apple-tv-mode .section-fullscreen-fallback>.section-fullscreen-toolbar,body.apple-tv-mode #projectorView:fullscreen>.section-fullscreen-toolbar,body.apple-tv-mode #projectorView.section-fullscreen-fallback>.section-fullscreen-toolbar{background:#101827!important}
