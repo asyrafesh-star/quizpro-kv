@@ -6,8 +6,8 @@ function renderPlayerQuestion(q,ps,phase){
     if(Number(q.no)!==Number(currentPlayerQuestion)){selectedChoice='';playerAnswerPending=null;playerAnswerError='';}
     currentPlayerQuestion=Number(q.no);lastPlayerVibrationSecond=null;playerVibrationFinished=false;
     if(playerCountdownTimer){clearInterval(playerCountdownTimer);playerCountdownTimer=null;}
-    const symbols={A:'▲',B:'◆',C:'●',D:'■'};
-    $('playerContent').innerHTML=`<p class="phone-question-number">SOALAN ${q.no} / ${q.total}</p><h2 class="phone-question">${esc(q.question)}</h2>${questionImageMarkup(q.image,'student',q.no)}<div class="timer center" id="countdown"></div><div class="student-answer-grid">${['A','B','C','D'].map(k=>`<button class="student-letter choice-${k}" id="opt${k}" aria-label="Jawapan ${k}" onclick="answer('${k}',${q.no})"><span class="phone-choice-key">${k}</span><span class="phone-choice-text">${esc(q[k])}</span></button>`).join('')}</div><div id="answerFeedback" role="status" aria-live="polite"></div>`;
+    const symbols={A:'▲',B:'◆',C:'●',D:'■'},symbolNames={A:'segitiga',B:'berlian',C:'bulatan',D:'petak'};
+    $('playerContent').innerHTML=`<p class="phone-question-number">SOALAN ${q.no} / ${q.total}</p><h2 class="phone-question">${esc(q.question)}</h2>${questionImageMarkup(q.image,'student',q.no)}<div class="timer center" id="countdown"></div><div class="student-answer-grid">${['A','B','C','D'].map(k=>`<button class="student-letter choice-${k}" id="opt${k}" aria-label="Pilihan ${k}, ${symbolNames[k]}: ${esc(q[k])}" onclick="answer('${k}',${q.no})"><span class="phone-choice-key" aria-hidden="true">${symbols[k]}</span><span class="phone-choice-text">${esc(q[k])}</span></button>`).join('')}</div><div id="answerFeedback" role="status" aria-live="polite"></div>`;
   }
   playerTimerPhase=phase;playerTimerPaused=!!q.paused;
   const confirmed=Number(ps.currentQuestion)===Number(q.no)?String(ps.currentChoice||''):'';
