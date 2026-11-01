@@ -158,7 +158,7 @@
     <div class="card">
       <div class="row-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><h2 style="margin:0">4. Bank soalan</h2><button id="toggleQuestionBankBtn" class="secondary" type="button" onclick="toggleQuestionBank()">Sembunyikan soalan</button></div>
       <div id="questionBankBody"><div id="questionTable" class="tablewrap muted">Log masuk untuk melihat soalan.</div>
-      <p class="muted">Edit masa/markah dengan mengubah nilai dalam Excel dan import semula. Ini membantu elak suntingan tidak sengaja semasa kuiz berlangsung.</p></div>
+      <p class="muted">Masa dan markah maksimum di panel Tetapan kuiz digunakan untuk semua soalan. Nilai Masa/Markah dalam Excel diabaikan untuk sesi baharu.</p></div>
     </div>
     <div class="card" id="attendanceCard"><h2>Kehadiran kuiz kelas</h2><p id="attendanceStatus" class="muted">Pilih kelas untuk melihat senarai.</p><div class="attendance-grid"><div><h3 id="presentHeading">Sudah masuk kuiz (0)</h3><div id="attendancePresent"></div></div><div><h3 id="absentHeading">Belum masuk (0)</h3><div id="attendanceAbsent"></div></div></div></div>
     <div class="card" id="sessionControlsCard"><h2>5. Sesi permainan</h2>
@@ -254,6 +254,7 @@ function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;',
 async function saveSettings() {
   try {
     await call('adminSaveSettings', pin, {quizTitle:$('quizTitle').value, defaultSeconds:$('defaultSeconds').value, defaultPoints:$('defaultPoints').value, revealSeconds:$('revealSeconds').value, nextMode:$('nextMode').value});
+    await loadAdminData();
     notice('Tetapan berjaya disimpan.');
   } catch(e) { notice(e.message, true); }
 }
