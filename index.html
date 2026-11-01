@@ -652,6 +652,7 @@ body.apple-tv-mode .apple-tv-dock .dock-icon{display:none!important}
  const show=window.showView;
  if(typeof show==="function")window.showView=function(){const result=show.apply(this,arguments);closeMenu();return result;};
 })();
+</script>
 <style id="tvMenuStandaloneFix">
 .apple-tv-top-menu{display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:4px 0 12px;border-bottom:1px solid #ffffff28}
 .apple-tv-top-menu .tv-menu-trigger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:88px;height:86px;margin:0;padding:6px;border:1px solid #ffffff2b;border-radius:18px;background:linear-gradient(145deg,#263b60,#111a2b);color:#fff;font-size:12px;font-weight:750;box-shadow:0 8px 22px #0004}
@@ -687,7 +688,7 @@ body.apple-tv-mode #homeView .welcome-intro{color:#475569!important}body.apple-t
  
 })();
 </script>
-/script>
+
 
 </body>
 </html>
