@@ -501,6 +501,17 @@ async function joinGame() {
   } catch(e) { notice(e.message, true); }finally{joiningGame=false;joinButton.disabled=false;joinButton.textContent=joinLabel;}
 }
 let playerPollGeneration=0;
+const playerRevealAnswers=new Map(),playerRevealLookups=new Set();
+function fetchPlayerRevealAnswer(code,player,no){
+  const key=`${code}:${no}`;if(playerRevealAnswers.has(key)||playerRevealLookups.has(key))return;
+  playerRevealLookups.add(key);
+  legacyCall('playerSnapshot',code,player,true).then(snapshot=>{
+    const state=snapshot?.state,q=state?.question;
+    if(state?.status==='reveal'&&Number(q?.no)===Number(no)&&['A','B','C','D'].includes(String(q?.correct||''))&&snapshot?.player?.valid&&String(snapshot.player.playerId)===String(player)){
+      playerRevealAnswers.set(key,String(q.correct));pollPlayer();
+    }
+  }).catch(()=>{}).finally(()=>playerRevealLookups.delete(key));
+}
 function startPolling(){
   if(poller)clearTimeout(poller);lastPlayerStatus='';const generation=++playerPollGeneration;
   const cycle=async()=>{if(!playerId||generation!==playerPollGeneration)return;await pollPlayer();if(playerId&&generation===playerPollGeneration&&lastPlayerStatus!=='finished')poller=setTimeout(cycle,(document.hidden?6500:1800)+Math.random()*900);};cycle();
@@ -510,8 +521,9 @@ async function pollPlayer() {
   if (!playerId || pollPlayerBusy) return;
   pollPlayerBusy=true;
   try {
-    const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId,!document.hidden);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
+    const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId,!document.hidden);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();let state=snapshot.state;const ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
     if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
+    if(state.status==='reveal'&&state.question){const key=`${requestedCode}:${state.question.no}`,correct=state.question.correct||playerRevealAnswers.get(key);if(correct)state=Object.assign({},state,{question:Object.assign({},state.question,{correct})});else fetchPlayerRevealAnswer(requestedCode,requestedPlayer,state.question.no);}
     $('appTitle').textContent = state.title || 'QuizPro KV';
     lastPlayerStatus=String(state.status); // No live scores or leaderboard on student phones.
 
