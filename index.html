@@ -135,7 +135,7 @@
         <div class="full"><label for="quizTitle">Nama kuiz</label><input id="quizTitle" type="text" value="Kuiz Kelas"></div>
         <div><label for="defaultSeconds">Masa setiap soalan (saat)</label><input id="defaultSeconds" type="number" min="5" max="600" value="30"></div>
         <div><label for="defaultPoints">Markah maksimum setiap soalan</label><input id="defaultPoints" type="number" min="1" max="100" value="5"></div>
-        <div><label for="revealSeconds">Masa paparan keputusan (saat)</label><input id="revealSeconds" type="number" min="1" max="120" value="15"></div>
+        <div><label for="revealSeconds">Jumlah Reveal + countdown (saat)</label><input id="revealSeconds" type="number" min="2" max="120" step="1" value="10"><small id="revealSecondsHelp" class="muted">Dibahagi dua sama rata: separuh masa paparan jawapan, separuh masa countdown sebelum soalan seterusnya.</small></div>
         <div><label for="nextMode">Soalan seterusnya</label><select id="nextMode" style="width:100%;padding:11px 12px;border:1px solid #c9d3e2;border-radius:10px;background:#fff"><option value="auto">Automatik selepas masa keputusan</option><option value="manual">Manual — cikgu tekan seterusnya</option></select></div>
       </div>
             <p class="muted">Markah betul: markah penuh dalam ⅓ masa pertama, kemudian turun sama rata hingga minimum 1 sebelum masa tamat. Jawapan salah atau tidak dihantar: 0.</p>
@@ -553,7 +553,7 @@ applyInitialRoute();
 <script src="reset.js?v=20261028a"></script>
 <script src="fullscreen.js?v=20261029a"></script>
 <script src="resume.js?v=firebase1"></script>
-<script src="classroom-ui.js?v=tapclock20261101"></script>
+<script src="classroom-ui.js?v=reveal-split20261101"></script>
 
 <style id="appleTvThemeStyles">
 body.apple-tv-mode{--ink:#f3f6ff;--muted:#a9b5cc;--line:#ffffff24;--pale:#dce7ff;background:radial-gradient(ellipse at 50% -20%,#273d68 0,transparent 48%),radial-gradient(ellipse at 100% 100%,#142a46 0,transparent 42%),#070b13;color:#f3f6ff;padding-bottom:105px}
