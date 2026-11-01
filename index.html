@@ -55,7 +55,7 @@
 <script src="metrics.js?v=20261028sync"></script>
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
-<script src="answer-controls.js?v=performance20261029"></script>
+<script src="answer-controls.js?v=pendingfix20261101"></script>
 <link rel="stylesheet" href="apple-theme.css?v=20261028a">
 <script src="piano.js?v=20261028a"></script>
 <script src="classroom-core.js?v=20261029a"></script><link rel="stylesheet" href="classroom.css?v=20261029a">
@@ -505,7 +505,7 @@ function startPolling(){
 }
 let pollPlayerBusy=false;
 async function pollPlayer() {
-  if (!playerId || pollPlayerBusy || playerAnswerPending) return;
+  if (!playerId || pollPlayerBusy) return;
   pollPlayerBusy=true;
   try {
     const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId,!document.hidden);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();const state=snapshot.state,ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
@@ -554,11 +554,3 @@ applyInitialRoute();
 <script src="classroom-ui.js?v=lists20261101"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
