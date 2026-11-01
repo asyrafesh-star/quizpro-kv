@@ -7,11 +7,17 @@ function scheduleRosterLookup(){
   status.textContent='Menyemak nama…';
   rosterLookupTimer=setTimeout(async()=>{try{
     const d=await call('studentRosterName',code,ic);if(generation!==rosterLookupGeneration)return;
-    if(d.found){name.value=d.name;name.readOnly=true;status.textContent='✓ Nama dijumpai · '+d.className;}
+    if(d.found){name.value=d.name;name.readOnly=true;status.textContent='✓ Nama dijumpai · '+d.className;
+      // Warm Firebase auth while the student reviews the name, so Register does not
+      // have to wait for the SDK download and anonymous sign-in to start.
+      if(typeof quizRealtime!=='undefined')quizRealtime.token().catch(()=>{});
+    }
     else status.textContent='IC tidak dijumpai. Semak kod permainan dan IC, atau hubungi cikgu.';
   }catch(e){if(generation===rosterLookupGeneration)status.textContent='Semakan nama gagal. Cuba semula atau hubungi cikgu.';}},350);
 }
 $('studentId').addEventListener('input',scheduleRosterLookup);$('joinCode').addEventListener('input',scheduleRosterLookup);
+function warmStudentBridge(){if(typeof quizBridge!=='undefined'&&typeof quizBridge.prepare==='function')quizBridge.prepare().catch(()=>{});}
+$('studentId').addEventListener('focus',warmStudentBridge);$('joinCode').addEventListener('focus',warmStudentBridge);
 function attendanceTable(list){return list.length?'<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th><th>IC akhir</th></tr></thead><tbody>'+list.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.name)}</td><td>•••• ${esc(p.idSuffix)}</td></tr>`).join('')+'</tbody></table></div>':'<p class="muted">Tiada pelajar.</p>';}
 async function refreshAttendance(){
   if(!pin||!cloudClass||attendancePending)return;attendancePending=true;

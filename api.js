@@ -22,13 +22,15 @@ const quizBridge=(()=>{
     catch(e){disconnect(c,e);}
     return c.promise;
   }
-  return async(fn,args)=>{
+  const request=async(fn,args)=>{
     const c=await connect();return new Promise((resolve,reject)=>{
       const id=crypto.randomUUID(),task={connection:c,resolve,reject};
       task.timer=setTimeout(()=>disconnect(c,new Error('Sambungan terputus atau permintaan terlalu lama. Semak rekod sebelum mengulang penghantaran.')),45000);pending.set(id,task);
       try{c.remote.postMessage({type:'quiz-call',channel:c.channel,id,fn,args},c.origin);}catch(e){disconnect(c,e);}
     });
   };
+  request.prepare=connect;
+  return request;
 })();
 async function legacyCall(fn,...args){const data=await quizBridge(fn,args);const site=new URL(location.href);site.search='';site.hash='';if(fn==='adminGetData'&&data)data.webAppUrl=site.href;if(fn==='adminStartSession'&&data){site.searchParams.set('join',data.code);data.url=site.href;}return data;}
 

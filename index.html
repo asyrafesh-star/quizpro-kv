@@ -6,7 +6,7 @@
   <script src="images.js?v=20261028"></script>
   <script src="config.js?v=7"></script>
   <script src="firebase-live.js?v=tapclock20261101"></script>
-  <script src="api.js?v=tapclock20261101"></script>
+  <script src="api.js?v=studentjoin20261101"></script>
   <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -486,7 +486,7 @@ async function endSession() {
 }
 let joiningGame=false;
 async function joinGame() {
-  if(joiningGame)return;joiningGame=true;const joinButton=document.querySelector('button[onclick="joinGame()"]');joinButton.disabled=true;
+  if(joiningGame)return;joiningGame=true;const joinButton=document.querySelector('button[onclick="joinGame()"]'),joinLabel=joinButton.textContent;joinButton.disabled=true;joinButton.textContent='Sedang sambung…';notice('Sedang mendaftar dan menyambung ke permainan…');
   try {
     // Give supported phones a direct user-gesture to unlock vibration; iOS Safari may not support Vibration API.
     if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(100);
@@ -498,7 +498,7 @@ async function joinGame() {
     $('playerMusicToggle').textContent = musicEngines.player.enabled ? 'Piano: ON' : 'Piano: OFF';
     $('playerHeading').textContent = 'Hai, ' + playerName;
     showView('player'); startPolling(); notice(res.existing?'Permainan disambung. Jawapan dan markah dikekalkan.':'Pendaftaran berjaya.');
-  } catch(e) { notice(e.message, true); }finally{joiningGame=false;joinButton.disabled=false;}
+  } catch(e) { notice(e.message, true); }finally{joiningGame=false;joinButton.disabled=false;joinButton.textContent=joinLabel;}
 }
 let playerPollGeneration=0;
 function startPolling(){
@@ -549,7 +549,7 @@ function updatePlayerCountdown() {
 applyInitialRoute();
 </script>
 <script src="cloud.js?v=performance20261029"></script>
-<script src="roster.js?v=performance20261029"></script>
+<script src="roster.js?v=studentjoin20261101"></script>
 <script src="reset.js?v=20261028a"></script>
 <script src="fullscreen.js?v=20261029a"></script>
 <script src="resume.js?v=firebase1"></script>
