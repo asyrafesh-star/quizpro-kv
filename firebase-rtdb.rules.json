@@ -11,7 +11,7 @@
           "$uid": {
             ".read": "auth != null && auth.uid === $uid",
             "$no": {
-              ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('sessions').child($code).child('grants').child($uid).exists() && root.child('sessions').child($code).child('questionWindows').child($no).exists() && newData.child('tapAt').isNumber() && now >= root.child('sessions').child($code).child('questionWindows').child($no).child('startedAt').val() && newData.child('tapAt').val() >= root.child('sessions').child($code).child('questionWindows').child($no).child('startedAt').val() && newData.child('tapAt').val() <= root.child('sessions').child($code).child('questionWindows').child($no).child('endsAt').val() && newData.child('tapAt').val() <= now",
+              ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('sessions').child($code).child('grants').child($uid).exists() && root.child('sessions').child($code).child('state').child('status').val() === 'question' && (root.child('sessions').child($code).child('state').child('question').child('no').val() + '') === $no && newData.child('tapAt').isNumber() && newData.child('start').val() === root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && now + 3000 >= root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && newData.child('tapAt').val() >= root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && newData.child('tapAt').val() <= root.child('sessions').child($code).child('state').child('question').child('endsAt').val() && newData.child('tapAt').val() <= now + 3000",
               ".validate": "newData.hasChildren(['choice','at','tapAt','start'])",
               "choice": {
                 ".validate": "newData.isString() && newData.val().matches(/^[ABCD]$/)"
@@ -20,10 +20,10 @@
                 ".validate": "newData.isNumber() && newData.val() === now"
               },
               "tapAt": {
-                ".validate": "newData.isNumber() && newData.val() >= root.child('sessions').child($code).child('questionWindows').child($no).child('startedAt').val() && newData.val() <= root.child('sessions').child($code).child('questionWindows').child($no).child('endsAt').val() && newData.val() <= now"
+                ".validate": "newData.isNumber() && newData.val() >= root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && newData.val() <= root.child('sessions').child($code).child('state').child('question').child('endsAt').val() && newData.val() <= now + 3000"
               },
               "start": {
-                ".validate": "newData.isNumber() && newData.val() === root.child('sessions').child($code).child('questionWindows').child($no).child('startedAt').val()"
+                ".validate": "newData.isNumber() && newData.val() === root.child('sessions').child($code).child('state').child('question').child('startedAt').val()"
               },
               "$other": {
                 ".validate": false
