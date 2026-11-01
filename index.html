@@ -133,16 +133,17 @@
       <h2>1. Tetapan kuiz</h2>
       <div class="grid">
         <div class="full"><label for="quizTitle">Nama kuiz</label><input id="quizTitle" type="text" value="Kuiz Kelas"></div>
-        <div><label for="defaultSeconds">Masa lalai (saat)</label><input id="defaultSeconds" type="number" min="5" max="600" value="30"></div>
-        <div><label for="defaultPoints">Markah maksimum lalai</label><input id="defaultPoints" type="number" min="1" max="100" value="5"></div>
+        <div><label for="defaultSeconds">Masa setiap soalan (saat)</label><input id="defaultSeconds" type="number" min="5" max="600" value="30"></div>
+        <div><label for="defaultPoints">Markah maksimum setiap soalan</label><input id="defaultPoints" type="number" min="1" max="100" value="5"></div>
         <div><label for="revealSeconds">Masa paparan keputusan (saat)</label><input id="revealSeconds" type="number" min="1" max="120" value="15"></div>
         <div><label for="nextMode">Soalan seterusnya</label><select id="nextMode" style="width:100%;padding:11px 12px;border:1px solid #c9d3e2;border-radius:10px;background:#fff"><option value="auto">Automatik selepas masa keputusan</option><option value="manual">Manual — cikgu tekan seterusnya</option></select></div>
       </div>
+            <p class="muted">Markah betul: markah penuh dalam ⅓ masa pertama, kemudian turun sama rata hingga minimum 1 sebelum masa tamat. Jawapan salah atau tidak dihantar: 0.</p>
       <button onclick="saveSettings()">Simpan tetapan</button>
     </div>
     <div class="card">
       <h2>2. Import soalan Excel</h2>
-      <p class="muted">Fail .xlsx atau .xls. Tajuk lajur yang diterima: No, Soalan, A, B, C, D, Jawapan, Masa, Markah, Gambar. Jawapan mesti A/B/C/D. Masa dan Markah boleh dikosongkan untuk guna nilai lalai.</p>
+      <p class="muted">Fail .xlsx atau .xls. Tajuk lajur yang diterima: No, Soalan, A, B, C, D, Jawapan dan Gambar. Jawapan mesti A/B/C/D. Masa dan markah ditetapkan di panel tetapan kuiz dan mengatasi nilai dalam Excel.</p>
       <label for="excelFile">Pilih fail Excel</label><input id="excelFile" type="file" accept=".xlsx,.xls,.csv">
       <button onclick="importExcel()">Import soalan</button>
       <div id="importSummary" class="muted"></div>
@@ -551,6 +552,7 @@ applyInitialRoute();
 <script src="reset.js?v=20261028a"></script>
 <script src="fullscreen.js?v=20261029a"></script>
 <script src="resume.js?v=firebase1"></script>
-<script src="classroom-ui.js?v=countdown20261101"></script>
+<script src="classroom-ui.js?v=scoring20261101"></script>
 </body>
 </html>
+
