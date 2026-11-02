@@ -25,9 +25,13 @@ function renderPlayerQuestion(q,ps,phase){
   else if(q.endsAt&&studentNow()>=q.endsAt)setAnswerState('expired','','Masa tamat. Tunggu soalan seterusnya.');
   else setAnswerState(playerAnswerError?'retry':'open','',playerAnswerError||'Pilih satu jawapan.');
   playerTimerStartedAt=Number(q.startedAt)||0;
-  startPlayerCountdown(q.no,q.endsAt,phase,q.seconds,q.paused,q.pausedRemainingMs,q.revealSeconds);
+  const timer=$('countdown'),showTimer=phase==='question'&&(q.paused||!q.endsAt||studentNow()<q.endsAt);
+  if(timer){timer.hidden=!showTimer;if(showTimer)timer.style.removeProperty('display');else timer.style.setProperty('display','none','important');}
+  if(showTimer)startPlayerCountdown(q.no,q.endsAt,phase,q.seconds,q.paused,q.pausedRemainingMs,q.revealSeconds);
+  else if(playerCountdownTimer){clearInterval(playerCountdownTimer);playerCountdownTimer=null;}
 }
 function setAnswerState(state,choice,message,correctChoice=''){
+  if(state==='expired'||state==='reveal'){const timer=$('countdown');if(timer){timer.hidden=true;timer.style.setProperty('display','none','important');}if(playerCountdownTimer){clearInterval(playerCountdownTimer);playerCountdownTimer=null;}}
   const locked=['selected','locked','correct','expired','sending','paused','reveal'].includes(state);
   ['A','B','C','D'].forEach(k=>{const button=$('opt'+k);if(!button)return;
     button.classList.toggle('selected',['selected','locked','sending','reveal'].includes(state)&&k===choice);
