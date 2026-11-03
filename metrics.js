@@ -1,3 +1,4 @@
+function metricSeconds(value){return value==null||!Number.isFinite(Number(value))?"—":Number(value).toFixed(2)+" s";}
 function metricCount(value){return value==null?'—':String(Math.max(0,Number(value)||0));}
 function answerStatsMarkup(p,state){
   const stats=Object.assign({},p);if(state){const total=Number(state.total)||Number(p.totalQuestions)||0,current=Number(state.currentQuestion)||0,phase=String(state.status);
@@ -8,6 +9,6 @@ function answerStatsMarkup(p,state){
 }
 function metricsRankingTable(list,total=false,history=false){
   if(!list.length)return '<p class="muted">'+(history?'Belum ada keputusan. Markah terkumpul dikira selepas sesi tamat.':'Belum ada peserta.')+'</p>';
-  return '<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th><th>'+(total?'Jumlah markah':'Markah')+'</th><th>Betul</th><th>Salah</th><th>Dijawab</th><th>Tidak dijawab</th>'+(total?'<th>Kuiz</th>':'')+'</tr></thead><tbody>'+list.map(p=>`<tr><td>${p.rank}</td><td>${esc(p.name)}</td><td><b>${metricCount(p.points)}</b></td><td class="metric-correct">${metricCount(p.correct)}</td><td class="metric-wrong">${metricCount(p.wrong)}</td><td>${metricCount(p.answered)}${p.pending?` <small>(${metricCount(p.pending)} menunggu reveal)</small>`:''}</td><td>${metricCount(p.unanswered)}</td>${total?`<td>${metricCount(p.sessions)}</td>`:''}</tr>`).join('')+'</tbody></table></div>';
+  return '<div class="tablewrap"><table><thead><tr><th>#</th><th>Nama pelajar</th><th>'+(total?'Jumlah markah':'Markah')+'</th><th>Purata masa</th><th>Betul</th><th>Salah</th><th>Dijawab</th><th>Tidak dijawab</th>'+(total?'<th>Kuiz</th>':'')+'</tr></thead><tbody>'+list.map(p=>`<tr><td>${p.rank}</td><td>${esc(p.name)}</td><td><b>${metricCount(p.points)}</b></td><td>${metricSeconds(p.averageSeconds)}</td><td class="metric-correct">${metricCount(p.correct)}</td><td class="metric-wrong">${metricCount(p.wrong)}</td><td>${metricCount(p.answered)}${p.pending?` <small>(${metricCount(p.pending)} menunggu reveal)</small>`:''}</td><td>${metricCount(p.unanswered)}</td>${total?`<td>${metricCount(p.sessions)}</td>`:''}</tr>`).join('')+'</tbody></table></div>';
 }
 

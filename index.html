@@ -53,7 +53,7 @@
 </style>
 <link rel="stylesheet" href="fullscreen.css?v=20261028a">
 <link rel="stylesheet" href="race.css?v=20261028a">
-<script src="metrics.js?v=20261028sync"></script>
+<script src="metrics.js?v=top3average20261103"></script>
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
 <script src="answer-controls.js?v=countdownend20261102"></script>
@@ -170,7 +170,7 @@ body .student-letter.correct,body .projector-choice.correct,body .teacher-choice
       <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
     <div class="card">
-      <h2>6. Keputusan selepas tamat</h2><p class="muted">Markah diproses sekali apabila kuiz tamat. Tiada ranking langsung semasa soalan berjalan.</p><button class="secondary" onclick="refreshLeaderboard()">Kemas kini ranking</button> <button onclick="createAnalysisSpreadsheet()">Bina Spreadsheet Analisis</button><div id="analysisSpreadsheetLink" class="status"></div><div id="leaderboardPanel" class="tablewrap"></div>
+      <h2>6. Keputusan selepas tamat</h2><p class="muted">Markah diproses sekali apabila kuiz tamat. Sesi baharu: 3 jawapan betul terpantas setiap soalan mendapat bonus +3, +2 dan +1 mengikut urutan diterima server. Purata masa meliputi soalan yang dijawab sahaja.</p><button class="secondary" onclick="refreshLeaderboard()">Kemas kini ranking</button> <button onclick="createAnalysisSpreadsheet()">Bina Spreadsheet Analisis</button><div id="analysisSpreadsheetLink" class="status"></div><div id="leaderboardPanel" class="tablewrap"></div>
     </div>
     <div id="teacherLiveCard" class="card hidden">
       <h2>7. Paparan projector — untuk pelajar</h2>
@@ -508,7 +508,7 @@ let playerFinishCode='',playerFinishPromise=null,playerFinishHtml='';
 function showPlayerFinished(code){
   if(playerFinishCode!==code){playerFinishCode=code;playerFinishPromise=null;playerFinishHtml='';}
   if(playerFinishHtml){$('playerContent').innerHTML=playerFinishHtml;return;}
-  $('playerContent').innerHTML=`<section class="student-finish-card"><div class="pill">KUIZ TAMAT</div><h1>Tahniah, ${esc(playerName||'pelajar')}!</h1><p>Anda telah menjawab semua soalan.</p><div class="student-finish-stats"><div><span>Markah anda hari ini</span><strong id="studentFinalPoints">…</strong></div><div><span>Ranking kuiz hari ini</span><strong id="studentFinalRank">…</strong></div></div><p id="studentFinalStatus" aria-live="polite">Sedang mengira markah dan ranking…</p></section>`;
+  $('playerContent').innerHTML=`<section class="student-finish-card"><div class="pill">KUIZ TAMAT</div><h1>Tahniah, ${esc(playerName||'pelajar')}!</h1><p>Anda telah menjawab semua soalan.</p><div class="student-finish-stats"><div><span>Markah anda hari ini</span><strong id="studentFinalPoints">…</strong></div><div><span>Ranking kuiz hari ini</span><strong id="studentFinalRank">…</strong></div><div><span>Purata masa menjawab</span><strong id="studentAverageSeconds">…</strong></div></div><p id="studentFinalStatus" aria-live="polite">Sedang mengira markah dan ranking…</p></section>`;
   if(playerFinishPromise)return;
   playerFinishPromise=call('leaderboard',code).then(list=>{
     if(playerFinishCode!==code||!Array.isArray(list))return;
@@ -516,8 +516,8 @@ function showPlayerFinished(code){
     const self=list.find(p=>[p.playerId,p.uid].some(id=>id!=null&&String(id)===String(playerId)))||list.find(p=>normalize(p.name)===normalize(playerName));
     const points=self?.points??self?.score,rank=Number(self?.rank)||(self?list.indexOf(self)+1:0);
     const pointsEl=$('studentFinalPoints'),rankEl=$('studentFinalRank'),statusEl=$('studentFinalStatus');if(!pointsEl||!rankEl||!statusEl)return;
-    if(self){pointsEl.textContent=String(Number(points)||0);rankEl.textContent=`${rank} / ${list.length}`;$('playerPoints').textContent=String(Number(points)||0);statusEl.textContent=`Kedudukan daripada ${list.length} pelajar yang menyertai kuiz.`;}
-    else{pointsEl.textContent='—';rankEl.textContent='—';statusEl.textContent='Markah sedang disegerakkan. Tekan untuk semak semula.';statusEl.insertAdjacentHTML('afterend','<button id="retryStudentFinal" class="secondary">Semak markah semula</button>');$('retryStudentFinal')?.addEventListener('click',()=>{playerFinishPromise=null;playerFinishHtml='';showPlayerFinished(code);});}
+    if(self){$('studentAverageSeconds').textContent=metricSeconds(self.averageSeconds);pointsEl.textContent=String(Number(points)||0);rankEl.textContent=`${rank} / ${list.length}`;$('playerPoints').textContent=String(Number(points)||0);statusEl.textContent=`Kedudukan daripada ${list.length} pelajar yang menyertai kuiz.`;}
+    else{$('studentAverageSeconds').textContent='—';pointsEl.textContent='—';rankEl.textContent='—';statusEl.textContent='Markah sedang disegerakkan. Tekan untuk semak semula.';statusEl.insertAdjacentHTML('afterend','<button id="retryStudentFinal" class="secondary">Semak markah semula</button>');$('retryStudentFinal')?.addEventListener('click',()=>{playerFinishPromise=null;playerFinishHtml='';showPlayerFinished(code);});}
     playerFinishHtml=$('playerContent').innerHTML;
   }).catch(()=>{
     if(playerFinishCode!==code)return;const statusEl=$('studentFinalStatus');if(statusEl){statusEl.textContent='Markah belum dapat dimuatkan. Tekan untuk cuba semula.';statusEl.insertAdjacentHTML('afterend','<button id="retryStudentFinal" class="secondary">Cuba semula</button>');$('retryStudentFinal')?.addEventListener('click',()=>{playerFinishPromise=null;playerFinishHtml='';showPlayerFinished(code);});}
