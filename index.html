@@ -59,7 +59,7 @@
 <script src="answer-controls.js?v=personalorder20261104"></script>
 <link rel="stylesheet" href="apple-theme.css?v=fullscreencontrast20261101">
 <script src="piano.js?v=20261028a"></script>
-<script src="classroom-core.js?v=20261029a"></script><link rel="stylesheet" href="classroom.css?v=20261029a">
+<script src="classroom-core.js?v=podium520261105"></script><link rel="stylesheet" href="classroom.css?v=20261029a">
 <link rel="stylesheet" href="minimal.css?v=20261029c">
 <style id="correct-answer-purple">
 body .student-letter.correct,body .projector-choice.correct,body .teacher-choice.correct{background:#7c3aed!important;color:#fff!important;border-color:#ddd6fe!important;outline-color:#7c3aed!important;box-shadow:0 0 0 4px #7c3aed33!important}
@@ -175,11 +175,11 @@ body.apple-tv-mode .session-summary{background:#19243a}
     </div>
     <div class="card" id="attendanceCard"><h2>Kehadiran kuiz kelas</h2><p id="attendanceStatus" class="muted">Pilih kelas untuk melihat senarai.</p><div class="attendance-grid"><div><h3 id="presentHeading">Sudah masuk kuiz (0)</h3><div id="attendancePresent"></div></div><div><h3 id="absentHeading">Belum masuk (0)</h3><div id="attendanceAbsent"></div></div></div></div>
     <div class="card" id="sessionControlsCard"><h2>5. Sesi permainan</h2>
-      <label for="sessionOrderMode">Susunan soalan</label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
+      <label for="sessionOrderMode">Susunan soalan <small>· Pilih sebelum mula sesi baharu</small></label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
       <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
     <div class="card">
-      <h2>6. Keputusan selepas tamat</h2><p class="muted">Markah diproses sekali apabila kuiz tamat. Sesi baharu: 3 jawapan betul terpantas setiap soalan mendapat bonus +3, +2 dan +1 mengikut urutan diterima server. Purata masa meliputi soalan yang dijawab sahaja.</p><button class="secondary" onclick="refreshLeaderboard()">Kemas kini ranking</button> <button onclick="createAnalysisSpreadsheet()">Bina Spreadsheet Analisis</button><div id="analysisSpreadsheetLink" class="status"></div><div id="leaderboardPanel" class="tablewrap"></div>
+      <h2>6. Keputusan selepas tamat</h2><p class="muted">Markah diproses sekali apabila kuiz tamat. Sesi baharu: 3 jawapan betul terpantas setiap soalan mendapat bonus +3, +2 dan +1 mengikut urutan diterima server. Bonus +10 untuk semua jawapan betul, atau untuk markah tertinggi jika tiada yang betul semua. Purata masa meliputi soalan yang dijawab sahaja.</p><button class="secondary" onclick="refreshLeaderboard()">Kemas kini ranking</button> <button onclick="createAnalysisSpreadsheet()">Bina Spreadsheet Analisis</button><div id="analysisSpreadsheetLink" class="status"></div><div id="leaderboardPanel" class="tablewrap"></div>
     </div>
     <div id="teacherLiveCard" class="card hidden">
       <h2>7. Paparan projector — untuk pelajar</h2>

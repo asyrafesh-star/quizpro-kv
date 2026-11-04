@@ -7,6 +7,6 @@ function parseRosterRows(rows){
   if(!entries.length||entries.length>500)throw Error('Fail mesti mengandungi 1 hingga 500 pelajar.');return entries;
 }
 function podiumMarkup(list){
-  const top=(list||[]).slice(0,3);if(!top.length)return '<p class="muted">Belum ada peserta untuk podium.</p>';
-  return '<div class="podium" aria-label="Podium tiga pelajar tertinggi">'+[1,0,2].filter(i=>top[i]).map(i=>`<div class="podium-place podium-${i+1}"><span class="podium-medal">${['🥇','🥈','🥉'][i]}</span><strong>${esc(top[i].name)}</strong><span>${metricCount(top[i].points)} markah</span><div class="podium-step">${i+1}</div></div>`).join('')+'</div>';
+  const top=(list||[]).slice(0,5);if(!top.length)return '<p class="muted">Belum ada peserta untuk podium.</p>';
+  return '<div class="podium" aria-label="Podium lima pelajar tertinggi">'+[3,1,0,2,4].filter(i=>top[i]).map(i=>`<div class="podium-place podium-${i+1}"><span class="podium-medal">${(['🥇','🥈','🥉'][i]||'🏅')}</span><strong>${esc(top[i].name)}</strong><span>${metricCount(top[i].points)} markah</span><div class="podium-step">${i+1}</div></div>`).join('')+'</div>';
 }
