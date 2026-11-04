@@ -73,7 +73,7 @@ body .student-letter.correct,body .projector-choice.correct,body .teacher-choice
 .session-qr{background:white;color:#202124;border-radius:14px;padding:12px;text-align:center}.session-qr img,.session-qr small{display:block}.session-qr small{margin-top:6px}.session-qr img{width:min(320px,68vw);height:auto;aspect-ratio:1}#sessionControlsCard:fullscreen .session-qr img{width:min(62vh,72vw,640px)}
 body.apple-tv-mode .session-summary{background:#19243a}
 @media(max-width:530px){.session-summary{flex-wrap:wrap;gap:14px}}
-</style><style>#sessionPanel .session-summary{display:grid;justify-items:center;text-align:center;gap:16px}#sessionPanel .session-qr{max-width:100%;box-sizing:border-box}#sessionPanel .session-qr img{width:min(520px,72vw);max-width:100%;margin-inline:auto}#sessionControlsCard:fullscreen #sessionPanel .session-qr img{width:min(72vh,80vw,850px)}</style></head>
+</style></head>
 <body>
 <div class="wrap">
   <header class="brand">
@@ -751,5 +751,13 @@ body.apple-tv-mode #homeView .welcome-intro{color:#475569!important}body.apple-t
 </script>
 
 
-</body>
+<style id="centered-join-card">
+#sessionControlsCard #sessionPanel .session-summary{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;box-sizing:border-box;gap:14px;padding:clamp(16px,3vw,32px)}
+#sessionControlsCard #sessionPanel .session-summary>div:first-child{width:auto;max-width:100%;margin:0 auto}
+#sessionControlsCard #sessionPanel .session-code-label{margin:8px 0 0}
+#sessionControlsCard #sessionPanel .session-summary p:last-child{margin:8px 0 0}
+#sessionControlsCard #sessionPanel .session-qr{width:fit-content;max-width:100%;margin:0 auto;padding:12px;background:#fff;border-radius:14px;box-sizing:border-box}
+#sessionControlsCard #sessionPanel img#qr{display:block;width:min(520px,70vw);max-width:100%;height:auto;aspect-ratio:1;object-fit:contain;margin:0 auto}
+#sessionControlsCard:fullscreen #sessionPanel img#qr{width:min(70vh,80vw,850px)}
+</style></body>
 </html>
