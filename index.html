@@ -56,7 +56,7 @@
 <script src="metrics.js?v=top3average20261103"></script>
 <script src="race-render.js?v=20261028b"></script>
 <link rel="stylesheet" href="metrics.css?v=20261028b">
-<script src="answer-controls.js?v=countdownend20261102"></script>
+<script src="answer-controls.js?v=personalorder20261104"></script>
 <link rel="stylesheet" href="apple-theme.css?v=fullscreencontrast20261101">
 <script src="piano.js?v=20261028a"></script>
 <script src="classroom-core.js?v=20261029a"></script><link rel="stylesheet" href="classroom.css?v=20261029a">
@@ -99,7 +99,7 @@ body .student-letter.correct,body .projector-choice.correct,body .teacher-choice
   </section>
 
   <section id="projectorView" class="projector-page hidden">
-    <div class="projector-toolbar"><span class="pill">PAPARAN PROJECTOR</span><div><button id="soundToggle" class="secondary" onclick="toggleSuspenseMusic('projector')">Piano: OFF</button><button id="projectorPauseBtn" class="secondary hidden" onclick="togglePauseProjector()">Pause</button><button id="projectorNextBtn" class="secondary hidden" onclick="nextQuestionProjector()">Soalan seterusnya</button><button onclick="goToRoute('menu')">Menu utama</button></div></div>
+    <div class="projector-toolbar"><span class="pill">PAPARAN CIKGU</span><div><button id="soundToggle" class="secondary" onclick="toggleSuspenseMusic('projector')">Piano: OFF</button><button id="projectorPauseBtn" class="secondary hidden" onclick="togglePauseProjector()">Pause</button><button id="projectorNextBtn" class="secondary hidden" onclick="nextQuestionProjector()">Soalan seterusnya</button><button onclick="goToRoute('menu')">Menu utama</button></div></div>
     <div id="projectorContent" class="projector-screen"><div class="projector-empty">Memuatkan paparan kuiz…</div></div>
   </section>
 
@@ -166,7 +166,7 @@ body .student-letter.correct,body .projector-choice.correct,body .teacher-choice
     </div>
     <div class="card" id="attendanceCard"><h2>Kehadiran kuiz kelas</h2><p id="attendanceStatus" class="muted">Pilih kelas untuk melihat senarai.</p><div class="attendance-grid"><div><h3 id="presentHeading">Sudah masuk kuiz (0)</h3><div id="attendancePresent"></div></div><div><h3 id="absentHeading">Belum masuk (0)</h3><div id="attendanceAbsent"></div></div></div></div>
     <div class="card" id="sessionControlsCard"><h2>5. Sesi permainan</h2>
-      <div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
+      <label for="sessionOrderMode">Susunan soalan</label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
       <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
     <div class="card">
@@ -190,6 +190,7 @@ const params = new URLSearchParams(location.search);
 const INITIAL_ROUTE = params.get('view') || params.get('route') || params.get('mode') || 'menu';
 
 function showView(name) {
+  if (name === 'projector') name = 'home';
   ['home','student','player','projector','adminLogin','admin'].forEach(v => $(v+'View').classList.toggle('hidden', v !== name));
   document.body.classList.toggle('projector-mode', name === 'projector');
   document.body.classList.toggle('phone-minimal', name === 'player');
@@ -206,7 +207,7 @@ function goToRoute(route) { location.assign(routeUrl(route)); }
 function goToProjector() { goToRoute('projector'); }
 function applyInitialRoute() {
   if (params.get('join')) { $('joinCode').value = params.get('join'); showView('student'); return; }
-  if (INITIAL_ROUTE === 'projector') { showView('projector'); startProjectorPolling(); return; }
+  if (INITIAL_ROUTE === 'projector') { showView('home'); return; }
   if (INITIAL_ROUTE === 'admin') { showView('adminLogin'); return; }
   if (INITIAL_ROUTE === 'student') { showView('student'); return; }
   showView('home');
@@ -309,7 +310,7 @@ async function startSession() {
   try {
     if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.');
     await call('adminSaveSettings', pin, {quizTitle:$('quizTitle').value, defaultSeconds:$('defaultSeconds').value, defaultPoints:$('defaultPoints').value, revealSeconds:$('revealSeconds').value, nextMode:$('nextMode').value});
-    const res = await call('adminStartSession', pin, cloudClass); sessionCode = res.code; sessionStorage.setItem('quizproSessionCode', sessionCode);
+    const res = await call('adminStartSession', pin, cloudClass, $('sessionOrderMode').value); sessionCode = res.code; sessionStorage.setItem('quizproSessionCode', sessionCode);
     $('teacherLiveCard').classList.add('hidden');
     renderSession(res.status, routeUrl('student') + '&join=' + encodeURIComponent(res.code)); startAdminPolling(); await loadCloudDashboard(); notice('Sesi '+res.className+' sudah dibuat. Minta pelajar scan QR.');
   } catch(e) { notice(e.message, true); }
@@ -426,7 +427,7 @@ async function refreshTeacherLive() {
     const d = await call('adminLiveData', pin);
     if (typeof cloudData !== 'undefined' && cloudData && d.status === 'finished' && cloudData.activeStatus !== 'finished') { cloudData.activeStatus = 'finished'; loadCloudDashboard().catch(e => cloudStatus(e.message, true)); }
     if (d.code) sessionCode = String(d.code);
-    publishProjectorState(d);
+
     if(typeof featureTeacherSnapshot==='function')featureTeacherSnapshot(d);
     if (['finished','idle'].includes(d.status) && adminPoller) {clearInterval(adminPoller);adminPoller=null;}
     const q = d.question, symbols = { A:'▲', B:'◆', C:'●', D:'■' }, revealing = d.status === 'reveal', ready = d.status === 'ready';
@@ -554,7 +555,7 @@ async function pollPlayer() {
     if (state.status === 'waiting') $('playerContent').innerHTML = '<p class="big">Sila tunggu cikgu memulakan soalan.</p>';
     else if (state.status === 'ready') { $('playerContent').innerHTML = '<p class="big center">Soalan seterusnya sedang disediakan…</p>'; }
     else if ((state.status === 'question' || state.status === 'reveal') && state.question) renderPlayerQuestion(state.question, ps, state.status);
-    else if (state.status === 'leaderboard') { $('playerContent').innerHTML = '<p class="big">Sila tunggu soalan seterusnya.</p>'; } else if (state.status === 'finished') showPlayerFinished(requestedCode);
+    else if (state.status === 'personalDone') { $('playerContent').innerHTML='<p class="big">Selesai! Tunggu cikgu tamatkan sesi untuk lihat keputusan.</p>'; } else if (state.status === 'leaderboard') { $('playerContent').innerHTML = '<p class="big">Sila tunggu soalan seterusnya.</p>'; } else if (state.status === 'finished') showPlayerFinished(requestedCode);
   } catch(e) { /* transient polling error; next poll retries */ } finally {pollPlayerBusy=false;}
 }
 // Updated renderPlayerQuestion in answer-controls.js.
