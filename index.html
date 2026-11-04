@@ -64,7 +64,16 @@
 <style id="correct-answer-purple">
 body .student-letter.correct,body .projector-choice.correct,body .teacher-choice.correct{background:#7c3aed!important;color:#fff!important;border-color:#ddd6fe!important;outline-color:#7c3aed!important;box-shadow:0 0 0 4px #7c3aed33!important}
 </style>
-</head>
+<style>
+#sessionControlsCard .adminbar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+#sessionControlsCard select{max-width:360px}
+.session-summary{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(16px,4vw,28px);border:1px solid var(--line,#ddd);border-radius:20px;background:var(--surface,#f5f5f7)}
+.session-status{display:inline-block;background:#e7efff;color:#16447e;font-weight:700;border-radius:999px;padding:6px 12px}
+.session-code-label{margin:16px 0 2px}.session-code{font-size:clamp(32px,7vw,56px);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.session-qr{background:white;color:#202124;border-radius:14px;padding:12px;text-align:center}.session-qr img,.session-qr small{display:block}.session-qr small{margin-top:6px}
+body.apple-tv-mode .session-summary{background:#19243a}
+@media(max-width:530px){.session-summary{flex-wrap:wrap;gap:14px}}
+</style></head>
 <body>
 <div class="wrap">
   <header class="brand">
@@ -316,7 +325,12 @@ async function startSession() {
   } catch(e) { notice(e.message, true); }
 }
 function renderSession(status, url) {
-  $('sessionPanel').innerHTML = `<p>Status: <b>${esc(status)}</b></p><p>Kod permainan: <span class="big">${esc(sessionCode)}</span></p><p><a href="${esc(url)}">Buka halaman pelajar</a></p><div class="center"><img id="qr" alt="QR sesi kuiz" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}"><p class="muted">QR menggunakan servis pihak ketiga untuk menjana imej kod.</p></div>`;
+  const labels={waiting:'Menunggu pelajar',ready:'Sedia',question:'Sedang bermain',reveal:'Semakan jawapan',finished:'Sesi tamat',idle:'Tiada sesi'};
+  const active=!['finished','idle'].includes(status);
+  const panel=$('sessionPanel'),key=JSON.stringify([sessionCode,status,url]);
+  if(panel.dataset.sessionRender===key)return;
+  panel.dataset.sessionRender=key;
+  panel.innerHTML = `<div class="session-summary"><div><span class="session-status">${esc(labels[status]||status)}</span><p class="session-code-label">Kod permainan</p><strong class="session-code">${esc(sessionCode)}</strong>${active?`<p><a href="${esc(url)}">Buka halaman pelajar ↗</a></p>`:''}</div>${active?`<div class="session-qr"><img id="qr" width="144" height="144" alt="QR sesi kuiz" src="https://api.qrserver.com/v1/create-qr-code/?size=144x144&data=${encodeURIComponent(url)}"><small>Imbas untuk masuk</small></div>`:''}</div>`;
 }
 async function launchQuestion() {
   try {
@@ -428,6 +442,7 @@ async function refreshTeacherLive() {
     if (typeof cloudData !== 'undefined' && cloudData && d.status === 'finished' && cloudData.activeStatus !== 'finished') { cloudData.activeStatus = 'finished'; loadCloudDashboard().catch(e => cloudStatus(e.message, true)); }
     if (d.code) sessionCode = String(d.code);
 
+    if(sessionCode&&d.code===sessionCode)renderSession(d.status,routeUrl('student')+'&join='+encodeURIComponent(sessionCode));
     if(typeof featureTeacherSnapshot==='function')featureTeacherSnapshot(d);
     if (['finished','idle'].includes(d.status) && adminPoller) {clearInterval(adminPoller);adminPoller=null;}
     const q = d.question, symbols = { A:'▲', B:'◆', C:'●', D:'■' }, revealing = d.status === 'reveal', ready = d.status === 'ready';
@@ -541,6 +556,15 @@ function startPolling(){
   const cycle=async()=>{if(!playerId||generation!==playerPollGeneration)return;await pollPlayer();if(playerId&&generation===playerPollGeneration&&lastPlayerStatus!=='finished')poller=setTimeout(cycle,(document.hidden?6500:1800)+Math.random()*900);};cycle();
 }
 let pollPlayerBusy=false;
+let presenceKey='', presenceSentAt=0;
+function reportPlayerPresence(code,id,status){
+  if(!id||['idle','finished'].includes(status))return;
+  const key=code+':'+id+':'+document.hidden;
+  const now=Date.now();
+  if(key===presenceKey&&now-presenceSentAt<12000)return;
+  presenceKey=key;presenceSentAt=now;
+  legacyCall('playerPresence',code,id,!document.hidden).catch(()=>{});
+}
 async function pollPlayer() {
   if (!playerId || pollPlayerBusy) return;
   pollPlayerBusy=true;
@@ -548,6 +572,7 @@ async function pollPlayer() {
     const requestedPlayer=playerId,requestedCode=sessionCode;const snapshot=await call('playerSnapshot',sessionCode,playerId,!document.hidden);if(playerId!==requestedPlayer||sessionCode!==requestedCode)return;if(Number.isFinite(snapshot.serverNow))playerClockOffset=snapshot.serverNow-Date.now();let state=snapshot.state;const ps=snapshot.player;if(ps.valid&&ps.playerId){playerId=ps.playerId;savePlayerResume();}
     if (!state.valid || !ps.valid) { $('playerContent').textContent = 'Sesi tidak sah atau telah berubah.'; return; }
     if(state.status==='reveal'&&state.question){const key=`${requestedCode}:${state.question.no}`,correct=state.question.correct||playerRevealAnswers.get(key);if(correct)state=Object.assign({},state,{question:Object.assign({},state.question,{correct})});else fetchPlayerRevealAnswer(requestedCode,requestedPlayer,state.question.no);}
+    reportPlayerPresence(requestedCode,ps.playerId,state.status);
     $('appTitle').textContent = state.title || 'QuizPro KV';
     lastPlayerStatus=String(state.status); // No live scores or leaderboard on student phones.
 
