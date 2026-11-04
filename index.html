@@ -70,7 +70,7 @@ body .student-letter.correct,body .projector-choice.correct,body .teacher-choice
 .session-summary{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(16px,4vw,28px);border:1px solid var(--line,#ddd);border-radius:20px;background:var(--surface,#f5f5f7)}
 .session-status{display:inline-block;background:#e7efff;color:#16447e;font-weight:700;border-radius:999px;padding:6px 12px}
 .session-code-label{margin:16px 0 2px}.session-code{font-size:clamp(32px,7vw,56px);font-variant-numeric:tabular-nums;letter-spacing:.08em}
-.session-qr{background:white;color:#202124;border-radius:14px;padding:12px;text-align:center}.session-qr img,.session-qr small{display:block}.session-qr small{margin-top:6px}
+.session-qr{background:white;color:#202124;border-radius:14px;padding:12px;text-align:center}.session-qr img,.session-qr small{display:block}.session-qr small{margin-top:6px}.session-qr img{width:min(320px,68vw);height:auto;aspect-ratio:1}#sessionControlsCard:fullscreen .session-qr img{width:min(62vh,72vw,640px)}
 body.apple-tv-mode .session-summary{background:#19243a}
 @media(max-width:530px){.session-summary{flex-wrap:wrap;gap:14px}}
 </style></head>
@@ -330,7 +330,7 @@ function renderSession(status, url) {
   const panel=$('sessionPanel'),key=JSON.stringify([sessionCode,status,url]);
   if(panel.dataset.sessionRender===key)return;
   panel.dataset.sessionRender=key;
-  panel.innerHTML = `<div class="session-summary"><div><span class="session-status">${esc(labels[status]||status)}</span><p class="session-code-label">Kod permainan</p><strong class="session-code">${esc(sessionCode)}</strong>${active?`<p><a href="${esc(url)}">Buka halaman pelajar ↗</a></p>`:''}</div>${active?`<div class="session-qr"><img id="qr" width="144" height="144" alt="QR sesi kuiz" src="https://api.qrserver.com/v1/create-qr-code/?size=144x144&data=${encodeURIComponent(url)}"><small>Imbas untuk masuk</small></div>`:''}</div>`;
+  panel.innerHTML = `<div class="session-summary"><div><span class="session-status">${esc(labels[status]||status)}</span><p class="session-code-label">Kod permainan</p><strong class="session-code">${esc(sessionCode)}</strong>${active?`<p><a href="${esc(url)}">Buka halaman pelajar ↗</a></p>`:''}</div>${active?`<div class="session-qr"><img id="qr" width="320" height="320" alt="QR sesi kuiz" src="https://api.qrserver.com/v1/create-qr-code/?size=640x640&data=${encodeURIComponent(url)}"><small>Imbas untuk masuk</small></div>`:''}</div>`;
 }
 async function launchQuestion() {
   try {
