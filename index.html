@@ -138,7 +138,10 @@ body.apple-tv-mode .session-summary{background:#19243a}
   <p class="muted">Setiap sesi yang tamat menyumbang sekali kepada jumlah. Ulangan kuiz dalam sesi baharu turut dikira. Markah dua kelas diasingkan.</p>
   <div id="classRanking"><p class="muted">Pilih kelas untuk melihat markah.</p></div>
   <button class="cloud-action secondary" onclick="exportCloudClass()">Simpan laporan kelas ke Drive</button><div id="cloudExportResult"></div>
-  <details><summary>Senarai pelajar kelas</summary><div id="classRoster"></div></details>
+  <details><summary>Senarai pelajar kelas</summary><div id="classRoster"></div><div class="photo-controls"><button class="secondary" id="loadStudentPhotos" type="button">Gambar pelajar</button>
+ <form id="studentPhotoForm" hidden><label for="studentPhotoPerson">Nama pelajar</label><select id="studentPhotoPerson" required></select>
+ <label for="studentPhotoFile">Pilih gambar</label><input type="file" accept="image/*" id="studentPhotoFile" required>
+ <button type="submit">Simpan gambar</button></form><p id="studentPhotoStatus" role="status"></p></div></details>
   <div class="reset-panel"><h3>Urus sejarah & markah</h3><p class="muted">Padam sesi akan membuang sumbangannya daripada markah terkumpul. Reset kelas mengosongkan sejarah dan markah kelas tersebut. Tamatkan sesi aktif dahulu.</p><button class="danger reset-action" onclick="resetSelectedClass()">Reset sejarah & markah kelas dipilih</button><button class="danger reset-action" onclick="resetAllClasses()">Reset semua kelas</button><button id="restoreRecordsBtn" class="secondary reset-action" onclick="restoreLastRecords()" disabled>Pulihkan pemadaman terakhir</button><p id="resetStatus" class="muted" aria-live="polite"></p></div><h3>Sejarah kuiz</h3><div id="historyList"></div><div id="sessionHistoryDetail"></div><div id="legacyHistory"></div>
 </div>
 
@@ -759,5 +762,100 @@ body.apple-tv-mode #homeView .welcome-intro{color:#475569!important}body.apple-t
 #sessionControlsCard #sessionPanel .session-qr{width:fit-content;max-width:100%;margin:0 auto;padding:12px;background:#fff;border-radius:14px;box-sizing:border-box}
 #sessionControlsCard #sessionPanel img#qr{display:block;width:min(520px,70vw);max-width:100%;height:auto;aspect-ratio:1;object-fit:contain;margin:0 auto}
 #sessionControlsCard:fullscreen #sessionPanel img#qr{width:min(70vh,80vw,850px)}
-</style><style id="podium-step-order">.podium .podium-1 .podium-step{min-height:160px}.podium .podium-2 .podium-step{min-height:126px}.podium .podium-3 .podium-step{min-height:98px}.podium .podium-4 .podium-step{min-height:74px}.podium .podium-5 .podium-step{min-height:54px}@media(max-width:500px){.podium .podium-1 .podium-step{min-height:120px}.podium .podium-2 .podium-step{min-height:96px}.podium .podium-3 .podium-step{min-height:76px}.podium .podium-4 .podium-step{min-height:56px}.podium .podium-5 .podium-step{min-height:40px}}</style></body>
+</style><style id="podium-step-order">.podium .podium-1 .podium-step{min-height:160px}.podium .podium-2 .podium-step{min-height:126px}.podium .podium-3 .podium-step{min-height:98px}.podium .podium-4 .podium-step{min-height:74px}.podium .podium-5 .podium-step{min-height:54px}@media(max-width:500px){.podium .podium-1 .podium-step{min-height:120px}.podium .podium-2 .podium-step{min-height:96px}.podium .podium-3 .podium-step{min-height:76px}.podium .podium-4 .podium-step{min-height:56px}.podium .podium-5 .podium-step{min-height:40px}}</style><style>.photo-controls{margin-top:14px}.photo-controls form{margin-top:12px;max-width:420px}.photo-controls form[hidden]{display:none}.podium-avatar{display:grid;place-items:center;width:clamp(28px,7vw,64px);aspect-ratio:1;border-radius:50%;margin:0 auto;background:#ede9fe;color:#542ba4;font-weight:800;object-fit:cover}.podium-avatar img{width:100%;height:100%;border-radius:inherit;object-fit:cover}</style>
+ <script>
+ (() => {
+  let database, rosterClass='', currentPodium;
+  function openPhotos(){
+   if(!database)database=new Promise((resolve,reject)=>{
+    const request=indexedDB.open('quizpro-teacher-photos',1);
+    request.onupgradeneeded=()=>request.result.createObjectStore('photos');
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
+   }).catch(error=>{database=null;throw error;});
+   return database;
+  }
+  async function photoRecord(key,value){
+   const db=await openPhotos();
+   return new Promise((resolve,reject)=>{
+    const tx=db.transaction('photos',value===undefined?'readonly':'readwrite');
+    const store=tx.objectStore('photos');
+    const request=value===undefined?store.get(key):store.put(value,key);
+    tx.oncomplete=()=>resolve(request.result);
+    tx.onabort=tx.onerror=()=>reject(tx.error||request.error);
+   });
+  }
+  async function thumbnail(file){
+   if(!file.type.startsWith('image/')||file.size>20*1024*1024)throw Error('Pilih fail gambar sehingga 20 MB.');
+   const url=URL.createObjectURL(file);
+   try{
+    const image=new Image();image.src=url;await image.decode();
+    const side=Math.min(image.naturalWidth,image.naturalHeight);
+    if(!side)throw Error('Gambar tidak dapat dibaca.');
+    const canvas=document.createElement('canvas');canvas.width=canvas.height=128;
+    const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,128,128);
+    ctx.drawImage(image,(image.naturalWidth-side)/2,(image.naturalHeight-side)/2,side,side,0,0,128,128);
+    for(const quality of [.82,.68,.52,.35]){
+     const data=canvas.toDataURL('image/jpeg',quality);
+     if(data.startsWith('data:image/jpeg;base64,')&&data.split(',')[1].length<=26664)return data;
+    }
+    throw Error('Gambar tidak dapat dikecilkan. Cuba gambar lain.');
+   }finally{URL.revokeObjectURL(url);}
+  }
+  const form=$('studentPhotoForm'),status=$('studentPhotoStatus'),person=$('studentPhotoPerson'),file=$('studentPhotoFile'),load=$('loadStudentPhotos');
+  load.addEventListener('click',async()=>{
+   if(!cloudClass){status.textContent='Pilih kelas dahulu.';return;}
+   const selected=cloudClass;
+   load.disabled=true;form.hidden=true;status.textContent='Memuatkan senarai…';
+   try{
+    const result=await call('adminClassSummary',pin,selected);
+    if(selected!==cloudClass){status.textContent='Kelas berubah. Buka Gambar pelajar semula.';return;}
+    person.replaceChildren(...result.roster.filter(p=>p.photoKey).map(p=>new Option(p.name,p.photoKey)));
+    rosterClass=selected;form.hidden=!person.options.length;file.value='';
+    status.textContent=form.hidden?'Tiada pelajar tersedia.':'Gambar disimpan dalam browser ini.';
+   }catch(error){status.textContent='Gagal memuatkan senarai: '+error.message;}
+   finally{load.disabled=false;}
+  });
+  form.addEventListener('submit',async event=>{
+   event.preventDefault();
+   if(rosterClass!==cloudClass){form.hidden=true;status.textContent='Kelas berubah. Buka Gambar pelajar semula.';return;}
+   const key=person.value,selectedFile=file.files[0],button=form.querySelector('button');
+   if(!key||!selectedFile)return;
+   button.disabled=true;person.disabled=true;
+   try{
+    const data=await thumbnail(selectedFile);await photoRecord(key,data);
+    status.textContent='Gambar disimpan.';file.value='';
+    if(currentPodium?.ranks.some(p=>p.photoKey===key)){
+     currentPodium.photos.set(key,data);decorate(currentPodium);
+    }
+   }catch(error){status.textContent='Gambar gagal disimpan: '+error.message;}
+   finally{button.disabled=false;person.disabled=false;}
+  });
+  function decorate(entry){
+   if(entry!==currentPodium)return;
+   entry.ranks.forEach((player,index)=>{
+    const card=document.querySelector('#teacherPodium .podium-'+(index+1));
+    if(!card)return;
+    let avatar=card.querySelector('.podium-avatar');
+    if(!avatar){avatar=document.createElement('span');avatar.className='podium-avatar';avatar.setAttribute('aria-hidden','true');card.prepend(avatar);}
+    const data=entry.photos.get(player.photoKey);
+    if(data){
+     if(avatar.firstElementChild?.getAttribute('src')===data)return;
+     const img=document.createElement('img');img.alt='';img.src=data;img.decoding='async';avatar.replaceChildren(img);
+    }else avatar.textContent=player.name.trim().split(/\s+/).slice(0,2).map(word=>Array.from(word)[0]||'').join('').toUpperCase()||'•';
+   });
+  }
+  const original=featureTeacherSnapshot;
+  featureTeacherSnapshot=function(snapshot){
+   original(snapshot);
+   if(snapshot.status!=='finished'){currentPodium=null;return;}
+   const ranks=(snapshot.leaderboard||[]).slice(0,5),key=JSON.stringify([snapshot.code,ranks.map(p=>[p.playerId,p.photoKey])]);
+   if(currentPodium?.key===key){decorate(currentPodium);return;}
+   const entry={key,ranks,photos:new Map()};currentPodium=entry;decorate(entry);
+   ranks.filter(p=>p.photoKey).forEach(p=>photoRecord(p.photoKey).then(data=>{
+    if(data&&!entry.photos.has(p.photoKey))entry.photos.set(p.photoKey,data);decorate(entry);
+   }).catch(()=>{}));
+  };
+ })();
+ </script></body>
 </html>
