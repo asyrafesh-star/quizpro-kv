@@ -83,7 +83,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
   <div id="notice" class="hidden"></div>
 
   <section id="homeView" class="card">
-    <div class="welcome-eyebrow">BELAJAR. BERMAIN. BERJAYA.</div><h2>Setiap soalan,<br>satu langkah ke depan.</h2>
+    <div class="quiz-theme-controls"><button type="button" class="secondary quiz-theme-toggle" data-quiz-theme aria-pressed="false">⚡ Tema Gaming</button></div><div class="welcome-eyebrow">BELAJAR. BERMAIN. BERJAYA.</div><h2>Setiap soalan,<br>satu langkah ke depan.</h2>
     <p class="welcome-intro">Ruang kuiz untuk kelas anda. Sertai permainan dan lihat kemajuan bersama.</p>
     <button onclick="showView('student')">Saya pelajar — sertai kuiz</button>
     <button class="secondary" onclick="showView('adminLogin')">Panel cikgu</button>
@@ -91,7 +91,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
   </section>
 
   <section id="studentView" class="card hidden">
-    <h2>Sertai permainan</h2>
+    <h2>Sertai permainan</h2><div class="quiz-theme-controls"><button type="button" class="secondary quiz-theme-toggle" data-quiz-theme aria-pressed="false">⚡ Tema Gaming</button></div>
     <div class="grid">
       <div><label for="joinCode">Kod permainan</label><input id="joinCode" type="text" inputmode="numeric" maxlength="6" placeholder="Contoh: 123456"></div>
 <div><label for="studentId">Nombor Kad Pengenalan (12 digit)</label><input id="studentId" type="text" inputmode="numeric" autocomplete="off" maxlength="12" pattern="[0-9]{12}" placeholder="Contoh: 000000000000"></div>
@@ -104,7 +104,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
 
   <section id="playerView" class="card hidden">
     <div class="brand"><div><div class="pill" id="playerState">MENUNGGU</div><h2 id="playerHeading">Hai!</h2></div><div class="center"><div class="muted">Jumlah markah</div><div class="big" id="playerPoints">0</div><button id="playerMusicToggle" class="secondary" onclick="toggleSuspenseMusic('player')">Piano: ON selepas sertai</button></div></div>
-    <div id="playerAnswerStats" aria-live="polite"></div><div id="playerContent"><p>Cikgu akan memulakan soalan. Sila tunggu.</p></div>
+    <div class="quiz-theme-controls"><button type="button" class="secondary quiz-theme-toggle" data-quiz-theme aria-pressed="false">⚡ Tema Gaming</button></div><div id="playerAnswerStats" aria-live="polite"></div><div id="playerContent"><p>Cikgu akan memulakan soalan. Sila tunggu.</p></div>
   </section>
 
   <section id="projectorView" class="projector-page hidden">
@@ -857,5 +857,73 @@ body.apple-tv-mode #homeView .welcome-intro{color:#475569!important}body.apple-t
    }).catch(()=>{}));
   };
  })();
- </script></body>
+ </script><style id="gaming-theme">
+.quiz-theme-controls{display:flex;justify-content:flex-end;margin:0 0 12px}
+.quiz-theme-toggle{min-height:40px;padding:8px 13px!important;font-size:13px!important}
+body.quiz-gaming:has(#homeView:not(.hidden),#studentView:not(.hidden),#playerView:not(.hidden)){background:radial-gradient(ellipse at 65% 0,#37245f,transparent 52%),#0c0f24;color:#f7f3ff;--ink:#f7f3ff;--muted:#cdc3e8;--line:#7767a366;--surface:#171830}
+body.quiz-gaming :is(#homeView,#studentView,#playerView){background:linear-gradient(150deg,#222044,#15182f)!important;color:#f7f3ff;border:1px solid #a78bfa55;border-radius:24px;box-shadow:0 10px 28px #08071770}
+body.quiz-gaming :is(#homeView,#studentView,#playerView) :is(.muted,label,small,.welcome-intro){color:#d2c8ee}
+body.quiz-gaming #homeView .welcome-eyebrow{color:#edbcff}
+body.quiz-gaming :is(#homeView,#studentView) button:not(.secondary){background:linear-gradient(130deg,#6e37c5,#a3297c);color:#fff;border:1px solid #eebaff66}
+body.quiz-gaming :is(#homeView,#studentView,#playerView) button.secondary{background:#33264f;color:#fff;border:1px solid #b99cff66}
+body.quiz-gaming #studentView input{background:#10132b;color:#fff;border:1px solid #a78bfa70}
+body.quiz-gaming #studentView input::placeholder{color:#bcb0d5}
+body.quiz-gaming #playerView .phone-question-number{color:#f4d2ff}
+body.quiz-gaming #playerView .phone-question{color:#fff}
+body.quiz-gaming #playerView .student-letter{border-radius:20px!important;border-color:#ffffff70!important;box-shadow:inset 0 1px #ffffff35,0 5px 0 #09091c!important;transition:transform 120ms ease}
+body.quiz-gaming #playerView .student-letter.choice-A:not(.selected,.correct,.expired){background:linear-gradient(145deg,#cb204a,#991538)!important}
+body.quiz-gaming #playerView .student-letter.choice-B:not(.selected,.correct,.expired){background:linear-gradient(145deg,#2468d2,#173d99)!important}
+body.quiz-gaming #playerView .student-letter.choice-C:not(.selected,.correct,.expired){background:linear-gradient(145deg,#a66408,#754508)!important}
+body.quiz-gaming #playerView .student-letter.choice-D:not(.selected,.correct,.expired){background:linear-gradient(145deg,#167f58,#10523f)!important}
+body.quiz-gaming #playerView .student-letter.correct{background:#7c3aed!important;box-shadow:0 0 0 3px #e8c5ff,0 5px 0 #391065!important}
+body.quiz-gaming #playerView .student-letter:active:not(:disabled){transform:translateY(3px)}
+body.quiz-gaming #playerView .student-finish-card{background:linear-gradient(145deg,#36215d,#181a37);color:#fff;border:1px solid #b78afa80}
+body.quiz-gaming #playerView .student-finish-stats>div{background:#221a43;border:1px solid #b990f770}
+body.quiz-gaming :is(#homeView,#studentView,#playerView) button:focus-visible{outline:3px solid #f4cbff;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){body.quiz-gaming #playerView .student-letter{transition:none}body.quiz-gaming #playerView .student-letter:active{transform:none}}
+
+body.quiz-gaming #playerView .gaming-feedback{padding:12px 14px;border-radius:14px;border:1px solid #9772d9;background:#28204c;color:#f7efff;font-weight:700}
+body.quiz-gaming #playerView .gaming-feedback[data-effect="right"]{background:#44247c;border-color:#d7aaff}
+body.quiz-gaming #playerView .gaming-feedback[data-effect="wrong"]{background:#54243e;border-color:#f5a7c4}
+body.quiz-gaming #playerView .gaming-feedback[data-effect="right"]::before{content:"⚡ TEPAT!";display:block;color:#ffe49c;margin-bottom:4px}
+body.quiz-gaming #playerView .gaming-feedback[data-effect="wrong"]::before{content:"CUBA LAGI";display:block;color:#ffd0e5;margin-bottom:4px}
+body.quiz-gaming #playerView .gaming-feedback[data-effect="saved"]::before{content:"✓ JAWAPAN DIKUNCI";display:block;color:#c7ffe4;margin-bottom:4px}
+@media(prefers-reduced-motion:no-preference){body.quiz-gaming #playerView .gaming-feedback{animation:qp-feedback-pop .34s cubic-bezier(.2,.75,.35,1.15) both}}
+@keyframes qp-feedback-pop{from{opacity:.35;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+</style><script id="gaming-theme-switch">
+(() => {
+ const key='quizpro-student-theme';
+ const buttons=[...document.querySelectorAll('[data-quiz-theme]')];
+ let gaming=false;
+ try{gaming=localStorage.getItem(key)==='gaming';}catch(error){}
+ function apply(){
+  document.body.classList.toggle('quiz-gaming',gaming);
+  buttons.forEach(button=>{
+   button.setAttribute('aria-pressed',String(gaming));
+   button.textContent=gaming?'⚡ Gaming · Tukar ke Asal':'⚡ Tema Gaming';
+  });
+ }
+ buttons.forEach(button=>button.addEventListener('click',()=>{
+  gaming=!gaming;
+  try{localStorage.setItem(key,gaming?'gaming':'original');}catch(error){}
+  apply();
+ }));
+ apply();
+})();
+</script><script id="gaming-feedback-hook">
+(() => {
+ const original=setAnswerState;
+ setAnswerState=function(state,choice,message,correctChoice){
+  original.apply(this,arguments);
+  const feedback=$('answerFeedback');
+  if(!feedback)return;
+  const effect=state==='reveal'&&choice&&correctChoice
+   ? (choice===correctChoice?'right':'wrong')
+   : state==='selected'?'saved':'';
+  if(!effect){feedback.classList.remove('gaming-feedback');delete feedback.dataset.effect;return;}
+  feedback.dataset.effect=effect;
+  feedback.classList.add('gaming-feedback');
+ };
+})();
+</script></body>
 </html>
