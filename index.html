@@ -178,7 +178,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
     </div>
     <div class="card" id="attendanceCard"><h2>Kehadiran kuiz kelas</h2><p id="attendanceStatus" class="muted">Pilih kelas untuk melihat senarai.</p><div class="attendance-grid"><div><h3 id="presentHeading">Sudah masuk kuiz (0)</h3><div id="attendancePresent"></div></div><div><h3 id="absentHeading">Belum masuk (0)</h3><div id="attendanceAbsent"></div></div></div></div>
     <div class="card" id="sessionControlsCard"><h2>5. Sesi permainan</h2>
-      <label for="sessionOrderMode">Susunan soalan <small>· Pilih sebelum mula sesi baharu</small></label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
+      <label for="sessionGameplayMode">Mod permainan</label><select id="sessionGameplayMode"><option value="classic">Kuiz asal</option><option value="gaming">Gaming · 30 saat, cuba hingga betul</option></select><label for="sessionOrderMode">Susunan soalan <small>· Pilih sebelum mula sesi baharu</small></label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
       <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
     <div class="card">
@@ -322,13 +322,14 @@ async function startSession() {
   try {
     if (!pin) throw new Error('Sila log masuk sebagai cikgu dahulu.');
     await call('adminSaveSettings', pin, {quizTitle:$('quizTitle').value, defaultSeconds:$('defaultSeconds').value, defaultPoints:$('defaultPoints').value, revealSeconds:$('revealSeconds').value, nextMode:$('nextMode').value});
-    const res = await call('adminStartSession', pin, cloudClass, $('sessionOrderMode').value); sessionCode = res.code; sessionStorage.setItem('quizproSessionCode', sessionCode);
+    const res = await call('adminStartSession', pin, cloudClass, $('sessionOrderMode').value, $('sessionGameplayMode').value); sessionCode = res.code; if(cloudData)cloudData.activeGameplayMode=$('sessionGameplayMode').value; sessionStorage.setItem('quizproSessionCode', sessionCode);
     $('teacherLiveCard').classList.add('hidden');
     renderSession(res.status, routeUrl('student') + '&join=' + encodeURIComponent(res.code)); startAdminPolling(); await loadCloudDashboard(); notice('Sesi '+res.className+' sudah dibuat. Minta pelajar scan QR.');
   } catch(e) { notice(e.message, true); }
 }
 function renderSession(status, url) {
   const labels={waiting:'Menunggu pelajar',ready:'Sedia',question:'Sedang bermain',reveal:'Semakan jawapan',finished:'Sesi tamat',idle:'Tiada sesi'};
+  if(typeof cloudData!=='undefined'&&cloudData?.activeGameplayMode==='gaming')url=new URL('gaming.html?join='+encodeURIComponent(sessionCode),location.href).href;
   const active=!['finished','idle'].includes(status);
   const panel=$('sessionPanel'),key=JSON.stringify([sessionCode,status,url]);
   if(panel.dataset.sessionRender===key)return;

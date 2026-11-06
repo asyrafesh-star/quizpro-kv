@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ms"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QuizPro KV · Gaming</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#3b2365,transparent 55%),#0d1024;color:#f7f1ff;font:16px system-ui,sans-serif}main{max-width:760px;margin:auto;padding:24px 16px}a{color:#e4c4ff}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}small{color:#d0bde9}.panel{background:#201b3d;border:1px solid #8665ba70;border-radius:24px;padding:clamp(16px,4vw,32px)}h1,h2{line-height:1.2}button,input{font:inherit}button{cursor:pointer;border:1px solid #ba96e977;color:white;background:#6334a4;border-radius:12px;padding:12px;font-weight:700}button:disabled{opacity:.46;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #ffda88;outline-offset:3px}[hidden]{display:none!important}.hud,.powers{display:flex;flex-wrap:wrap;gap:8px}.hud span{background:#322553;border-radius:10px;padding:8px 12px}.powers button{background:#322553;font-size:14px}.powers button[aria-pressed=true]{background:#8950c3}.timer{margin:16px 0 6px;font-variant-numeric:tabular-nums;font-weight:800}progress{width:100%;height:12px;accent-color:#f4b4ff}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.answers button{text-align:left;min-height:68px;box-shadow:0 4px #100c25;overflow-wrap:anywhere}.answers button:nth-child(1){background:#a62955}.answers button:nth-child(2){background:#244eac}.answers button:nth-child(3){background:#805010}.answers button:nth-child(4){background:#146344}.answers button.correct{background:#773fd2;opacity:1;border-color:#edc3ff;box-shadow:0 0 0 2px #edc3ff}.feedback{padding:14px;background:#36245d;border-radius:14px;min-height:48px}.feedback:empty{display:none}.feedback strong{display:block;color:#ffdb88;margin-bottom:6px}.feedback p{margin:4px 0}.feedback.pop{animation:pop .3s ease-out both}@keyframes pop{from{transform:translateY(6px);opacity:.5}to{transform:none;opacity:1}}@media(max-width:520px){.answers{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){.feedback.pop{animation:none}}
+</style>
+<main><header><strong>⚡ QuizPro KV Gaming</strong><a href="./">Kuiz asal ↗</a></header>
+<section class="panel" id="intro"><small>GAMING · SET SOALAN CIKGU</small><h1>Cabaran Gaming</h1><p>Jawab semua dengan betul. Anda ada 30 saat setiap giliran. Soalan yang silap atau tamat masa akan kembali di hujung giliran.</p><p>Pilih masa terbaik untuk gunakan ×2, ×3, Beku 5 saat atau 50:50. Setiap satu boleh digunakan sekali. Streak bermula pada jawapan betul kedua berturut-turut.</p><label for="gamingJoin">Kod sesi Gaming</label><input id="gamingJoin" inputmode="numeric" maxlength="6"><button id="loadBank">Muatkan soalan</button><p id="bankStatus" role="status"></p><p id="best"></p><button id="start">Mula Gaming</button></section>
+<section class="panel" id="play" hidden><div class="hud"><span id="progress"></span><span id="score"></span><span id="streak"></span><span id="elapsed"></span></div><div class="timer" id="timer"></div><progress id="bar" max="30" value="30" aria-label="Baki masa soalan"></progress><h2 id="question"></h2><img id="gamingQuestionImage" alt="Rajah soalan" hidden style="display:block;max-width:100%;max-height:36vh;margin:12px auto;object-fit:contain"><div class="powers" id="powers"><button data-power="double">×2</button><button data-power="triple">×3</button><button data-power="freeze">❄ Beku 5s</button><button data-power="half">50:50</button></div><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div></section>
+<section class="panel" id="end" hidden><small>CABARAN SELESAI</small><h1>🏆 Semua soalan betul!</h1><p id="result"></p><p id="record"></p><button id="restart">Main semula</button></section></main>
+
+<script>window.QUIZPRO_CONFIG={apiUrl:"https://script.google.com/macros/s/AKfycbxthgZ2i4Hl4qRZ1w2Wy2br1d8goQ7HB9DaOeD4VGUdlwcf59RRAguV3I0tfw-rCZpYwQ/exec"};</script><script src="api.js?v=studentjoin20261101"></script><script>
+'use strict';
+let questions=[];let bankLoaded=false;const gameCode=new URLSearchParams(location.search).get('join')||'';
+const $=id=>document.getElementById(id);
+const bestKey='quizpro-gaming-best:'+gameCode;
+const bestTime=()=>{try{return Number(localStorage.getItem(bestKey))||0;}catch{return 0;}};
+const timeText=ms=>Math.floor(ms/60000)+':'+String(Math.floor(ms/1000)%60).padStart(2,'0')+'.'+Math.floor(ms%1000/100);
+const basePoints=(seconds,maximum=5)=>seconds>=30?0:seconds<=10?maximum:maximum===1?1:Math.max(1,maximum-Math.ceil((seconds-10)/(20/(maximum-1))-1e-10));
+const shuffled=list=>{const copy=list.slice();for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;};
+let game, ticker, nextTimer;
+function start(){
+ if(!bankLoaded||!questions.length)return;
+ clearInterval(ticker);clearTimeout(nextTimer);
+ game={queue:shuffled(questions),score:0,streak:0,correct:0,attempts:0,started:performance.now(),powers:{double:true,triple:true,freeze:true,half:true}};
+ $('intro').hidden=$('end').hidden=true;$('play').hidden=false;
+ next();ticker=setInterval(tick,100);
+}
+function next(){
+ if(!game.queue.length){finish();return;}
+ game.question=game.queue.shift();
+ game.options=shuffled(game.question.options.map((text,index)=>({text,index})));
+ game.opened=performance.now();game.freezeAt=0;game.multiplier=1;game.phase='answer';
+ $('question').textContent=game.question.question;
+ const image=$('gamingQuestionImage');image.hidden=true;image.removeAttribute('src');
+ if(game.question.image){try{const url=new URL(game.question.image);if(url.protocol==='https:'){const id=url.hostname==='drive.google.com'&&(url.searchParams.get('id')||url.pathname.match(/\/d\/([^/]+)/)?.[1]);image.src=id?'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w1000':url.href;image.hidden=false;}}catch{}}
+ $('feedback').replaceChildren();$('feedback').classList.remove('pop');
+ $('answers').replaceChildren(...game.options.map((option,index)=>{
+  const b=document.createElement('button');b.type='button';b.textContent='ABCD'[index]+'. '+option.text;
+  b.onclick=()=>answer(option.index);return b;
+ }));
+ updatePowers();tick();
+}
+function activeSeconds(now){return (now-game.opened-(game.freezeAt?Math.min(5000,Math.max(0,now-game.freezeAt)):0))/1000;}
+function tick(){
+ if(!game)return;
+ const now=performance.now();
+ $('elapsed').textContent='⏱ '+timeText(now-game.started);
+ $('progress').textContent=game.correct+'/'+questions.length+' betul';
+ $('score').textContent=game.score+' markah';
+ $('streak').textContent='🔥 '+game.streak+' berturut';
+ if(game.phase!=='answer')return;
+ const left=Math.max(0,30-activeSeconds(now));
+ $('timer').textContent=(game.freezeAt&&now-game.freezeAt<5000?'❄ ': '')+Math.ceil(left)+' saat';
+ $('bar').value=left;
+ if(left<=0)answer(-1);
+}
+function updatePowers(){
+ document.querySelectorAll('[data-power]').forEach(b=>{
+  const key=b.dataset.power,selected=(key==='double'&&game.multiplier===2)||(key==='triple'&&game.multiplier===3);
+  b.disabled=game.phase!=='answer'||!game.powers[key]||((key==='double'||key==='triple')&&game.multiplier!==1);
+  b.setAttribute('aria-pressed',String(selected));
+ });
+}
+function power(key){
+ if(!game||game.phase!=='answer'||!game.powers[key])return;
+ const now=performance.now();
+ if(activeSeconds(now)>=30){answer(-1);return;}
+ if((key==='double'||key==='triple')&&game.multiplier!==1)return;
+ game.powers[key]=false;
+ if(key==='double'||key==='triple')game.multiplier=key==='double'?2:3;
+ if(key==='freeze')game.freezeAt=now;
+ if(key==='half'){
+  const wrong=shuffled(game.options.map((o,i)=>o.index===game.question.correct?-1:i).filter(i=>i>=0));
+  wrong.slice(0,2).forEach(i=>{$('answers').children[i].disabled=true;});
+ }
+ updatePowers();tick();
+}
+function answer(index){
+ if(game.phase!=='answer')return;
+ const elapsed=activeSeconds(performance.now());
+ if(elapsed>=30)index=-1;
+ game.phase='feedback';game.attempts++;
+ for(const b of $('answers').children)b.disabled=true;
+ const correct=index===game.question.correct;
+ const title=document.createElement('strong'),message=document.createElement('p');
+ let delay;
+ if(correct){
+  game.correct++;game.streak++;
+  const base=basePoints(elapsed,game.question.points),streakBonus=game.streak>=2?game.streak:0,earned=base*game.multiplier+streakBonus;
+  game.score+=earned;
+  $('answers').children[game.options.findIndex(o=>o.index===index)].classList.add('correct');
+  title.textContent='⚡ TEPAT! +'+earned+' markah';
+  message.textContent=game.question.explanation;
+  delay=5000;
+  $('timer').textContent='Penerangan · 5 saat';
+ }else{
+  game.streak=0;game.queue.push(game.question);
+  title.textContent=index===-1?'⏳ Masa tamat':'↻ Cuba semula nanti';
+  message.textContent='Soalan ini akan muncul semula.';
+  delay=750;
+ }
+ $('feedback').replaceChildren(title,message);$('feedback').classList.add('pop');
+ updatePowers();tick();
+ if(correct&&!game.queue.length)game.finishedAt=performance.now();
+ nextTimer=setTimeout(next,delay);
+}
+function finish(){
+ clearInterval(ticker);
+ const duration=Math.round(game.finishedAt-game.started),previous=bestTime();
+ $('play').hidden=true;$('end').hidden=false;
+ $('result').textContent=game.score+' markah · '+timeText(duration)+' · '+game.attempts+' cubaan';
+ if(!previous||duration<previous){try{localStorage.setItem(bestKey,String(duration));}catch{}}
+ $('record').textContent='Masa terbaik pada browser ini: '+timeText(Math.min(previous||duration,duration));
+}
+document.querySelectorAll('[data-power]').forEach(b=>b.onclick=()=>power(b.dataset.power));
+$('start').onclick=start;$('restart').onclick=start;
+if(bestTime())$('best').textContent='Rekod masa browser ini: '+timeText(bestTime());
+
+$('start').disabled=true;$('gamingJoin').value=gameCode;
+$('loadBank').onclick=()=>{const entered=$('gamingJoin').value.trim();if(entered!==gameCode){location.href='gaming.html?join='+encodeURIComponent(entered);return;}loadBank();};
+async function loadBank(){
+ $('loadBank').disabled=true;$('bankStatus').textContent='Memuatkan set cikgu…';
+ try{const bank=await legacyCall('gamingQuestionBank',gameCode);
+ if(!Array.isArray(bank.questions)||!bank.questions.length)throw Error('Tiada soalan tersedia.');
+ if(bank.questions.some(q=>!Array.isArray(q.options)||q.options.length!==4||!Number.isInteger(q.correct)||q.correct<0||q.correct>3))throw Error('Set soalan tidak sah.');
+ questions=bank.questions;bankLoaded=true;$('start').disabled=false;$('bankStatus').textContent=bank.title+' · '+questions.length+' soalan';
+ }catch(e){$('bankStatus').textContent=e.message||'Gagal memuatkan soalan.';}
+ finally{$('loadBank').disabled=false;}
+}
+if(gameCode)loadBank();
+</script></html>
