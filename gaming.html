@@ -2,18 +2,35 @@
 <html lang="ms"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QuizPro KV · Gaming</title>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#3b2365,transparent 55%),#0d1024;color:#f7f1ff;font:16px system-ui,sans-serif}main{max-width:760px;margin:auto;padding:24px 16px}a{color:#e4c4ff}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}small{color:#d0bde9}.panel{background:#201b3d;border:1px solid #8665ba70;border-radius:24px;padding:clamp(16px,4vw,32px)}h1,h2{line-height:1.2}button,input{font:inherit}button{cursor:pointer;border:1px solid #ba96e977;color:white;background:#6334a4;border-radius:12px;padding:12px;font-weight:700}button:disabled{opacity:.46;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #ffda88;outline-offset:3px}[hidden]{display:none!important}.hud,.powers{display:flex;flex-wrap:wrap;gap:8px}.hud span{background:#322553;border-radius:10px;padding:8px 12px}.powers button{background:#322553;font-size:14px}.powers button[aria-pressed=true]{background:#8950c3}.timer{margin:16px 0 6px;font-variant-numeric:tabular-nums;font-weight:800}progress{width:100%;height:12px;accent-color:#f4b4ff}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.answers button{text-align:left;min-height:68px;box-shadow:0 4px #100c25;overflow-wrap:anywhere}.answers button:nth-child(1){background:#a62955}.answers button:nth-child(2){background:#244eac}.answers button:nth-child(3){background:#805010}.answers button:nth-child(4){background:#146344}.answers button.correct{background:#773fd2;opacity:1;border-color:#edc3ff;box-shadow:0 0 0 2px #edc3ff}.feedback{padding:14px;background:#36245d;border-radius:14px;min-height:48px}.feedback:empty{display:none}.feedback strong{display:block;color:#ffdb88;margin-bottom:6px}.feedback p{margin:4px 0}.feedback.pop{animation:pop .3s ease-out both}@keyframes pop{from{transform:translateY(6px);opacity:.5}to{transform:none;opacity:1}}@media(max-width:520px){.answers{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){.feedback.pop{animation:none}}
+
+.power-tray{margin-top:16px;padding:10px;background:#17132e;border:1px solid #8665ba70;border-radius:16px}
+.power-tray p{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;margin:0 2px 8px;font-size:13px;font-weight:800}
+.powers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.powers button{display:grid;justify-items:center;align-content:center;gap:3px;min-height:60px;padding:5px 2px;border-color:#b08bef;background:#482d75;font-size:clamp(11px,3.4vw,14px);white-space:nowrap}
+.powers button span{font-size:21px;line-height:1.1}
+.powers button[aria-pressed=true]{border-color:#ffda88;box-shadow:inset 0 0 0 1px #ffda88;opacity:1}
+.powers button[data-power=double]{--power-ink:#ffe287;--power-bg:#513618}
+.powers button[data-power=triple]{--power-ink:#f6b9ff;--power-bg:#55256b}
+.powers button[data-power=freeze]{--power-ink:#a6eeff;--power-bg:#18445e}
+.powers button[data-power=half]{--power-ink:#a0ffd5;--power-bg:#1b4b45}
+.powers button[data-power]{background:linear-gradient(150deg,var(--power-bg),#211631);border-color:var(--power-ink);color:var(--power-ink)}
+.power-word{font-size:clamp(14px,4vw,23px);font-weight:950;font-variant-numeric:tabular-nums;line-height:1.1;text-shadow:0 2px 0 #140e24}
+[data-power=freeze] .power-word{text-transform:uppercase;font-size:clamp(10px,2.6vw,15px);letter-spacing:.025em}
+.powers button[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--power-ink)}
 </style>
-<main><header><strong>⚡ QuizPro KV Gaming</strong><a href="./">Kuiz asal ↗</a></header>
-<section class="panel" id="intro"><small>GAMING · SET SOALAN CIKGU</small><h1>Cabaran Gaming</h1><p>Jawab semua dengan betul. Anda ada 30 saat setiap giliran. Soalan yang silap atau tamat masa akan kembali di hujung giliran.</p><p>Pilih masa terbaik untuk gunakan ×2, ×3, Beku 5 saat atau 50:50. Setiap satu boleh digunakan sekali. Streak bermula pada jawapan betul kedua berturut-turut.</p><label for="gamingJoin">Kod sesi Gaming</label><input id="gamingJoin" inputmode="numeric" maxlength="6"><button id="loadBank">Muatkan soalan</button><p id="bankStatus" role="status"></p><p id="best"></p><button id="start">Mula Gaming</button></section>
-<section class="panel" id="play" hidden><div class="hud"><span id="progress"></span><span id="score"></span><span id="streak"></span><span id="elapsed"></span></div><div class="timer" id="timer"></div><progress id="bar" max="30" value="30" aria-label="Baki masa soalan"></progress><h2 id="question"></h2><img id="gamingQuestionImage" alt="Rajah soalan" hidden style="display:block;max-width:100%;max-height:36vh;margin:12px auto;object-fit:contain"><div class="powers" id="powers"><button data-power="double">×2</button><button data-power="triple">×3</button><button data-power="freeze">❄ Beku 5s</button><button data-power="half">50:50</button></div><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div></section>
+<main><p id="testBanner" hidden><strong>🧪 SESI UJIAN</strong> · Rekod kelas tidak digunakan</p><header><strong>⚡ QuizPro KV Gaming</strong><a href="./">Kuiz asal ↗</a></header>
+<section class="panel" id="intro"><small>GAMING · SET SOALAN CIKGU</small><h1>Cabaran Gaming</h1><p>Jawab semua dengan betul. Anda ada 30 saat setiap giliran. Soalan yang silap atau tamat masa akan kembali di hujung giliran.</p><p>⚡ ×2 gandakan markah asas dan 🚀 ×3 tigakan markah asas jika jawapan betul. ❄️ Beku hentikan pemasa selama 5 saat. 🎯 50:50 nyahaktifkan dua pilihan salah. Setiap satu boleh digunakan sekali. Streak bermula pada jawapan betul kedua berturut-turut.</p><div id="testerSetup" hidden><label for="testerPin">PIN cikgu</label><input type="password" id="testerPin" autocomplete="current-password"><button type="button" id="testerList">Buka Bank Soalan</button><p><label for="testerSet">Set soalan</label> <select id="testerSet"></select></p><p><label for="testerMode">Mod</label> <select id="testerMode"><option value="gaming">Gaming</option><option value="classic">Kuiz asal · Pratonton</option></select></p><p><label for="testerOrder">Susunan</label> <select id="testerOrder"><option value="fixed">Tetap</option><option value="random">Rawak</option></select></p></div><label for="gamingJoin">Kod sesi Gaming</label><input id="gamingJoin" inputmode="numeric" maxlength="6"><button id="loadBank">Muatkan soalan</button><p id="bankStatus" role="status"></p><p id="best"></p><button id="start">Mula Gaming</button></section>
+<section class="panel" id="play" hidden><div class="hud"><span id="progress"></span><span id="score"></span><span id="streak"></span><span id="elapsed"></span></div><div class="power-tray"><p>🎮 Kuasa bantuan <small>Sekali setiap kuasa</small></p><div class="powers" id="powers" role="group" aria-label="Kuasa bantuan"><button type="button" data-power="double" title="Gandakan markah asas jika betul" aria-label="×2: Gandakan markah asas jika betul"><span aria-hidden="true">⚡</span><strong class="power-word">×2</strong></button><button type="button" data-power="triple" title="Tigakan markah asas jika betul" aria-label="×3: Tigakan markah asas jika betul"><span aria-hidden="true">🚀</span><strong class="power-word">×3</strong></button><button type="button" data-power="freeze" title="Bekukan pemasa 5 saat" aria-label="Beku 5s: Bekukan pemasa 5 saat"><span aria-hidden="true">❄️</span><strong class="power-word">Beku 5s</strong></button><button type="button" data-power="half" title="Nyahaktifkan dua pilihan salah" aria-label="50:50: Nyahaktifkan dua pilihan salah"><span aria-hidden="true">🎯</span><strong class="power-word">50:50</strong></button></div></div><div class="timer" id="timer"></div><progress id="bar" max="30" value="30" aria-label="Baki masa soalan"></progress><h2 id="question"></h2><img id="gamingQuestionImage" alt="Rajah soalan" hidden style="display:block;max-width:100%;max-height:36vh;margin:12px auto;object-fit:contain"><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div></section>
 <section class="panel" id="end" hidden><small>CABARAN SELESAI</small><h1>🏆 Semua soalan betul!</h1><p id="result"></p><p id="record"></p><button id="restart">Main semula</button></section></main>
 
 <script>window.QUIZPRO_CONFIG={apiUrl:"https://script.google.com/macros/s/AKfycbxthgZ2i4Hl4qRZ1w2Wy2br1d8goQ7HB9DaOeD4VGUdlwcf59RRAguV3I0tfw-rCZpYwQ/exec"};</script><script src="api.js?v=studentjoin20261101"></script><script>
 'use strict';
-let questions=[];let bankLoaded=false;const gameCode=new URLSearchParams(location.search).get('join')||'';
+let questions=[];let orderMode="random";let bankLoaded=false;const gameCode=new URLSearchParams(location.search).get('join')||'';
 const $=id=>document.getElementById(id);
+const tester=new URLSearchParams(location.search).get('view')==='tester';
+let classicTest=false;
 const bestKey='quizpro-gaming-best:'+gameCode;
-const bestTime=()=>{try{return Number(localStorage.getItem(bestKey))||0;}catch{return 0;}};
+const bestTime=()=>{if(tester)return 0;try{return Number(localStorage.getItem(bestKey))||0;}catch{return 0;}};
 const timeText=ms=>Math.floor(ms/60000)+':'+String(Math.floor(ms/1000)%60).padStart(2,'0')+'.'+Math.floor(ms%1000/100);
 const basePoints=(seconds,maximum=5)=>seconds>=30?0:seconds<=10?maximum:maximum===1?1:Math.max(1,maximum-Math.ceil((seconds-10)/(20/(maximum-1))-1e-10));
 const shuffled=list=>{const copy=list.slice();for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;};
@@ -21,7 +38,7 @@ let game, ticker, nextTimer;
 function start(){
  if(!bankLoaded||!questions.length)return;
  clearInterval(ticker);clearTimeout(nextTimer);
- game={queue:shuffled(questions),score:0,streak:0,correct:0,attempts:0,started:performance.now(),powers:{double:true,triple:true,freeze:true,half:true}};
+ game={queue:orderMode==="fixed"?questions.slice():shuffled(questions),score:0,streak:0,correct:0,attempts:0,started:performance.now(),powers:{double:true,triple:true,freeze:true,half:true}};
  $('intro').hidden=$('end').hidden=true;$('play').hidden=false;
  next();ticker=setInterval(tick,100);
 }
@@ -86,7 +103,7 @@ function answer(index){
  let delay;
  if(correct){
   game.correct++;game.streak++;
-  const base=basePoints(elapsed,game.question.points),streakBonus=game.streak>=2?game.streak:0,earned=base*game.multiplier+streakBonus;
+  const base=basePoints(elapsed,game.question.points),streakBonus=!classicTest&&game.streak>=2?game.streak:0,earned=base*game.multiplier+streakBonus;
   game.score+=earned;
   $('answers').children[game.options.findIndex(o=>o.index===index)].classList.add('correct');
   title.textContent='⚡ TEPAT! +'+earned+' markah';
@@ -94,14 +111,14 @@ function answer(index){
   delay=5000;
   $('timer').textContent='Penerangan · 5 saat';
  }else{
-  game.streak=0;game.queue.push(game.question);
+  game.streak=0;if(!classicTest)game.queue.push(game.question);
   title.textContent=index===-1?'⏳ Masa tamat':'↻ Cuba semula nanti';
-  message.textContent='Soalan ini akan muncul semula.';
+  message.textContent=classicTest?game.question.explanation:'Soalan ini akan muncul semula.';
   delay=750;
  }
  $('feedback').replaceChildren(title,message);$('feedback').classList.add('pop');
  updatePowers();tick();
- if(correct&&!game.queue.length)game.finishedAt=performance.now();
+ if(!game.queue.length)game.finishedAt=performance.now();
  nextTimer=setTimeout(next,delay);
 }
 function finish(){
@@ -109,7 +126,7 @@ function finish(){
  const duration=Math.round(game.finishedAt-game.started),previous=bestTime();
  $('play').hidden=true;$('end').hidden=false;
  $('result').textContent=game.score+' markah · '+timeText(duration)+' · '+game.attempts+' cubaan';
- if(!previous||duration<previous){try{localStorage.setItem(bestKey,String(duration));}catch{}}
+ if(!tester&&(!previous||duration<previous)){try{localStorage.setItem(bestKey,String(duration));}catch{}}
  $('record').textContent='Masa terbaik pada browser ini: '+timeText(Math.min(previous||duration,duration));
 }
 document.querySelectorAll('[data-power]').forEach(b=>b.onclick=()=>power(b.dataset.power));
@@ -121,11 +138,38 @@ $('loadBank').onclick=()=>{const entered=$('gamingJoin').value.trim();if(entered
 async function loadBank(){
  $('loadBank').disabled=true;$('bankStatus').textContent='Memuatkan set cikgu…';
  try{const bank=await legacyCall('gamingQuestionBank',gameCode);
+ acceptBank(bank);
+ }catch(e){bankStatus.textContent=e.message||'Gagal memuatkan soalan.';}
+ finally{loadBank.disabled=false;}
+}
+function acceptBank(bank){
  if(!Array.isArray(bank.questions)||!bank.questions.length)throw Error('Tiada soalan tersedia.');
  if(bank.questions.some(q=>!Array.isArray(q.options)||q.options.length!==4||!Number.isInteger(q.correct)||q.correct<0||q.correct>3))throw Error('Set soalan tidak sah.');
- questions=bank.questions;bankLoaded=true;$('start').disabled=false;$('bankStatus').textContent=bank.title+' · '+questions.length+' soalan';
- }catch(e){$('bankStatus').textContent=e.message||'Gagal memuatkan soalan.';}
- finally{$('loadBank').disabled=false;}
+ questions=bank.questions;orderMode=bank.orderMode==="fixed"?"fixed":"random";bankLoaded=true;$('start').disabled=false;$('bankStatus').textContent=bank.title+' · '+questions.length+' soalan';
 }
-if(gameCode)loadBank();
+if(tester){
+ $('testBanner').hidden=$('testerSetup').hidden=false;
+ $('gamingJoin').hidden=document.querySelector('label[for="gamingJoin"]').hidden=true;
+ $('testerList').onclick=async()=>{
+  $('testerList').disabled=true;
+  try{
+   const sets=await legacyCall('adminTesterBank',$('testerPin').value);
+   $('testerSet').replaceChildren(...sets.map(set=>new Option(set.title+' · '+set.count+' soalan',set.id)));
+   $('bankStatus').textContent=sets.length?'Pilih set, mod dan susunan.':'Simpan set dalam Bank Soalan dahulu.';
+  }catch(e){$('bankStatus').textContent=e.message;}
+  finally{$('testerList').disabled=false;}
+ };
+ $('loadBank').onclick=async()=>{
+  $('start').disabled=true;bankLoaded=false;
+  if(!$('testerSet').value){$('bankStatus').textContent='Buka Bank Soalan dan pilih set dahulu.';return;}
+  $('loadBank').disabled=true;
+  try{
+   const bank=await legacyCall('adminTesterBank',$('testerPin').value,$('testerSet').value);
+   classicTest=$('testerMode').value==='classic';
+   document.querySelector('.power-tray').hidden=classicTest;
+   acceptBank({...bank,orderMode:$('testerOrder').value});
+  }catch(e){$('bankStatus').textContent=e.message;}
+  finally{$('loadBank').disabled=false;}
+ };
+}else if(gameCode)loadBank();
 </script></html>
