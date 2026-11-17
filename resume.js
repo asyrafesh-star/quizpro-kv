@@ -17,6 +17,7 @@ function offerPlayerResume(){
 async function resumeSavedPlayer(){
   if(resumeBusy)return;const saved=storedPlayerResume();if(!saved)return;resumeBusy=true;const button=$('continueGame'),status=$('resumeStatus');if(button)button.disabled=true;if(status)status.textContent='Menyambung ke sesi tersimpan…';
   try{
+    if(saved.gameplayMode==='gaming'){location.href='gaming.html?join='+encodeURIComponent(saved.code);return;}
     // A tap also permits piano playback under browser audio rules.
     
     const ps=await call('playerStatus',saved.code,saved.playerId);

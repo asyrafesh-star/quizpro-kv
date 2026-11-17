@@ -51,178 +51,27 @@
 .answers button.selected{outline:3px solid #fff;outline-offset:1px}
 #question{font-size:clamp(18px,4.8vw,25px)}
 @media(max-width:520px){main{padding:16px 10px}.panel{padding:12px}.hud{gap:5px}.hud span{font-size:12px;padding:6px 8px}.race-sky{font-size:10px}}
+
+input,select{width:100%;padding:12px;margin:6px 0 14px;border-radius:12px;border:1px solid #77639c;background:#15132c;color:#fff;font:inherit}
+label{display:block;font-size:13px;color:#decbf7;margin-top:10px}
+#studentName[readonly]{color:#e5d2ff}
+#raceShare{padding:12px;background:#33254f;border-radius:12px;margin:10px 0;overflow-wrap:anywhere}
+#sound{font-size:11px;padding:8px;margin-left:auto;margin-right:8px}
+.race-competitors{padding:12px;background:#19172d;border-radius:12px;margin:12px 0}
+.race-competitors summary{cursor:pointer;font-size:13px}.rival-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:12px}.rival-row strong{white-space:nowrap}
+#connection{font-size:10px}.podium{display:flex;align-items:flex-end;gap:6px;margin:30px 0 12px;justify-content:center}
+.podium-place{display:flex;flex:1;min-width:0;max-width:130px;flex-direction:column;align-items:center;text-align:center;gap:7px}
+.podium-place strong{font-size:10px;overflow-wrap:anywhere;line-height:1.3;min-height:52px}.podium-place small{font-size:11px}.podium-medal{font-size:30px}
+.podium-step{width:100%;padding:16px 4px;font-size:24px;font-weight:900;border-radius:12px 12px 0 0;background:linear-gradient(#72529e,#302044);border:1px solid #b29ac6}
+.place-1 .podium-step{height:160px;background:linear-gradient(#c0933c,#604a28);border-color:#ffe094}.place-2 .podium-step{height:130px}.place-3 .podium-step{height:105px}.place-4 .podium-step{height:80px}.place-5 .podium-step{height:65px}
+#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+#confetti i{position:absolute;width:9px;height:15px;top:-25px;animation:confetti-fall 2.8s ease-in both}
+@keyframes confetti-fall{to{transform:translateY(110vh) rotate(650deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){#confetti{display:none}}
 </style>
-<main><p id="testBanner" hidden><strong>🧪 SESI UJIAN</strong> · Rekod kelas tidak digunakan</p><header><strong>⚡ QuizPro KV Gaming</strong><a href="./">Kuiz asal ↗</a></header>
-<section class="panel" id="intro"><small>GAMING · SET SOALAN CIKGU</small><h1>🏁 Larian QuizPro</h1><p>Jawab betul untuk mara ke garisan penamat. Pilih lorong A, B atau C untuk menjawab. Setiap soalan ada 3 pilihan. Jawapan salah atau masa tamat membekukan pelari 5 saat. Soalan itu kembali kemudian.</p><div id="testerSetup" hidden><label for="testerPin">PIN cikgu</label><input type="password" id="testerPin" autocomplete="current-password"><button type="button" id="testerList">Buka Bank Soalan</button><p><label for="testerSet">Set soalan</label> <select id="testerSet"></select></p><p><label for="testerMode">Mod</label> <select id="testerMode"><option value="gaming">Gaming</option><option value="classic">Kuiz asal · Pratonton</option></select></p><p><label for="testerOrder">Susunan</label> <select id="testerOrder"><option value="fixed">Tetap</option><option value="random">Rawak</option></select></p></div><label for="gamingJoin">Kod sesi Gaming</label><input id="gamingJoin" inputmode="numeric" maxlength="6"><button id="loadBank">Muatkan soalan</button><p id="bankStatus" role="status"></p><p id="best"></p><button id="start">Mula Gaming</button></section>
-<section class="panel" id="play" hidden><div class="hud"><span id="progress"></span><span id="score"></span><span id="streak"></span><span id="elapsed"></span></div><section class="race-scene" aria-label="Trek perlumbaan"><div class="race-sky">LARIAN QUIZPRO <span>🏁 PENAMAT</span></div><div id="race3d" class="race3d" role="img" aria-label="Pelari 3D di trek tiga lorong"></div><p id="renderStatus" class="render-status" role="status">Memuatkan trek 3D…</p><div class="race-track"><div id="runner" class="runner"><span class="runner-head"></span><span class="runner-body"></span><span class="runner-arm"></span><span class="runner-leg leg-one"></span><span class="runner-leg leg-two"></span></div><div class="finish-line"></div></div><div class="lane-key" aria-hidden="true"><span>A · KIRI</span><span>B · TENGAH</span><span>C · KANAN</span></div><p id="raceDistance" role="status"></p></section><div class="power-tray" hidden><p>🎮 Kuasa bantuan <small>Sekali setiap kuasa</small></p><div class="powers" id="powers" role="group" aria-label="Kuasa bantuan"><button type="button" data-power="double" title="Gandakan markah asas jika betul" aria-label="×2: Gandakan markah asas jika betul"><span aria-hidden="true">⚡</span><strong class="power-word">×2</strong></button><button type="button" data-power="triple" title="Tigakan markah asas jika betul" aria-label="×3: Tigakan markah asas jika betul"><span aria-hidden="true">🚀</span><strong class="power-word">×3</strong></button><button type="button" data-power="freeze" title="Bekukan pemasa 5 saat" aria-label="Beku 5s: Bekukan pemasa 5 saat"><span aria-hidden="true">❄️</span><strong class="power-word">Beku 5s</strong></button><button type="button" data-power="half" title="Nyahaktifkan dua pilihan salah" aria-label="50:50: Nyahaktifkan dua pilihan salah"><span aria-hidden="true">🎯</span><strong class="power-word">50:50</strong></button></div></div><div class="timer" id="timer"></div><progress id="bar" max="30" value="30" aria-label="Baki masa soalan"></progress><h2 id="question"></h2><img id="gamingQuestionImage" alt="Rajah soalan" hidden style="display:block;max-width:100%;max-height:36vh;margin:12px auto;object-fit:contain"><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div></section>
-<section class="panel" id="end" hidden><small>CABARAN SELESAI</small><h1>🏆 Semua soalan betul!</h1><p id="result"></p><p id="record"></p><button id="restart">Main semula</button></section></main>
+<main><p id="testBanner" hidden><strong>🧪 SESI UJIAN</strong> · Rekod kelas tidak digunakan</p><header><strong>⚡ QuizPro KV Gaming</strong><button id="sound" type="button" aria-pressed="false">🔈 Bunyi OFF</button><a href="./">Kuiz asal ↗</a></header>
+<section class="panel" id="intro"><small>GAMING · SET SOALAN CIKGU</small><h1>🏁 Larian QuizPro</h1><p>Jawab betul untuk mara ke garisan penamat. Pilih lorong A, B atau C untuk menjawab. Setiap soalan ada 3 pilihan. Jawapan salah atau masa tamat membekukan pelari 5 saat. Soalan itu kembali kemudian.</p><div id="testerSetup" hidden><label for="testerPin">PIN cikgu</label><input type="password" id="testerPin" autocomplete="current-password"><button type="button" id="testerList">Buka Bank Soalan</button><p><label for="testerSet">Set soalan</label> <select id="testerSet"></select></p><p><label for="testerMode">Mod</label> <select id="testerMode"><option value="gaming">Gaming</option><option value="classic">Kuiz asal · Pratonton</option></select></p><p><label for="testerOrder">Susunan</label> <select id="testerOrder"><option value="fixed">Tetap</option><option value="random">Rawak</option></select></p></div><label for="gamingJoin">Kod sesi Gaming</label><input id="gamingJoin" inputmode="numeric" maxlength="32"><div id="studentIdentity"><label for="studentIC">Kad pengenalan</label><input id="studentIC" inputmode="numeric" maxlength="14" autocomplete="off"><label for="studentName">Nama pelajar</label><input id="studentName" readonly placeholder="Nama disahkan daripada senarai kelas selepas sambung"></div><div id="testIdentity" hidden><label for="testName">Nama penguji</label><input id="testName" maxlength="80" autocomplete="off"></div><div id="watchSetup" hidden><label for="watchPin">PIN cikgu</label><input id="watchPin" type="password"><button id="watchConnect">Buka pemantauan</button></div><button id="loadBank">Muatkan soalan</button><p id="bankStatus" role="status"></p><div id="raceShare" hidden><p>Kod ujian <strong id="shareCode"></strong></p><a id="raceLink"></a></div><p id="best"></p><button id="start">Mula Gaming</button></section>
+<section class="panel" id="play" hidden><div class="hud"><span id="progress"></span><span id="score"></span><span id="streak"></span><span id="elapsed"></span><span id="raceRank"></span><span id="connection" role="status"></span></div><section class="race-scene" aria-label="Trek perlumbaan"><div class="race-sky">LARIAN QUIZPRO <span>🏁 PENAMAT</span></div><div id="race3d" class="race3d" role="img" aria-label="Pelari 3D di trek tiga lorong"></div><p id="renderStatus" class="render-status" role="status">Memuatkan trek 3D…</p><div class="race-track"><div id="runner" class="runner"><span class="runner-head"></span><span class="runner-body"></span><span class="runner-arm"></span><span class="runner-leg leg-one"></span><span class="runner-leg leg-two"></span></div><div class="finish-line"></div></div><div class="lane-key" aria-hidden="true"><span>A · KIRI</span><span>B · TENGAH</span><span>C · KANAN</span></div><p id="raceDistance" role="status"></p></section><details class="race-competitors"><summary>🏃 Pelari teratas</summary><div id="rivalList"></div></details><div class="power-tray" hidden><p>🎮 Kuasa bantuan <small>Sekali setiap kuasa</small></p><div class="powers" id="powers" role="group" aria-label="Kuasa bantuan"><button type="button" data-power="double" title="Gandakan markah asas jika betul" aria-label="×2: Gandakan markah asas jika betul"><span aria-hidden="true">⚡</span><strong class="power-word">×2</strong></button><button type="button" data-power="triple" title="Tigakan markah asas jika betul" aria-label="×3: Tigakan markah asas jika betul"><span aria-hidden="true">🚀</span><strong class="power-word">×3</strong></button><button type="button" data-power="freeze" title="Bekukan pemasa 5 saat" aria-label="Beku 5s: Bekukan pemasa 5 saat"><span aria-hidden="true">❄️</span><strong class="power-word">Beku 5s</strong></button><button type="button" data-power="half" title="Nyahaktifkan dua pilihan salah" aria-label="50:50: Nyahaktifkan dua pilihan salah"><span aria-hidden="true">🎯</span><strong class="power-word">50:50</strong></button></div></div><div class="timer" id="timer"></div><progress id="bar" max="30" value="30" aria-label="Baki masa soalan"></progress><h2 id="question"></h2><img id="gamingQuestionImage" alt="Rajah soalan" hidden style="display:block;max-width:100%;max-height:36vh;margin:12px auto;object-fit:contain"><div class="answers" id="answers"></div><button id="retryAnswer" hidden>Cuba hantar semula</button><div class="feedback" id="feedback" role="status" aria-live="polite"></div></section>
+<section class="panel" id="end" hidden><small>CABARAN SELESAI</small><h1 id="finishHeading">🏆 Semua soalan betul!</h1><p id="result"></p><p id="record"></p><div id="podium" class="podium" aria-label="Top 5 penamat"></div><p id="podiumStatus" class="muted"></p><button id="restart">Main semula</button></section><section id="watchView" class="panel" hidden><h1>🏁 Perlumbaan kelas</h1><p id="watchStatus"></p><button id="watchStart">Mula perlumbaan</button><div id="watchRanking"></div></section><div id="confetti" aria-hidden="true"></div></main>
 
-<script>window.QUIZPRO_CONFIG={apiUrl:"https://script.google.com/macros/s/AKfycbxthgZ2i4Hl4qRZ1w2Wy2br1d8goQ7HB9DaOeD4VGUdlwcf59RRAguV3I0tfw-rCZpYwQ/exec"};</script><script src="api.js?v=studentjoin20261101"></script><script>
-'use strict';
-let questions=[];let orderMode="random";let bankLoaded=false;const gameCode=new URLSearchParams(location.search).get('join')||'';
-const $=id=>document.getElementById(id);
-const tester=new URLSearchParams(location.search).get('view')==='tester';
-let classicTest=false;
-const bestKey='quizpro-gaming-best:'+gameCode;
-const bestTime=()=>{if(tester)return 0;try{return Number(localStorage.getItem(bestKey))||0;}catch{return 0;}};
-const timeText=ms=>Math.floor(ms/60000)+':'+String(Math.floor(ms/1000)%60).padStart(2,'0')+'.'+Math.floor(ms%1000/100);
-const basePoints=(seconds,maximum=5)=>seconds>=30?0:seconds<=10?maximum:maximum===1?1:Math.max(1,maximum-Math.ceil((seconds-10)/(20/(maximum-1))-1e-10));
-const shuffled=list=>{const copy=list.slice();for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;};
-let game, ticker, nextTimer;
-function start(){
- if(!bankLoaded||!questions.length)return;
- clearInterval(ticker);clearTimeout(nextTimer);
- game={queue:orderMode==="fixed"?questions.slice():shuffled(questions),score:0,streak:0,correct:0,attempts:0,started:performance.now(),lane:1,powers:{double:true,triple:true,freeze:true,half:true}};
- $('intro').hidden=$('end').hidden=true;$('play').hidden=false;
- next();ticker=setInterval(tick,100);
-}
-function next(){
- if(!game.queue.length){finish();return;}
- game.question=game.queue.shift();
- const options=game.question.options.map((text,index)=>({text,index}));
- const wrong=shuffled(options.filter(option=>option.index!==game.question.correct)).slice(0,2);
- game.options=classicTest?shuffled(options):shuffled([options[game.question.correct],...wrong]);
- game.opened=performance.now();game.freezeAt=0;game.multiplier=1;game.phase='answer';
- $('runner').classList.remove('frozen','finished');
- $('question').textContent=game.question.question;
- const image=$('gamingQuestionImage');image.hidden=true;image.removeAttribute('src');
- if(game.question.image){try{const url=new URL(game.question.image);if(url.protocol==='https:'){const id=url.hostname==='drive.google.com'&&(url.searchParams.get('id')||url.pathname.match(/\/d\/([^/]+)/)?.[1]);image.src=id?'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w1000':url.href;image.hidden=false;}}catch{}}
- $('feedback').replaceChildren();$('feedback').classList.remove('pop');
- $('answers').replaceChildren(...game.options.map((option,index)=>{
-  const b=document.createElement('button');b.type='button';
-  const label=document.createElement('strong');label.className='lane-letter';label.textContent='ABCD'[index];
-  const text=document.createElement('span');text.textContent=option.text;b.append(label,text);
-  b.onclick=()=>answer(option.index);return b;
- }));
- updatePowers();tick();
-}
-function activeSeconds(now){return (now-game.opened-(game.freezeAt?Math.min(5000,Math.max(0,now-game.freezeAt)):0))/1000;}
-function tick(){
- if(!game)return;
- const now=performance.now();
- const scene=$('race3d');scene.dataset.phase=game.phase;scene.dataset.lane=String(game.lane);scene.dataset.progress=String(game.correct/questions.length);
- $('elapsed').textContent='⏱ '+timeText(now-game.started);
- $('progress').textContent=game.correct+'/'+questions.length+' betul';
- $('score').textContent=game.score+' markah';
- $('streak').textContent='🔥 '+game.streak+' berturut';
- $('runner').style.left=(game.correct/questions.length*100)+'%';
- $('raceDistance').textContent=game.correct+'/'+questions.length+' halangan dilepasi';
- if(game.phase==='penalty'){
-  const remaining=Math.max(0,game.penaltyEnds-now);
-  $('timer').textContent='❄️ Penalti · '+Math.ceil(remaining/1000)+' saat';
-  $('bar').value=0;
-  return;
- }
- if(game.phase!=='answer')return;
- const left=Math.max(0,30-activeSeconds(now));
- $('timer').textContent=(game.freezeAt&&now-game.freezeAt<5000?'❄ ': '')+Math.ceil(left)+' saat';
- $('bar').value=left;
- if(left<=0)answer(-1);
-}
-function updatePowers(){
- document.querySelectorAll('[data-power]').forEach(b=>{
-  const key=b.dataset.power,selected=(key==='double'&&game.multiplier===2)||(key==='triple'&&game.multiplier===3);
-  b.disabled=game.phase!=='answer'||!game.powers[key]||((key==='double'||key==='triple')&&game.multiplier!==1);
-  b.setAttribute('aria-pressed',String(selected));
- });
-}
-function power(key){
- if(!game||game.phase!=='answer'||!game.powers[key])return;
- const now=performance.now();
- if(activeSeconds(now)>=30){answer(-1);return;}
- if((key==='double'||key==='triple')&&game.multiplier!==1)return;
- game.powers[key]=false;
- if(key==='double'||key==='triple')game.multiplier=key==='double'?2:3;
- if(key==='freeze')game.freezeAt=now;
- if(key==='half'){
-  const wrong=shuffled(game.options.map((o,i)=>o.index===game.question.correct?-1:i).filter(i=>i>=0));
-  wrong.slice(0,2).forEach(i=>{$('answers').children[i].disabled=true;});
- }
- updatePowers();tick();
-}
-function answer(index){
- if(game.phase!=='answer')return;
- const elapsed=activeSeconds(performance.now());
- if(elapsed>=30)index=-1;
- game.phase='feedback';game.attempts++;
- $('bar').value=0;
- for(const b of $('answers').children)b.disabled=true;
- const selected=game.options.findIndex(option=>option.index===index);
- if(selected>=0){game.lane=selected;$('answers').children[selected].classList.add('selected');}
- const correct=index===game.question.correct;
- const title=document.createElement('strong'),message=document.createElement('p');
- let delay;
- if(correct){
-  game.correct++;game.streak++;
-  const base=basePoints(elapsed,game.question.points),streakBonus=!classicTest&&game.streak>=2?game.streak:0,earned=base*game.multiplier+streakBonus;
-  game.score+=earned;
-  $('answers').children[game.options.findIndex(o=>o.index===index)].classList.add('correct');
-  title.textContent='⚡ TEPAT! +'+earned+' markah';
-  message.textContent=game.question.explanation;
-  delay=5000;
-  $('timer').textContent='Penerangan · 5 saat';
- }else{
-  game.streak=0;if(!classicTest)game.queue.push(game.question);
-  title.textContent=index===-1?'⏳ Masa tamat':'↻ Cuba semula nanti';
-  message.textContent=classicTest?game.question.explanation:'Soalan ini akan muncul semula.';
-  delay=classicTest?750:5000;
-  if(!classicTest){game.phase='penalty';game.penaltyEnds=performance.now()+5000;$('runner').classList.add('frozen');}
- }
- $('feedback').replaceChildren(title,message);$('feedback').classList.add('pop');
- updatePowers();tick();
- if(!game.queue.length)game.finishedAt=performance.now();
- nextTimer=setTimeout(next,delay);
-}
-function finish(){
- clearInterval(ticker);
- game.phase='finished';$('runner').classList.add('finished');
- const duration=Math.round(game.finishedAt-game.started),previous=bestTime();
- $('play').hidden=true;$('end').hidden=false;
- $('result').textContent=game.score+' markah · '+timeText(duration)+' · '+game.attempts+' cubaan';
- if(!tester&&(!previous||duration<previous)){try{localStorage.setItem(bestKey,String(duration));}catch{}}
- $('record').textContent='Masa terbaik pada browser ini: '+timeText(Math.min(previous||duration,duration));
-}
-document.querySelectorAll('[data-power]').forEach(b=>b.onclick=()=>power(b.dataset.power));
-$('start').onclick=start;$('restart').onclick=start;
-if(bestTime())$('best').textContent='Rekod masa browser ini: '+timeText(bestTime());
-
-$('start').disabled=true;$('gamingJoin').value=gameCode;
-$('loadBank').onclick=()=>{const entered=$('gamingJoin').value.trim();if(entered!==gameCode){location.href='gaming.html?join='+encodeURIComponent(entered);return;}loadBank();};
-async function loadBank(){
- $('loadBank').disabled=true;$('bankStatus').textContent='Memuatkan set cikgu…';
- try{const bank=await legacyCall('gamingQuestionBank',gameCode);
- acceptBank(bank);
- }catch(e){$('bankStatus').textContent=e.message||'Gagal memuatkan soalan.';}
- finally{$('loadBank').disabled=false;}
-}
-function acceptBank(bank){
- if(!Array.isArray(bank.questions)||!bank.questions.length)throw Error('Tiada soalan tersedia.');
- if(bank.questions.some(q=>!Array.isArray(q.options)||q.options.length!==4||!Number.isInteger(q.correct)||q.correct<0||q.correct>3))throw Error('Set soalan tidak sah.');
- questions=bank.questions;orderMode=bank.orderMode==="fixed"?"fixed":"random";bankLoaded=true;$('start').disabled=false;$('bankStatus').textContent=bank.title+' · '+questions.length+' soalan';
-}
-if(tester){
- $('testBanner').hidden=$('testerSetup').hidden=false;
- $('gamingJoin').hidden=document.querySelector('label[for="gamingJoin"]').hidden=true;
- $('testerList').onclick=async()=>{
-  $('testerList').disabled=true;
-  try{
-   const sets=await legacyCall('adminTesterBank',$('testerPin').value);
-   $('testerSet').replaceChildren(...sets.map(set=>new Option(set.title+' · '+set.count+' soalan',set.id)));
-   $('bankStatus').textContent=sets.length?'Pilih set, mod dan susunan.':'Simpan set dalam Bank Soalan dahulu.';
-  }catch(e){$('bankStatus').textContent=e.message;}
-  finally{$('testerList').disabled=false;}
- };
- $('loadBank').onclick=async()=>{
-  $('start').disabled=true;bankLoaded=false;
-  if(!$('testerSet').value){$('bankStatus').textContent='Buka Bank Soalan dan pilih set dahulu.';return;}
-  $('loadBank').disabled=true;
-  try{
-   const bank=await legacyCall('adminTesterBank',$('testerPin').value,$('testerSet').value);
-   classicTest=$('testerMode').value==='classic';
-   document.querySelector('.power-tray').hidden=true;
-   acceptBank({...bank,orderMode:$('testerOrder').value});
-  }catch(e){$('bankStatus').textContent=e.message;}
-  finally{$('loadBank').disabled=false;}
- };
-}else if(gameCode)loadBank();
-</script><script type="module" src="runner-scene.mjs?v=runner3d20261117"></script></html>
+<script>window.QUIZPRO_CONFIG={apiUrl:"https://script.google.com/macros/s/AKfycbxthgZ2i4Hl4qRZ1w2Wy2br1d8goQ7HB9DaOeD4VGUdlwcf59RRAguV3I0tfw-rCZpYwQ/exec"};</script><script src="api.js?v=studentjoin20261101"></script><script type="module" src="gaming-game.mjs?v=race20261117"></script><script type="module" src="runner-scene.mjs?v=race20261117"></script></html>

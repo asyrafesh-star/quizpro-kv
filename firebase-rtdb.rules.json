@@ -11,7 +11,7 @@
           "$uid": {
             ".read": "auth != null && auth.uid === $uid",
             "$no": {
-              ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('sessions').child($code).child('grants').child($uid).exists() && root.child('sessions').child($code).child('state').child('status').val() === 'question' && (root.child('sessions').child($code).child('state').child('question').child('no').val() + '') === $no && newData.child('tapAt').isNumber() && newData.child('start').val() === root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && now + 3000 >= root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && newData.child('tapAt').val() >= root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && newData.child('tapAt').val() <= root.child('sessions').child($code).child('state').child('question').child('endsAt').val() && newData.child('tapAt').val() <= now + 3000",
+              ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('sessions').child($code).child('grants').child($uid).exists() && root.child('sessions').child($code).child('state').child('status').val() === 'question' && (root.child('sessions').child($code).child('state').child('question').child('no').val() + '') === $no && newData.child('tapAt').isNumber() && newData.child('start').val() === root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && now + 3000 >= root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && newData.child('tapAt').val() >= root.child('sessions').child($code).child('state').child('question').child('startedAt').val() && newData.child('tapAt').val() <= root.child('sessions').child($code).child('state').child('question').child('endsAt').val() && newData.child('tapAt').val() <= now + 3000 && root.child('sessions').child($code).child('state').child('question').child('paused').val() === false",
               ".validate": "newData.hasChildren(['choice','at','tapAt','start'])",
               "choice": {
                 ".validate": "newData.isString() && newData.val().matches(/^[ABCD]$/)"
@@ -28,6 +28,96 @@
               "$other": {
                 ".validate": false
               }
+            }
+          }
+        }
+      }
+    },
+    "gamingRaces": {
+      "$code": {
+        "meta": {
+          ".read": false
+        },
+        "keys": {
+          ".read": false
+        },
+        "owners": {
+          ".read": false
+        },
+        "grants": {
+          "$uid": {
+            ".read": "auth != null && auth.uid === $uid"
+          }
+        },
+        "profiles": {
+          ".read": "auth != null && (root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() || root.child('gamingRaces').child($code).child('observers').child(auth.uid).val() === true)"
+        },
+        "state": {
+          ".read": "auth != null && (root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() || root.child('gamingRaces').child($code).child('observers').child(auth.uid).val() === true)"
+        },
+        "runners": {
+          ".read": "auth != null && (root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() || root.child('gamingRaces').child($code).child('observers').child(auth.uid).val() === true)",
+          "$uid": {
+            ".validate": "newData.hasChildren(['attempts','progress','mistakes','streak','last']) && root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).exists() && !data.child('correct').child(newData.child('last/qid').val()).exists() && newData.child('last/at').val() === now && (!data.child('last').exists() || (now >= data.child('last/at').val() + 5000 && newData.child('last/id').val() !== data.child('last/id').val())) && (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? newData.child('correct').child(newData.child('last/qid').val()).child('at').val() === now : !newData.child('correct').child(newData.child('last/qid').val()).exists()) && newData.child('attempts').val() === data.child('attempts').val() + 1 && newData.child('progress').val() === data.child('progress').val() + (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? 1 : 0) && newData.child('mistakes').val() === data.child('mistakes').val() + (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? 0 : 1) && newData.child('streak').val() === (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? data.child('streak').val() + 1 : 0) && (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? (now - (data.child('last/at').exists() ? data.child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()) < 30000) : true) && (now - (data.child('last/at').exists() ? data.child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()) >= 0) && (newData.child('progress').val() === root.child('gamingRaces').child($code).child('state').child('total').val() ? newData.child('finishedAt').val() === now : !newData.child('finishedAt').exists())",
+            "attempts": {
+              ".validate": "newData.isNumber()",
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists()"
+            },
+            "progress": {
+              ".validate": "newData.isNumber()",
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists()"
+            },
+            "mistakes": {
+              ".validate": "newData.isNumber()",
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists()"
+            },
+            "streak": {
+              ".validate": "newData.isNumber()",
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists()"
+            },
+            "last": {
+              ".validate": "newData.hasChildren(['id','qid','choice','at'])",
+              "id": {
+                ".validate": "newData.isString() && newData.val().length <= 80"
+              },
+              "qid": {
+                ".validate": "newData.isString() && newData.val().matches(/^q[0-9]+$/)"
+              },
+              "choice": {
+                ".validate": "newData.isNumber() && newData.val() >= -1 && newData.val() <= 3 && newData.val() % 1 === 0"
+              },
+              "at": {
+                ".validate": "newData.isNumber() && newData.val() === now"
+              },
+              "$other": {
+                ".validate": false
+              },
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists()"
+            },
+            "correct": {
+              "$qid": {
+                ".validate": "data.exists() ? (newData.child('at').val() === data.child('at').val() && newData.child('openedAt').val() === data.child('openedAt').val() && newData.child('streak').val() === data.child('streak').val()) : (newData.hasChildren(['at','openedAt','streak']) && newData.parent().parent().child('last/qid').val() === $qid && newData.parent().parent().child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child($qid).val() && newData.child('at').val() === now && newData.child('openedAt').val() === (data.parent().parent().child('last/at').exists() ? data.parent().parent().child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()))",
+                "at": {
+                  ".validate": "newData.isNumber()"
+                },
+                "openedAt": {
+                  ".validate": "newData.isNumber()"
+                },
+                "streak": {
+                  ".validate": "newData.isNumber() && newData.val() === newData.parent().parent().parent().child('streak').val()"
+                },
+                "$other": {
+                  ".validate": false
+                },
+                ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists() && !data.exists()"
+              }
+            },
+            "finishedAt": {
+              ".validate": "newData.isNumber() && newData.val() === now && newData.parent().child('progress').val() === root.child('gamingRaces').child($code).child('state').child('total').val()",
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists()"
+            },
+            "$other": {
+              ".validate": false
             }
           }
         }

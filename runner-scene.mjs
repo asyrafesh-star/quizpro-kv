@@ -63,26 +63,47 @@ function createRace() {
   const gates = new THREE.Group();
   gates.position.z = -15;
   const gateColors = [0xe94378, 0x448dff, 0xe8ae41];
+  const gateLabels = [];
   [-3, 0, 3].forEach((x, index) => {
     const color = gateColors[index];
     box(gates, color, [0.12, 2.6, 0.2], [x - 1.15, 1.3, 0]);
     box(gates, color, [0.12, 2.6, 0.2], [x + 1.15, 1.3, 0]);
     box(gates, color, [2.4, 0.16, 0.2], [x, 2.6, 0]);
     const canvas = document.createElement('canvas');
-    canvas.width = canvas.height = 128;
+    canvas.width = canvas.height = 256;
     const context = canvas.getContext('2d');
     context.fillStyle = '#' + color.toString(16).padStart(6, '0');
-    context.fillRect(0, 0, 128, 128);
+    context.fillRect(0, 0, 256, 256);
     context.font = '900 88px system-ui';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.fillStyle = '#ffffff';
-    context.fillText('ABC'[index], 64, 67);
-    const label = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.9), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(canvas) }));
-    label.position.set(x, 3.25, 0.15);
+    context.fillText('ABC'[index], 128, 80);
+    const texture = new THREE.CanvasTexture(canvas);
+    gateLabels.push({ canvas, context, texture, color, index });
+    const label = new THREE.Mesh(new THREE.PlaneGeometry(2.1, 1.7), new THREE.MeshBasicMaterial({ map: texture }));
+    label.position.set(x, 3.5, 0.15);
     gates.add(label);
   });
   scene.add(gates);
+  const labelsObserver = new MutationObserver(() => {
+    const answers = [...document.querySelectorAll('#answers button span')];
+    gateLabels.forEach(({ context, texture, color, index }) => {
+      context.fillStyle = '#' + color.toString(16).padStart(6, '0');context.fillRect(0,0,256,256);
+      context.fillStyle = '#fff';context.textAlign = 'center';context.textBaseline = 'middle';context.font = '900 72px system-ui';context.fillText('ABC'[index],128,48);
+      context.font = '700 22px system-ui';
+      const words = (answers[index]?.textContent || '').split(/\s+/);
+      const lines = [];let line = '';
+      for (const word of words) {
+        if (context.measureText(line + ' ' + word).width > 225 && line) { lines.push(line);line = word; }
+        else line = line ? line + ' ' + word : word;
+      }
+      if (line) lines.push(line);
+      lines.slice(0,5).forEach((value,row) => context.fillText(value,128,100+row*28,225));
+      texture.needsUpdate = true;
+    });
+  });
+  labelsObserver.observe(document.getElementById('answers'), { childList:true });
 
   const runner = new THREE.Group();
   runner.position.z = 1;
@@ -99,7 +120,7 @@ function createRace() {
     const leg = new THREE.Group();
     leg.position.set(side * 0.18, 1, 0);
     box(leg, 0x222d50, [0.23, 0.75, 0.25], [0, -0.37, 0]);
-    box(leg, 0xe9f5ff, [0.28, 0.18, 0.44], [0, -0.78, -0.07]);
+    box(leg, 0x6df0d3, [0.28, 0.18, 0.44], [0, -0.78, -0.07]);
     runner.add(leg);
     const arm = new THREE.Group();
     arm.position.set(side * 0.43, 1.68, 0);
@@ -117,6 +138,35 @@ function createRace() {
   scene.add(ice);
   ice.visible = false;
 
+  // Reused low-poly scenery keeps draw calls predictable on student phones.
+  const tyreGeometry = new THREE.TorusGeometry(0.45,0.18,5,10);
+  buildings.filter((_,index) => index % 4 === 0).forEach(building => {
+    for (let index=0;index<3;index++) {
+      const tyre = new THREE.Mesh(tyreGeometry,material(0x182131));
+      tyre.rotation.x = Math.PI/2;tyre.position.set(0,0.22+index*0.32,2.4);building.add(tyre);
+    }
+    box(building,0xffac48,[0.35,1.4,0.15],[0,2.5,1.85]);
+    box(building,0xffac48,[1,0.25,0.15],[0,2.8,1.85]);
+  });
+  const rivals = [];
+  for (let index=0;index<3;index++) {
+    const avatar = new THREE.Group();
+    box(avatar,[0xf28b58,0x67cfb5,0x72aaf8][index],[0.6,0.75,0.4],[0,1.35,0]);
+    const face = new THREE.Mesh(new THREE.SphereGeometry(0.25,8,6),material(0xffca9d));face.position.y=1.98;avatar.add(face);
+    const legs=[];
+    [-1,1].forEach(side=>{
+      const limb=new THREE.Group();limb.position.set(side*0.17,1,0);box(limb,0x242b48,[0.22,0.85,0.24],[0,-0.42,0]);avatar.add(limb);legs.push({limb,side});
+    });
+    const canvas=document.createElement('canvas');canvas.width=256;canvas.height=64;
+    const texture=new THREE.CanvasTexture(canvas);
+    const label=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,depthTest:false}));label.position.y=2.55;label.scale.set(2.6,0.65,1);avatar.add(label);
+    avatar.visible=false;scene.add(avatar);rivals.push({avatar,legs,canvas,texture,name:''});
+  }
+  const burstGeometry=new THREE.BufferGeometry();
+  const burstPositions=new Float32Array(24*3);burstGeometry.setAttribute('position',new THREE.BufferAttribute(burstPositions,3));
+  const burst=new THREE.Points(burstGeometry,new THREE.PointsMaterial({color:0xffe38a,size:0.16,transparent:true}));burst.visible=false;scene.add(burst);
+  let burstAge=2;
+
   const finish = new THREE.Group();
   [-4.2, 4.2].forEach(x => box(finish, 0xe8e7ff, [0.16, 4.4, 0.2], [x, 2.2, 0]));
   for (let column = 0; column < 16; column++) {
@@ -125,6 +175,7 @@ function createRace() {
     }
   }
   scene.add(finish);
+  const ribbon=box(scene,0xffc75c,[8.4,0.2,0.05],[0,1.5,-3]);ribbon.visible=false;
 
   const resize = new ResizeObserver(() => {
     const { width, height } = host.getBoundingClientRect();
@@ -139,6 +190,8 @@ function createRace() {
   let previous = 0;
   let stride = 0;
   let contextLost = false;
+  let previousPhase='';
+  let rivalStamp='',rivalData=[];
   renderer.domElement.addEventListener('webglcontextlost', event => {
     event.preventDefault();
     contextLost = true;
@@ -150,12 +203,20 @@ function createRace() {
     previous = time;
     if (contextLost || document.hidden || document.getElementById('play').hidden) return;
     const phase = host.dataset.phase;
+    const feedbackAge=Number(host.dataset.feedbackAge||0)/1000;
+    if(phase!==previousPhase){
+      if(!reducedMotion&&(phase==='feedback'||previousPhase==='penalty')){
+        burstAge=0;burst.material.color.setHex(previousPhase==='penalty'?0x9eefff:0xffe38a);
+      }
+      previousPhase=phase;
+    }
     const moving = phase === 'answer' || phase === 'feedback';
     const speed = moving && !reducedMotion ? (phase === 'feedback' ? 18 : 8) : 0;
     stride += dt * speed;
     const lane = Number(host.dataset.lane ?? 1);
     runner.position.x += ((lane - 1) * 3 - runner.position.x) * Math.min(1, dt * 9);
-    runner.position.y = moving && !reducedMotion ? Math.abs(Math.sin(stride * 2)) * 0.07 : 0;
+    const jump=phase==='feedback'&&!reducedMotion&&feedbackAge<0.8?Math.sin(feedbackAge/0.8*Math.PI)*0.8:0;
+    runner.position.y = jump+(moving && !reducedMotion ? Math.abs(Math.sin(stride * 2)) * 0.07 : 0);
     limbs.forEach(({ leg, arm, side }) => {
       leg.rotation.x = moving && !reducedMotion ? Math.sin(stride * 2) * 0.65 * side : 0;
       arm.rotation.x = -leg.rotation.x;
@@ -166,16 +227,41 @@ function createRace() {
     buildings.forEach(building => { building.position.z += dt * speed; if (building.position.z > 14) building.position.z -= 126; });
     const progress = Number(host.dataset.progress || 0);
     finish.position.z = -95 + progress * 92;
-    gates.visible = progress < 1;
+    gates.position.z=phase==='feedback'?-15+Math.min(1,feedbackAge/0.9)*25:-15;
+    gates.visible = progress < 1 && !(phase==='feedback'&&feedbackAge>0.9);
+    ribbon.visible=progress>=1&&phase==='feedback'&&feedbackAge<0.8;
+    ribbon.scale.x=8.4*(1+feedbackAge*0.7);
+    burstAge+=dt;burst.visible=burstAge<1.2;
+    if(burst.visible){
+      burst.position.set(runner.position.x,1.2,1);
+      burst.material.opacity=Math.max(0,1-burstAge/1.2);
+      for(let index=0;index<24;index++){
+        const angle=index*2.399;const radius=burstAge*(1+index%3);
+        burstPositions[index*3]=Math.cos(angle)*radius;
+        burstPositions[index*3+1]=Math.sin(angle)*radius+burstAge*1.3;
+        burstPositions[index*3+2]=Math.sin(angle*1.7)*radius;
+      }
+      burstGeometry.attributes.position.needsUpdate=true;
+    }
+    if(host.dataset.rivals!==rivalStamp){rivalStamp=host.dataset.rivals;try{rivalData=JSON.parse(rivalStamp||'[]');}catch{rivalData=[];}}
+    rivals.forEach((entry,index)=>{
+      const other=rivalData[index];entry.avatar.visible=!!other;if(!other)return;
+      const target=1-Math.max(-1,Math.min(7,other.progress-progress*Number(host.dataset.total||1)))*4;
+      entry.avatar.position.set(index===0?-3:index===1?3:0,0,Math.min(5,target));
+      entry.legs.forEach(({limb,side})=>{limb.rotation.x=moving&&!other.finished&&!reducedMotion?Math.sin(stride*2)*0.6*side:0;});
+      if(entry.name!==other.name){entry.name=other.name;const context=entry.canvas.getContext('2d');context.clearRect(0,0,256,64);context.fillStyle='#152039dd';context.fillRect(0,0,256,64);context.fillStyle='#fff';context.font='700 22px system-ui';context.textAlign='center';context.fillText(other.name.slice(0,27),128,39,246);entry.texture.needsUpdate=true;}
+    });
     scene.fog.color.setHex(phase === 'penalty' ? 0x244f72 : 0x192b50);
     renderer.setClearColor(scene.fog.color);
     renderer.render(scene, camera);
   });
-  addEventListener('pagehide', () => {
+  addEventListener('pagehide', event => {
+    if(event.persisted)return;
     renderer.setAnimationLoop(null);
     resize.disconnect();
+    labelsObserver.disconnect();
     renderer.dispose();
-  }, { once: true });
+  });
 }
 
 try {
