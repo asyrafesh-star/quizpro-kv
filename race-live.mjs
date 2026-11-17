@@ -1,3 +1,4 @@
+import { readAvatar, normalizeAvatar } from './avatar-options.mjs?v=mini20261117';
 import { buildAttempt, rankRunners } from './race-model.mjs?v=race20261117';
 
 const config = { apiKey:'AIzaSyDsLcMZtnge0eLl9IX2ZUIXaRXnfixg70M', authDomain:'quizpro-kv.firebaseapp.com', projectId:'quizpro-kv', databaseURL:'https://quizpro-kv-default-rtdb.asia-southeast1.firebasedatabase.app', appId:'1:897822705409:web:2147b1d6720e80c5357d00' };
@@ -24,9 +25,11 @@ export async function connect(code, ic, name, onUpdate, observerPin) {
   const token = await auth.currentUser.getIdToken();
   const bank = observerPin ? await legacyCall('adminRaceWatch', observerPin, code, token) : await legacyCall('raceJoin', code, ic, name, token);
   const root = 'gamingRaces/' + code;
+  if(!observerPin)await d.set(d.ref(db,root+'/profiles/'+auth.currentUser.uid+'/appearance'),readAvatar());
   const stops = [];
   const room = { bank, code, uid:auth.currentUser.uid, state:null, runners:{}, profiles:{}, connected:false, offset:0, error:'', closed:false };
   room.now = () => Date.now() + room.offset;
+  room.saveAppearance = choice => d.set(d.ref(db,root+'/profiles/'+room.uid+'/appearance'),normalizeAvatar(choice));
   const notify = () => {
     if (room.closed) return;
     room.self = room.runners[room.uid];

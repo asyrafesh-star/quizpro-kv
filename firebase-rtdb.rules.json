@@ -50,7 +50,25 @@
           }
         },
         "profiles": {
-          ".read": "auth != null && (root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() || root.child('gamingRaces').child($code).child('observers').child(auth.uid).val() === true)"
+          ".read": "auth != null && (root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() || root.child('gamingRaces').child($code).child('observers').child(auth.uid).val() === true)",
+          "$uid": {
+            "appearance": {
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && newData.exists()",
+              ".validate": "newData.hasChildren(['hair','outfit','color'])",
+              "hair": {
+                ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"
+              },
+              "outfit": {
+                ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 2"
+              },
+              "color": {
+                ".validate": "newData.isString() && (newData.val() === '#f5e7cd' || newData.val() === '#e94656' || newData.val() === '#ed8c32' || newData.val() === '#ecc84b' || newData.val() === '#3ea96b' || newData.val() === '#28a8a4' || newData.val() === '#4689e6' || newData.val() === '#9964d8' || newData.val() === '#eb8fb4' || newData.val() === '#303747')"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          }
         },
         "state": {
           ".read": "auth != null && (root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() || root.child('gamingRaces').child($code).child('observers').child(auth.uid).val() === true)"

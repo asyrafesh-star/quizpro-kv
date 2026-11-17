@@ -1,5 +1,5 @@
 import { orderedQuestions, racePoints, REVEAL_MS } from './race-model.mjs?v=race20261117';
-import { connect, createTest } from './race-live.mjs?v=race20261117';
+import { connect, createTest } from './race-live.mjs?v=avatar20261117';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -53,7 +53,8 @@ function updateRoom(value) {
     const progress = document.createElement('strong');progress.textContent = runner.finishedAt ? '🏁 ' + timeText(runner.duration) : runner.progress + '/' + (value.state?.total || bank?.questions.length || 0);
     row.append(name,progress);return row;
   }));
-  $('race3d').dataset.rivals = JSON.stringify(ranking.filter(runner => runner.uid !== value.uid).slice(0,3).map(runner => ({ name:runner.name, progress:runner.progress, finished:!!runner.finishedAt })));
+  $('race3d').dataset.rivals = JSON.stringify(ranking.filter(runner => runner.uid !== value.uid).slice(0,3).map(runner => ({ name:runner.name, progress:runner.progress, finished:!!runner.finishedAt, appearance:value.profiles?.[runner.uid]?.appearance })));
+  if(value.profiles?.[value.uid]?.appearance)$('race3d').dataset.appearance=JSON.stringify(value.profiles[value.uid].appearance);
   if (!$('end').hidden) renderPodium();
   if (watching) {
     $('intro').hidden = true;$('watchView').hidden = false;
@@ -286,3 +287,5 @@ if (watching) {
   };
 }
 setInterval(tick,100);
+
+addEventListener('quizpro-avatar-change',event=>{if(room&&!watching&&!solo)room.saveAppearance(event.detail).catch(()=>message('Pilihan watak belum dapat disegerakkan. Cuba sambung semula.'));});

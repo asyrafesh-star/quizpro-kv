@@ -1,4 +1,6 @@
 import * as THREE from './three.module.min.js';
+import { createMiniAvatar } from './mini-avatar.mjs?v=mini20261117';
+import { readAvatar, geometryOptions } from './avatar-options.mjs?v=mini20261117';
 
 const host = document.getElementById('race3d');
 const status = document.getElementById('renderStatus');
@@ -105,30 +107,18 @@ function createRace() {
   });
   labelsObserver.observe(document.getElementById('answers'), { childList:true });
 
-  const runner = new THREE.Group();
+  let playerChoice=JSON.stringify(readAvatar());
+  let playerAvatar = createMiniAvatar(THREE,geometryOptions(readAvatar()));
+  let runner = playerAvatar.group;
+  let limbs = playerAvatar.limbs;
+  function replacePlayer(choice){
+    const key=JSON.stringify(choice);if(key===playerChoice)return;
+    playerChoice=key;const position=runner.position.clone();scene.remove(runner);playerAvatar.dispose();
+    playerAvatar=createMiniAvatar(THREE,geometryOptions(choice));runner=playerAvatar.group;limbs=playerAvatar.limbs;runner.position.copy(position);scene.add(runner);
+  }
+  addEventListener('quizpro-avatar-change',event=>replacePlayer(event.detail));
   runner.position.z = 1;
   scene.add(runner);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.27, 12, 8), material(0xffca9d));
-  head.position.set(0, 1.95, 0);
-  runner.add(head);
-  box(runner, 0x382e52, [0.47, 0.18, 0.45], [0, 2.13, 0.04]);
-  box(runner, 0x9d62eb, [0.65, 0.75, 0.42], [0, 1.35, 0]);
-  box(runner, 0x633aa6, [0.43, 0.52, 0.19], [0, 1.38, 0.29]);
-  box(runner, 0xffd767, [0.2, 0.08, 0.05], [0, 1.4, 0.4]);
-  const limbs = [];
-  [-1, 1].forEach(side => {
-    const leg = new THREE.Group();
-    leg.position.set(side * 0.18, 1, 0);
-    box(leg, 0x222d50, [0.23, 0.75, 0.25], [0, -0.37, 0]);
-    box(leg, 0x6df0d3, [0.28, 0.18, 0.44], [0, -0.78, -0.07]);
-    runner.add(leg);
-    const arm = new THREE.Group();
-    arm.position.set(side * 0.43, 1.68, 0);
-    box(arm, 0xa16aee, [0.22, 0.3, 0.23], [0, -0.13, 0]);
-    box(arm, 0xffca9d, [0.18, 0.38, 0.2], [0, -0.43, 0]);
-    runner.add(arm);
-    limbs.push({ leg, arm, side });
-  });
   const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.55, 20), new THREE.MeshBasicMaterial({ color: 0x182238, transparent: true, opacity: 0.5 }));
   shadow.rotation.x = -Math.PI / 2;
   shadow.position.set(0, 0.02, 1);
@@ -150,17 +140,13 @@ function createRace() {
   });
   const rivals = [];
   for (let index=0;index<3;index++) {
-    const avatar = new THREE.Group();
-    box(avatar,[0xf28b58,0x67cfb5,0x72aaf8][index],[0.6,0.75,0.4],[0,1.35,0]);
-    const face = new THREE.Mesh(new THREE.SphereGeometry(0.25,8,6),material(0xffca9d));face.position.y=1.98;avatar.add(face);
-    const legs=[];
-    [-1,1].forEach(side=>{
-      const limb=new THREE.Group();limb.position.set(side*0.17,1,0);box(limb,0x242b48,[0.22,0.85,0.24],[0,-0.42,0]);avatar.add(limb);legs.push({limb,side});
-    });
+    const opponent = createMiniAvatar(THREE,{shirt:[0xeaa378,0x8bcab6,0x91b8e9][index]});
+    const avatar = opponent.group;
+    const legs = opponent.limbs.map(({leg,arm,knee,side})=>({limb:leg,arm,knee,side}));
     const canvas=document.createElement('canvas');canvas.width=256;canvas.height=64;
     const texture=new THREE.CanvasTexture(canvas);
     const label=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,depthTest:false}));label.position.y=2.55;label.scale.set(2.6,0.65,1);avatar.add(label);
-    avatar.visible=false;scene.add(avatar);rivals.push({avatar,legs,canvas,texture,name:''});
+    avatar.visible=false;scene.add(avatar);rivals.push({avatar,legs,canvas,texture,label,model:opponent,name:'',appearanceKey:''});
   }
   const burstGeometry=new THREE.BufferGeometry();
   const burstPositions=new Float32Array(24*3);burstGeometry.setAttribute('position',new THREE.BufferAttribute(burstPositions,3));
@@ -204,6 +190,7 @@ function createRace() {
     previous = time;
     if (contextLost || document.hidden || document.getElementById('play').hidden) return;
     const phase = host.dataset.phase;
+    if(host.dataset.appearance&&host.dataset.appearance!==playerChoice){try{replacePlayer(JSON.parse(host.dataset.appearance));}catch{}}
     const feedbackAge=Number(host.dataset.feedbackAge||0)/1000;
     if(phase!==previousPhase){
       if(!reducedMotion&&(phase==='feedback'||previousPhase==='penalty')){
@@ -218,9 +205,10 @@ function createRace() {
     runner.position.x += ((lane - 1) * 3 - runner.position.x) * Math.min(1, dt * 9);
     const jump=phase==='feedback'&&!reducedMotion&&feedbackAge<0.8?Math.sin(feedbackAge/0.8*Math.PI)*0.8:0;
     runner.position.y = jump+(moving && !reducedMotion ? Math.abs(Math.sin(stride * 2)) * 0.07 : 0);
-    limbs.forEach(({ leg, arm, side }) => {
+    limbs.forEach(({ leg, arm, knee, side }) => {
       leg.rotation.x = moving && !reducedMotion ? Math.sin(stride * 2) * 0.65 * side : 0;
       arm.rotation.x = -leg.rotation.x;
+      knee.rotation.x = Math.max(0,-leg.rotation.x)*0.65;
     });
     shadow.position.x = ice.position.x = runner.position.x;
     ice.visible = phase === 'penalty';
@@ -247,9 +235,15 @@ function createRace() {
     if(host.dataset.rivals!==rivalStamp){rivalStamp=host.dataset.rivals;try{rivalData=JSON.parse(rivalStamp||'[]');}catch{rivalData=[];}}
     rivals.forEach((entry,index)=>{
       const other=rivalData[index];entry.avatar.visible=!!other;if(!other)return;
+      const desired=other.appearance?geometryOptions(other.appearance):{shirt:[0xf28b58,0x67cfb5,0x72aaf8][index]};
+      const appearanceKey=JSON.stringify(desired);
+      if(entry.appearanceKey!==appearanceKey){
+        entry.appearanceKey=appearanceKey;entry.avatar.remove(entry.label);scene.remove(entry.avatar);entry.model.dispose();
+        entry.model=createMiniAvatar(THREE,desired);entry.avatar=entry.model.group;entry.legs=entry.model.limbs.map(({leg,arm,knee,side})=>({limb:leg,arm,knee,side}));entry.avatar.add(entry.label);scene.add(entry.avatar);
+      }
       const target=1-Math.max(-1,Math.min(7,other.progress-progress*Number(host.dataset.total||1)))*4;
       entry.avatar.position.set(index===0?-3:index===1?3:0,0,Math.min(5,target));
-      entry.legs.forEach(({limb,side})=>{limb.rotation.x=moving&&!other.finished&&!reducedMotion?Math.sin(stride*2)*0.6*side:0;});
+      entry.legs.forEach(({limb,arm,knee,side})=>{limb.rotation.x=moving&&!other.finished&&!reducedMotion?Math.sin(stride*2)*0.6*side:0;arm.rotation.x=-limb.rotation.x;knee.rotation.x=Math.max(0,-limb.rotation.x)*0.65;});
       if(entry.name!==other.name){entry.name=other.name;const context=entry.canvas.getContext('2d');context.clearRect(0,0,256,64);context.fillStyle='#152039dd';context.fillRect(0,0,256,64);context.fillStyle='#fff';context.font='700 22px system-ui';context.textAlign='center';context.fillText(other.name.slice(0,27),128,39,246);entry.texture.needsUpdate=true;}
     });
     scene.fog.color.setHex(phase === 'penalty' ? 0x244f72 : 0x192b50);
