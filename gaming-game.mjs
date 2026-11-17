@@ -60,6 +60,7 @@ function updateRoom(value) {
     $('watchRanking').replaceChildren(...ranking.map(runner => {
       const row = document.createElement('p');row.textContent = '#' + runner.rank + ' · ' + runner.name + ' · ' + runner.progress + '/' + value.state.total + (runner.finishedAt ? ' · ' + timeText(runner.duration) : '');return row;
     }));
+    renderPodium();
     $('watchStatus').textContent = value.state?.status === 'waiting' ? 'Lobi · Menunggu cikgu mula' : value.state?.status === 'finished' ? 'Perlumbaan tamat' : 'Perlumbaan sedang berlangsung';
     $('watchStart').disabled = value.state?.status !== 'waiting';
   }
@@ -203,7 +204,7 @@ function renderPodium() {
   $('podium').replaceChildren(...[3,1,0,2,4].filter(index => leaders[index]).map(index => {
     const runner = leaders[index], card = document.createElement('article');card.className = 'podium-place place-' + (index+1);
     const medal = document.createElement('span');medal.className = 'podium-medal';medal.textContent = ['🥇','🥈','🥉','🏅','🏅'][index];
-    const name = document.createElement('strong');name.textContent = runner.name;
+    const name = document.createElement('strong');name.textContent = runner.name;name.title = runner.name;
     const time = document.createElement('small');time.textContent = timeText(runner.duration);
     const step = document.createElement('div');step.className = 'podium-step';step.textContent = '#' + runner.rank;
     card.append(medal,name,time,step);return card;
@@ -273,6 +274,7 @@ if (tester) {
   };
 }
 if (watching) {
+  $('watchView').append($('podium'),$('podiumStatus'));
   $('watchSetup').hidden = false;$('studentIdentity').hidden = $('testIdentity').hidden = true;$('loadBank').hidden = $('start').hidden = true;
   $('watchConnect').onclick = async () => {
     try { room = await connect(watching,'','',updateRoom,$('watchPin').value);bank = room.bank; }

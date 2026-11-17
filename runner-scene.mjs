@@ -199,6 +199,7 @@ function createRace() {
     status.textContent = 'Paparan ringkas diaktifkan. Anda boleh terus menjawab.';
   });
   renderer.setAnimationLoop(time => {
+    if(time-previous<33)return;
     const dt = Math.min((time - previous) / 1000, 0.05);
     previous = time;
     if (contextLost || document.hidden || document.getElementById('play').hidden) return;
