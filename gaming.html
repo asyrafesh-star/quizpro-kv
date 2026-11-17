@@ -36,10 +36,25 @@
 #play .answers button{min-height:58px}
 @keyframes stride{from{transform:rotate(-38deg)}to{transform:rotate(38deg)}}
 @media(prefers-reduced-motion:reduce){.runner{transition:none}.runner-leg{animation:none}}
+
+.race3d{width:100%;height:clamp(270px,42vh,390px);display:none;position:relative}
+.race3d canvas{display:block;width:100%;height:100%}
+.race-scene.has-3d .race3d{display:block}
+.race-scene.has-3d .race-track{display:none}
+.render-status{margin:0;padding:8px 12px;font-size:12px;color:#d4e8ff}
+.render-status:empty{display:none}
+.lane-key{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:5px;margin:0;padding:12px 8px;font-size:10px;font-weight:900;letter-spacing:.08em}
+.lane-key span:nth-child(1){color:#ff8ca9}.lane-key span:nth-child(2){color:#9fc8ff}.lane-key span:nth-child(3){color:#ffda88}
+#play .answers{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:stretch}
+#play .answers button{display:flex;flex-direction:column;align-items:center;text-align:center;padding:12px 8px;gap:9px;font-size:clamp(12px,2.8vw,15px);line-height:1.4}
+.lane-letter{display:grid;place-items:center;border:1px solid #ffffff66;border-radius:9px;width:30px;height:30px;font-size:20px;font-weight:950;background:#ffffff20}
+.answers button.selected{outline:3px solid #fff;outline-offset:1px}
+#question{font-size:clamp(18px,4.8vw,25px)}
+@media(max-width:520px){main{padding:16px 10px}.panel{padding:12px}.hud{gap:5px}.hud span{font-size:12px;padding:6px 8px}.race-sky{font-size:10px}}
 </style>
 <main><p id="testBanner" hidden><strong>🧪 SESI UJIAN</strong> · Rekod kelas tidak digunakan</p><header><strong>⚡ QuizPro KV Gaming</strong><a href="./">Kuiz asal ↗</a></header>
-<section class="panel" id="intro"><small>GAMING · SET SOALAN CIKGU</small><h1>🏁 Larian QuizPro</h1><p>Jawab betul untuk mara ke garisan penamat. Setiap soalan ada 3 pilihan. Jawapan salah atau masa tamat membekukan pelari 5 saat. Soalan itu kembali kemudian.</p><div id="testerSetup" hidden><label for="testerPin">PIN cikgu</label><input type="password" id="testerPin" autocomplete="current-password"><button type="button" id="testerList">Buka Bank Soalan</button><p><label for="testerSet">Set soalan</label> <select id="testerSet"></select></p><p><label for="testerMode">Mod</label> <select id="testerMode"><option value="gaming">Gaming</option><option value="classic">Kuiz asal · Pratonton</option></select></p><p><label for="testerOrder">Susunan</label> <select id="testerOrder"><option value="fixed">Tetap</option><option value="random">Rawak</option></select></p></div><label for="gamingJoin">Kod sesi Gaming</label><input id="gamingJoin" inputmode="numeric" maxlength="6"><button id="loadBank">Muatkan soalan</button><p id="bankStatus" role="status"></p><p id="best"></p><button id="start">Mula Gaming</button></section>
-<section class="panel" id="play" hidden><div class="hud"><span id="progress"></span><span id="score"></span><span id="streak"></span><span id="elapsed"></span></div><section class="race-scene" aria-label="Trek perlumbaan"><div class="race-sky">LARIAN QUIZPRO <span>🏁 PENAMAT</span></div><div class="race-track"><div id="runner" class="runner"><span class="runner-head"></span><span class="runner-body"></span><span class="runner-arm"></span><span class="runner-leg leg-one"></span><span class="runner-leg leg-two"></span></div><div class="finish-line"></div></div><p id="raceDistance" role="status"></p></section><div class="power-tray" hidden><p>🎮 Kuasa bantuan <small>Sekali setiap kuasa</small></p><div class="powers" id="powers" role="group" aria-label="Kuasa bantuan"><button type="button" data-power="double" title="Gandakan markah asas jika betul" aria-label="×2: Gandakan markah asas jika betul"><span aria-hidden="true">⚡</span><strong class="power-word">×2</strong></button><button type="button" data-power="triple" title="Tigakan markah asas jika betul" aria-label="×3: Tigakan markah asas jika betul"><span aria-hidden="true">🚀</span><strong class="power-word">×3</strong></button><button type="button" data-power="freeze" title="Bekukan pemasa 5 saat" aria-label="Beku 5s: Bekukan pemasa 5 saat"><span aria-hidden="true">❄️</span><strong class="power-word">Beku 5s</strong></button><button type="button" data-power="half" title="Nyahaktifkan dua pilihan salah" aria-label="50:50: Nyahaktifkan dua pilihan salah"><span aria-hidden="true">🎯</span><strong class="power-word">50:50</strong></button></div></div><div class="timer" id="timer"></div><progress id="bar" max="30" value="30" aria-label="Baki masa soalan"></progress><h2 id="question"></h2><img id="gamingQuestionImage" alt="Rajah soalan" hidden style="display:block;max-width:100%;max-height:36vh;margin:12px auto;object-fit:contain"><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div></section>
+<section class="panel" id="intro"><small>GAMING · SET SOALAN CIKGU</small><h1>🏁 Larian QuizPro</h1><p>Jawab betul untuk mara ke garisan penamat. Pilih lorong A, B atau C untuk menjawab. Setiap soalan ada 3 pilihan. Jawapan salah atau masa tamat membekukan pelari 5 saat. Soalan itu kembali kemudian.</p><div id="testerSetup" hidden><label for="testerPin">PIN cikgu</label><input type="password" id="testerPin" autocomplete="current-password"><button type="button" id="testerList">Buka Bank Soalan</button><p><label for="testerSet">Set soalan</label> <select id="testerSet"></select></p><p><label for="testerMode">Mod</label> <select id="testerMode"><option value="gaming">Gaming</option><option value="classic">Kuiz asal · Pratonton</option></select></p><p><label for="testerOrder">Susunan</label> <select id="testerOrder"><option value="fixed">Tetap</option><option value="random">Rawak</option></select></p></div><label for="gamingJoin">Kod sesi Gaming</label><input id="gamingJoin" inputmode="numeric" maxlength="6"><button id="loadBank">Muatkan soalan</button><p id="bankStatus" role="status"></p><p id="best"></p><button id="start">Mula Gaming</button></section>
+<section class="panel" id="play" hidden><div class="hud"><span id="progress"></span><span id="score"></span><span id="streak"></span><span id="elapsed"></span></div><section class="race-scene" aria-label="Trek perlumbaan"><div class="race-sky">LARIAN QUIZPRO <span>🏁 PENAMAT</span></div><div id="race3d" class="race3d" role="img" aria-label="Pelari 3D di trek tiga lorong"></div><p id="renderStatus" class="render-status" role="status">Memuatkan trek 3D…</p><div class="race-track"><div id="runner" class="runner"><span class="runner-head"></span><span class="runner-body"></span><span class="runner-arm"></span><span class="runner-leg leg-one"></span><span class="runner-leg leg-two"></span></div><div class="finish-line"></div></div><div class="lane-key" aria-hidden="true"><span>A · KIRI</span><span>B · TENGAH</span><span>C · KANAN</span></div><p id="raceDistance" role="status"></p></section><div class="power-tray" hidden><p>🎮 Kuasa bantuan <small>Sekali setiap kuasa</small></p><div class="powers" id="powers" role="group" aria-label="Kuasa bantuan"><button type="button" data-power="double" title="Gandakan markah asas jika betul" aria-label="×2: Gandakan markah asas jika betul"><span aria-hidden="true">⚡</span><strong class="power-word">×2</strong></button><button type="button" data-power="triple" title="Tigakan markah asas jika betul" aria-label="×3: Tigakan markah asas jika betul"><span aria-hidden="true">🚀</span><strong class="power-word">×3</strong></button><button type="button" data-power="freeze" title="Bekukan pemasa 5 saat" aria-label="Beku 5s: Bekukan pemasa 5 saat"><span aria-hidden="true">❄️</span><strong class="power-word">Beku 5s</strong></button><button type="button" data-power="half" title="Nyahaktifkan dua pilihan salah" aria-label="50:50: Nyahaktifkan dua pilihan salah"><span aria-hidden="true">🎯</span><strong class="power-word">50:50</strong></button></div></div><div class="timer" id="timer"></div><progress id="bar" max="30" value="30" aria-label="Baki masa soalan"></progress><h2 id="question"></h2><img id="gamingQuestionImage" alt="Rajah soalan" hidden style="display:block;max-width:100%;max-height:36vh;margin:12px auto;object-fit:contain"><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div></section>
 <section class="panel" id="end" hidden><small>CABARAN SELESAI</small><h1>🏆 Semua soalan betul!</h1><p id="result"></p><p id="record"></p><button id="restart">Main semula</button></section></main>
 
 <script>window.QUIZPRO_CONFIG={apiUrl:"https://script.google.com/macros/s/AKfycbxthgZ2i4Hl4qRZ1w2Wy2br1d8goQ7HB9DaOeD4VGUdlwcf59RRAguV3I0tfw-rCZpYwQ/exec"};</script><script src="api.js?v=studentjoin20261101"></script><script>
@@ -57,7 +72,7 @@ let game, ticker, nextTimer;
 function start(){
  if(!bankLoaded||!questions.length)return;
  clearInterval(ticker);clearTimeout(nextTimer);
- game={queue:orderMode==="fixed"?questions.slice():shuffled(questions),score:0,streak:0,correct:0,attempts:0,started:performance.now(),powers:{double:true,triple:true,freeze:true,half:true}};
+ game={queue:orderMode==="fixed"?questions.slice():shuffled(questions),score:0,streak:0,correct:0,attempts:0,started:performance.now(),lane:1,powers:{double:true,triple:true,freeze:true,half:true}};
  $('intro').hidden=$('end').hidden=true;$('play').hidden=false;
  next();ticker=setInterval(tick,100);
 }
@@ -74,7 +89,9 @@ function next(){
  if(game.question.image){try{const url=new URL(game.question.image);if(url.protocol==='https:'){const id=url.hostname==='drive.google.com'&&(url.searchParams.get('id')||url.pathname.match(/\/d\/([^/]+)/)?.[1]);image.src=id?'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w1000':url.href;image.hidden=false;}}catch{}}
  $('feedback').replaceChildren();$('feedback').classList.remove('pop');
  $('answers').replaceChildren(...game.options.map((option,index)=>{
-  const b=document.createElement('button');b.type='button';b.textContent='ABCD'[index]+'. '+option.text;
+  const b=document.createElement('button');b.type='button';
+  const label=document.createElement('strong');label.className='lane-letter';label.textContent='ABCD'[index];
+  const text=document.createElement('span');text.textContent=option.text;b.append(label,text);
   b.onclick=()=>answer(option.index);return b;
  }));
  updatePowers();tick();
@@ -83,6 +100,7 @@ function activeSeconds(now){return (now-game.opened-(game.freezeAt?Math.min(5000
 function tick(){
  if(!game)return;
  const now=performance.now();
+ const scene=$('race3d');scene.dataset.phase=game.phase;scene.dataset.lane=String(game.lane);scene.dataset.progress=String(game.correct/questions.length);
  $('elapsed').textContent='⏱ '+timeText(now-game.started);
  $('progress').textContent=game.correct+'/'+questions.length+' betul';
  $('score').textContent=game.score+' markah';
@@ -129,6 +147,8 @@ function answer(index){
  game.phase='feedback';game.attempts++;
  $('bar').value=0;
  for(const b of $('answers').children)b.disabled=true;
+ const selected=game.options.findIndex(option=>option.index===index);
+ if(selected>=0){game.lane=selected;$('answers').children[selected].classList.add('selected');}
  const correct=index===game.question.correct;
  const title=document.createElement('strong'),message=document.createElement('p');
  let delay;
@@ -205,4 +225,4 @@ if(tester){
   finally{$('loadBank').disabled=false;}
  };
 }else if(gameCode)loadBank();
-</script></html>
+</script><script type="module" src="runner-scene.mjs?v=runner3d20261117"></script></html>
