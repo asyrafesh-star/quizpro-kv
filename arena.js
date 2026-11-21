@@ -19,7 +19,7 @@ const heroes=[
   {name:'Dreadmaw',role:'Pahlawan rangka',skill:'Hentak bumi',element:'earth',model:'assets/arena-heroes/skeleton-warrior.glb',attack:'2H_Melee_Attack_Chop',cast:'Block_Attack',power:[14,23,48],reach:[5,8,11],special:'shield'},
   {name:'Nyxfang',role:'Assassin rangka',skill:'Tusukan bisa',element:'lightning',model:'assets/arena-heroes/skeleton-rogue.glb',attack:'Dualwield_Melee_Attack_Slice',cast:'Dualwield_Melee_Attack_Chop',power:[16,24,50],reach:[6,9,12],special:'chain'},
   {name:'Soulhex',role:'Mage rangka',skill:'Letupan roh',element:'lightning',model:'assets/arena-heroes/skeleton-mage.glb',attack:'1H_Melee_Attack_Stab',cast:'Spellcast_Shoot',power:[18,27,55],reach:[7,9,13],special:'burst'},
-  {name:'Ravok',role:'Penjaga Rangka',skill:'Benteng tulang',element:'earth',model:'assets/arena-heroes/skeleton-minion.glb',previewScale:.72,attack:'Unarmed_Melee_Attack_Punch_A',cast:'Block_Attack',power:[13,22,46],reach:[6,9,12],special:'guard'}
+  {name:'Ravok',role:'Penjaga Rangka',skill:'Benteng tulang',element:'earth',model:'assets/arena-heroes/skeleton-minion.glb',previewScale:.5,attack:'Unarmed_Melee_Attack_Punch_A',cast:'Block_Attack',power:[13,22,46],reach:[6,9,12],special:'guard'}
 ];
 const questions=[
   {q:'Apakah maksud nombor 205 pada saiz tayar 205/55 R16?',a:['Diameter rim 205 inci','Lebar tayar 205 mm','Nisbah profil 205%','Tahun tayar dibuat'],c:1},
