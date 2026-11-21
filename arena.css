@@ -2,3 +2,33 @@
 /* Larger character cards, nicknames and readable tower HUD. */
 .hero-pick{display:flex;align-items:center;gap:12px;min-height:126px;padding:10px 12px;overflow:hidden}.hero-art{display:grid;place-items:center;flex:0 0 76px;height:100px;border-radius:15px;background:radial-gradient(ellipse at 50% 80%,#54739a88,transparent 66%),linear-gradient(150deg,#253a5a,#101929);border:1px solid #ffffff20}.hero-art svg{display:block;width:73px;height:91px;filter:drop-shadow(0 7px 8px #0008)}.hero-info{min-width:0}.hero-pick b{font-size:16px;line-height:1.2}.hero-pick small{font-size:12px;line-height:1.3}.nick-label{display:block;color:#d4e2f6;font-weight:750;font-size:12px;margin-top:14px}.nick-input{width:min(100%,250px);margin-top:6px;padding:10px 12px;border-radius:11px;border:1px solid #496486;background:#091321;color:#fff;font:800 16px system-ui;letter-spacing:.09em;text-transform:uppercase}.nick-input:focus{outline:2px solid #69baff}.team-bar-head span:last-child{font-size:9px;white-space:nowrap}.mobile-help{font-weight:700;color:#bfd3ee}
 @media(max-width:700px){.hero-pick{min-height:106px;gap:8px;padding:8px}.hero-art{flex-basis:62px;height:82px;border-radius:12px}.hero-art svg{width:59px;height:72px}.hero-pick b{font-size:14px}.hero-pick small{font-size:10px}.nick-input{font-size:16px}}
+
+/* MOBA-style arena polish: real 3D hero showcase, readable minimap and translucent touch controls. */
+.hero-preview{position:relative;overflow:hidden;border:1px solid #7ebdff55;border-radius:18px;background:radial-gradient(ellipse at 50% 72%,#34577a 0,transparent 54%),linear-gradient(145deg,#152944,#0a1221);box-shadow:inset 0 0 35px #5cbcff16;margin:10px 0 14px}
+#heroPreview{display:block;width:100%;height:clamp(240px,34vw,360px)}
+.hero-preview>div{position:absolute;left:14px;bottom:12px;display:grid;gap:2px;padding:9px 13px;border:1px solid #ffffff27;border-radius:12px;background:#07101dcc;backdrop-filter:blur(8px)}
+.hero-preview b{font-size:19px;color:#fff}.hero-preview span{font-size:12px;color:#c6d9f0}
+.hero-choices{grid-template-columns:repeat(6,minmax(0,1fr));max-height:unset;overflow:visible}
+.hero-pick{min-height:65px;display:block;border-radius:12px;padding:10px;transition:transform .15s,border-color .15s,background .15s}
+.hero-pick.active{background:linear-gradient(145deg,#24517a,#192945);transform:translateY(-2px)}
+.hero-pick b{font-size:14px}.hero-pick small{font-size:10px}
+.player-stats{margin-top:8px;color:#d5e5fa;font-size:12px;font-weight:800;letter-spacing:.02em}
+#minimap{position:absolute;z-index:2;left:12px;top:12px;width:clamp(92px,13vw,142px);height:auto;aspect-ratio:1;border:1px solid #d7edff55;border-radius:18px;box-shadow:0 8px 24px #0008;pointer-events:none}
+.hint{top:12px;left:50%;max-width:min(58%,620px);padding:8px 14px;background:#07101dbb;border:1px solid #ffffff24;backdrop-filter:blur(8px)}
+.controls{margin-top:10px;padding:12px 15px;border:1px solid #ffffff25;border-radius:22px;background:linear-gradient(120deg,#ffffff0c,#8bbcff0b);backdrop-filter:blur(10px)}
+.joystick{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#ffffff15,#ffffff05 68%,transparent 70%)}
+.joy-ring{inset:8px;border:2px solid #cce8ff88;background:radial-gradient(circle,#ffffff0d,#ffffff04);box-shadow:0 0 24px #71baff26,inset 0 0 20px #8bc6ff16}
+.knob{width:60px;height:60px;background:linear-gradient(145deg,#eff8ffbb,#91bce988);border:2px solid #ffffffc9;box-shadow:0 6px 18px #0008,inset 0 0 12px #ffffff55}
+.right-controls{gap:clamp(7px,1.15vw,16px)}
+.attack-btn,.skill-btn{border:1px solid #ffffff86;background:linear-gradient(145deg,#ffffff31,#9ed6ff15);backdrop-filter:blur(12px);box-shadow:0 8px 22px #0008,inset 0 1px 8px #ffffff36;text-shadow:0 2px 5px #000c;transition:transform .12s,filter .12s}
+.attack-btn:active,.skill-btn:active{transform:scale(.93);filter:brightness(1.3)}
+.attack-btn{height:92px;min-width:92px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#ffbc8e99,#ec334b88 55%,#7e162c99)}
+.skill-btn{height:76px;min-width:76px;background:radial-gradient(circle at 35% 25%,#d6b8ff88,#7145d388 58%,#34206699)}
+.skill-btn.ultimate{background:radial-gradient(circle at 35% 25%,#fff1a899,#e3a52099 55%,#79501499)}
+.skill-btn.buff-btn{background:radial-gradient(circle at 35% 25%,#b7ffad88,#23946799 58%,#12493699)}
+.skill-btn.cooldown{filter:grayscale(.7);opacity:.55}
+.quiz-overlay{background:#02050b70;backdrop-filter:blur(3px)}
+.quiz-overlay .question-card{width:min(560px,94vw);border-color:#94caff88;box-shadow:0 16px 60px #000c,0 0 30px #499dff35}
+.quiz-topline{display:flex;justify-content:space-between;align-items:center}.quiz-topline strong{display:grid;place-items:center;width:46px;height:46px;border:2px solid #71c7ff;border-radius:50%;font-size:18px;color:#dff5ff;box-shadow:0 0 18px #5ebaff55}
+@media(max-width:700px){.hero-choices{grid-template-columns:repeat(2,minmax(0,1fr));max-height:none}.hero-pick{min-height:58px}.hero-pick b{font-size:13px}.hero-pick small{font-size:9px}.hero-preview{margin:8px 0 10px}#heroPreview{height:260px}.controls{padding:8px 5px;gap:4px;border-radius:17px}.joystick{width:105px;height:108px}.knob{width:50px;height:50px}.right-controls{gap:4px}.attack-btn{height:67px;min-width:67px}.skill-btn{height:59px;min-width:54px}.attack-btn span{font-size:24px}.skill-btn span{font-size:18px}.skill-btn b{font-size:8px}.skill-btn small{display:none}#minimap{left:7px;top:7px;width:92px;border-radius:12px}.hint{max-width:62%;left:auto;right:8px;transform:none;top:8px;font-size:9px}.team-bar-head span:last-child{font-size:8px}}
+@media(max-width:380px){.joystick{width:88px;height:96px}.attack-btn{height:58px;min-width:58px}.skill-btn{height:52px;min-width:48px}.right-controls{gap:2px}.controls{padding-inline:2px}}
