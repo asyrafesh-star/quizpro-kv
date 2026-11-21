@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#080d18"><title>QuizPro Arena 3D — Demo</title>
+  <link rel="stylesheet" href="arena.css?v=arena01">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head>
+<body>
+  <main class="arena-app">
+    <header class="arena-header"><a href="index.html" class="back-link">← QuizPro KV</a><div><span class="eyebrow">MODE 3 · DEMO LAWAN BOT</span><h1>QuizPro Arena</h1></div><span class="live-pill">ARENA 3D</span></header>
+    <section id="setup" class="setup-card">
+      <div class="setup-copy"><span class="eyebrow">5 PASUKAN · ARENA BERSAMA</span><h2>Pilih hero dan pasukan</h2><p>Gerak bebas 360°. Serangan biasa guna butang. Jawab betul untuk lepaskan skill.</p></div>
+      <div class="setup-row"><div><h3>Pasukan</h3><div id="teamChoices" class="team-choices"></div></div><div><h3>Pemain setiap pasukan</h3><div class="stepper"><button id="countMinus" aria-label="Kurangkan pemain">−</button><strong id="playerCount">5</strong><button id="countPlus" aria-label="Tambah pemain">+</button><span>4–6 · pemain lain ialah bot</span></div></div></div>
+      <h3>Pilih hero</h3><div id="heroChoices" class="hero-choices"></div>
+      <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan demo</button><span>Demo setempat: telefon lain belum disambungkan.</span></div>
+    </section>
+    <section id="battle" class="battle hidden">
+      <div class="hud"><div class="hud-top"><div class="match-tag">5 PASUKAN · FREE FOR ALL</div><div id="clock" class="clock">03:00</div><button id="pauseBtn" class="hud-button">Jeda</button></div><div id="teamBars" class="team-bars"></div></div>
+      <div class="world-frame"><canvas id="world" aria-label="Arena tiga dimensi lima pasukan"></canvas><div class="rotate-note">⟳ Pusing telefon melintang untuk kawalan lebih selesa</div><div class="hint" id="hint">Gerak ke tengah, tekan Serang atau guna Skill.</div><div class="feed" id="feed" aria-live="polite"></div></div>
+      <div class="controls"><div class="left-controls"><div id="joystick" class="joystick" role="application" aria-label="Joystick gerakan 360 darjah"><div class="joy-ring"></div><div id="knob" class="knob"></div><span class="joy-label">GERAK</span></div></div><div class="right-controls"><button id="attackBtn" class="attack-btn"><span>⚔</span><b>PUKUL</b></button><button class="skill-btn" data-skill="1"><span>✦</span><b>SKILL 1</b><small>Jawab betul</small></button><button class="skill-btn" data-skill="2"><span>❖</span><b>SKILL 2</b><small>Jawab betul</small></button><button class="skill-btn ultimate" data-skill="3"><span>✹</span><b>ULTI</b><small>Jawab betul</small></button></div></div>
+      <div class="mobile-help">WASD / anak panah atau joystick • Serang lawan berdekatan</div>
+    </section>
+    <section id="questionModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="questionText"><div class="question-card"><span class="eyebrow">JAWAB BETUL UNTUK GUNA KUASA</span><h2 id="questionText"></h2><div id="questionOptions" class="question-options"></div><p id="questionFeedback" aria-live="polite"></p><button id="closeQuestion" class="hud-button hidden">Tutup</button></div></section>
+    <section id="endModal" class="modal hidden" role="dialog" aria-modal="true"><div class="question-card end-card"><span class="eyebrow">PERLAWANAN TAMAT</span><h2 id="winnerTitle">Pasukan menang!</h2><div id="finalTeams" class="final-teams"></div><button id="againBtn" class="primary">Main lagi</button><a class="back-link" href="index.html">Kembali ke QuizPro</a></div></section>
+    <footer class="arena-footer">Demo guna bot dan soalan contoh. Sesi 5 pasukan sebenar memerlukan sambungan game masa nyata.</footer>
+  </main>
+  <script type="module" src="arena.js?v=arena01"></script>
+</body>
+</html>
