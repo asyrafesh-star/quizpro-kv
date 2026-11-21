@@ -110,7 +110,7 @@ function loadArenaLeaders(){
   const leaders=units.filter(u=>u.index===0),modelHero=selectedHero;
   getHeroAsset(modelHero).then(gltf=>{for(const unit of leaders)if(units.includes(unit)&&unit.alive)attachHeroAsset(unit,gltf);toast(`${heroes[modelHero].name} dimuat · animasi berjalan, pukul dan skill sedia`);}).catch(error=>{console.warn('Hero GLB gagal dimuat',error);toast('Model 3D gagal dimuat. Periksa sambungan internet dan cuba lagi.');});
 }
-function getEnvironmentAsset(file){if(!environmentAssetCache.has(file)){const request=new Promise((resolve,reject)=>heroLoader.load(`assets/arena-environment/${file}`,resolve,undefined,reject));environmentAssetCache.set(file,request);request.catch(()=>environmentAssetCache.delete(file));}return environmentAssetCache.get(file);}
+function getEnvironmentAsset(file){if(!environmentAssetCache.has(file)){const request=new Promise((resolve,reject)=>heroLoader.load(`assets/arena-environment/${file}?v=arena09`,resolve,undefined,reject));environmentAssetCache.set(file,request);request.catch(()=>environmentAssetCache.delete(file));}return environmentAssetCache.get(file);}
 function addEnvironmentModel(file,x,z,height,rotation=0){getEnvironmentAsset(file).then(gltf=>{if(!scene)return;const model=gltf.scene.clone(true),box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3());model.scale.setScalar(height/Math.max(size.y,.01));const scaled=new THREE.Box3().setFromObject(model);model.position.set(x,-scaled.min.y,z);model.rotation.y=rotation;model.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false;}});scene.add(model);world.push(model);}).catch(()=>{});}
 function addBase(i){
   const angle=-Math.PI/2+i*Math.PI*2/5,x=Math.cos(angle)*24,z=Math.sin(angle)*24,t=teams[i];
