@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="theme-color" content="#080d18"><title>QuizPro Arena 3D — Demo</title>
-  <link rel="stylesheet" href="arena.css?v=arena04">
+  <link rel="stylesheet" href="arena.css?v=arena05">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -11,7 +11,7 @@
     <header class="arena-header"><a href="index.html" class="back-link">← QuizPro KV</a><div><span class="eyebrow">MODE 3 · DEMO LAWAN BOT</span><h1>QuizPro Arena</h1></div><span class="live-pill">ARENA 3D</span></header>
     <section id="setup" class="setup-card">
       <div class="setup-copy"><span class="eyebrow">5 PASUKAN · 30 SOALAN DEMO</span><h2>Pilih hero dan pasukan</h2><p>Gerak 360° dan pecahkan menara musuh. Hero tidak boleh mati. Jawapan betul mengaktifkan skill; jawapan salah tidak mendedahkan jawapan.</p></div>
-      <div class="setup-row"><div><h3>Pasukan</h3><div id="teamChoices" class="team-choices"></div></div><div><h3>Pemain setiap pasukan</h3><div class="stepper"><button id="countMinus" aria-label="Kurangkan pemain">−</button><strong id="playerCount">6</strong><button id="countPlus" aria-label="Tambah pemain">+</button><span>4–6 · maksimum 30 pemain</span></div><label class="nick-label" for="nickName">Nama panggilan (maksimum 6 huruf)</label><input id="nickName" class="nick-input" maxlength="6" autocomplete="off" placeholder="CONTOH" value="PELAJA"></div></div>
+      <div class="setup-row"><div><h3>Pasukan</h3><div id="teamChoices" class="team-choices"></div></div><div><h3>Pemain setiap pasukan</h3><div class="stepper"><button id="countMinus" aria-label="Kurangkan pemain">−</button><strong id="playerCount">6</strong><button id="countPlus" aria-label="Tambah pemain">+</button><span>4–6 · bot demo isi slot</span></div><label class="nick-label" for="nickName">Nama panggilan (maksimum 6 huruf)</label><input id="nickName" class="nick-input" maxlength="6" autocomplete="off" placeholder="CONTOH" value="PELAJA"></div></div>
       <h3>Pilih hero</h3><div id="heroChoices" class="hero-choices"></div>
       <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan demo</button><span>Demo setempat: pemain lain belum disambungkan. Setiap pasukan ada 5 menara.</span></div>
     </section>
@@ -25,6 +25,6 @@
     <section id="endModal" class="modal hidden" role="dialog" aria-modal="true"><div class="question-card end-card"><span class="eyebrow">PERLAWANAN TAMAT</span><h2 id="winnerTitle">Pasukan menang!</h2><div id="finalTeams" class="final-teams"></div><button id="againBtn" class="primary">Main lagi</button><a class="back-link" href="index.html">Kembali ke QuizPro</a></div></section>
     <footer class="arena-footer">Demo guna bot dan soalan contoh. Sesi 5 pasukan sebenar memerlukan sambungan game masa nyata.</footer>
   </main>
-  <script type="module" src="arena.js?v=arena04"></script>
+  <script type="module" src="arena.js?v=arena05"></script>
 </body>
 </html>
