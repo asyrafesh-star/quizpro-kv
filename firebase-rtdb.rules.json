@@ -7,6 +7,41 @@
         "state": {
           ".read": "auth != null && root.child('sessions').child($code).child('grants').child(auth.uid).exists()"
         },
+        "arena": {
+          ".read": "auth != null && root.child('sessions').child($code).child('grants').child(auth.uid).exists()",
+          "players": {
+            "$uid": {
+              ".write": "auth != null && auth.uid === $uid && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
+              ".validate": "newData.hasChildren(['team','hero','nick','x','z','rotation','at'])",
+              "team": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
+              "hero": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"},
+              "nick": {".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 6"},
+              "x": {".validate": "newData.isNumber() && newData.val() >= -40 && newData.val() <= 40"},
+              "z": {".validate": "newData.isNumber() && newData.val() >= -40 && newData.val() <= 40"},
+              "rotation": {".validate": "newData.isNumber() && newData.val() >= -7 && newData.val() <= 7"},
+              "hp": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"},
+              "alive": {".validate": "newData.isBoolean()"},
+              "at": {".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"},
+              "$other": {".validate": false}
+            }
+          },
+          "events": {
+            "$uid": {
+              "$event": {
+                ".write": "auth != null && auth.uid === $uid && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && !data.exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
+                ".validate": "newData.hasChildren(['type','team','hero','towerTeam','towerIndex','damage','at'])",
+                "type": {".validate": "newData.val() === 'tower-hit'"},
+                "team": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
+                "hero": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"},
+                "towerTeam": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
+                "towerIndex": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
+                "damage": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 1 && newData.val() <= 10"},
+                "at": {".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"},
+                "$other": {".validate": false}
+              }
+            }
+          }
+        },
         "answers": {
           "$uid": {
             ".read": "auth != null && auth.uid === $uid",

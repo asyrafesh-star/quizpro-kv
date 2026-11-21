@@ -2,18 +2,19 @@
 <html lang="ms">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <meta name="theme-color" content="#080d18"><title>QuizPro Arena 3D — Demo</title>
-  <link rel="stylesheet" href="arena.css?v=arena11">
+  <meta name="theme-color" content="#080d18"><title>QuizPro Arena 3D</title>
+  <link rel="stylesheet" href="arena.css?v=arena13">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
   <main class="arena-app">
-    <header class="arena-header"><a href="index.html" class="back-link">← QuizPro KV</a><div><span class="eyebrow">MODE 3 · DEMO LAWAN BOT</span><h1>QuizPro Arena</h1></div><span class="live-pill">ARENA 3D</span></header>
+    <header class="arena-header"><a href="index.html" class="back-link">← QuizPro KV</a><div><span class="eyebrow">MODE PERMAINAN · ARENA LIMA PASUKAN</span><h1>QuizPro Arena</h1></div><span class="live-pill">ARENA 3D</span></header>
+    <section id="joinPanel" class="setup-card hidden"><div class="setup-copy"><span class="eyebrow">SESI KELAS · PELAJAR</span><h2>Masuk ke Arena</h2><p>Daftar menggunakan nombor pengenalan dan nama kelas seperti biasa. Sesi ini menggunakan sambungan langsung.</p></div><label class="nick-label" for="arenaJoinCode">Kod sesi kuiz</label><input id="arenaJoinCode" class="nick-input" inputmode="numeric" maxlength="12" autocomplete="off"><label class="nick-label" for="arenaStudentId">Nombor pengenalan</label><input id="arenaStudentId" class="nick-input" inputmode="numeric" maxlength="14" autocomplete="off"><label class="nick-label" for="arenaStudentName">Nama panggilan dalam kelas</label><input id="arenaStudentName" class="nick-input" maxlength="80" autocomplete="name" placeholder="Nama penuh pelajar"><button id="arenaJoinBtn" class="primary">Daftar & masuk</button><p id="arenaJoinStatus" role="status"></p></section>
     <section id="setup" class="setup-card">
-      <div class="setup-copy"><span class="eyebrow">5 PASUKAN · 30 SOALAN DEMO</span><h2>Pilih hero dan pasukan</h2><p>Gerak 360°, lawan minion dan menara. Core musuh hancur = pasukan tersingkir. Jawab pantas untuk skill lebih kuat.</p></div>
+      <div class="setup-copy"><span class="eyebrow" id="arenaSetupEyebrow">5 PASUKAN · DEMO 30 HERO</span><h2>Pilih hero dan pasukan</h2><p>Gerak 360°. Pukul menara untuk kurangkan nyawanya; ia tidak akan rosak sendiri. Gunakan sesi kelas untuk soalan kuiz.</p></div>
       <div class="setup-row"><div><h3>Pasukan</h3><div id="teamChoices" class="team-choices"></div></div><div><h3>Pemain setiap pasukan</h3><div class="stepper"><button id="countMinus" aria-label="Kurangkan pemain">−</button><strong id="playerCount">6</strong><button id="countPlus" aria-label="Tambah pemain">+</button><span>4–6 · bot demo isi slot</span></div><label class="nick-label" for="nickName">Nama panggilan (maksimum 6 huruf)</label><input id="nickName" class="nick-input" maxlength="6" autocomplete="off" placeholder="CONTOH" value="PELAJA"></div></div>
       <h3>Pilih hero — preview 3D</h3><div class="hero-preview"><canvas id="heroPreview" aria-label="Model hero 3D yang dipilih"></canvas><div><b id="previewName">Bintang</b><span id="previewInfo">Fighter · Hentakan bara</span></div></div><div id="heroChoices" class="hero-choices"></div>
-      <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan demo</button><span>Demo setempat: bot isi pasukan. Telefon lain belum disambungkan. 4 pertahanan setiap pasukan.</span></div>
+      <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan</button><span id="arenaConnectionNote">Lima pasukan · 5 pertahanan setiap pasukan</span></div>
     </section>
     <section id="battle" class="battle hidden">
       <div class="hud"><div class="hud-top"><div class="match-tag">5 PASUKAN · CORE MENANG</div><div id="clock" class="clock">∞</div><button id="pauseBtn" class="hud-button">Jeda</button></div><div id="teamBars" class="team-bars"></div><div id="playerStats" class="player-stats">❤️ 100 · ⚡ 100 · 🪙 0 · XP 0</div></div>
@@ -24,8 +25,9 @@
     </section>
     <section id="questionModal" class="modal quiz-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="questionText"><div class="question-card"><div class="quiz-topline"><span class="eyebrow">JAWAB UNTUK AKTIFKAN KUASA</span><strong><span id="quizCountdown">4</span>s</strong></div><div class="quiz-timer"><div id="quizBar"></div></div><h2 id="questionText"></h2><div id="questionOptions" class="question-options"></div><p id="questionFeedback" aria-live="polite"></p></div></section>
     <section id="endModal" class="modal hidden" role="dialog" aria-modal="true"><div class="question-card end-card"><span class="eyebrow">PERLAWANAN TAMAT</span><h2 id="winnerTitle">Pasukan menang!</h2><div id="finalTeams" class="final-teams"></div><button id="againBtn" class="primary">Main lagi</button><a class="back-link" href="index.html">Kembali ke QuizPro</a></div></section>
-    <footer class="arena-footer">Peta lima pasukan berinspirasi MOBA · Demo bot setempat. Untuk perlawanan sebenar serentak, telefon pelajar perlu dipautkan melalui Firebase.</footer>
+    <footer class="arena-footer">Pilih pasukan dan hero, gerakkan watak, serang struktur secara terus dan gunakan soalan sesi kelas untuk kuasa.</footer>
   </main>
-  <script type="module" src="arena.js?v=arena11"></script>
+  <script src="config.js?v=8"></script><script src="firebase-live.js?v=arena-live-1"></script><script src="api.js?v=arena-live-1"></script>
+  <script type="module" src="arena.js?v=arena13"></script>
 </body>
 </html>
