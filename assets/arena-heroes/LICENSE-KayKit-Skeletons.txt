@@ -1,0 +1,11 @@
+KayKit Character Pack : Skeletons (1.0)
+
+Created/distributed by Kay Lousberg (www.kaylousberg.com)
+
+License: Creative Commons Zero (CC0) 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+This content is free to use in personal, educational and commercial projects.
+Crediting Kay Lousberg is appreciated but not required.
+
+Source: https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0
