@@ -13,13 +13,13 @@ const heroes=[
   {name:'Flarion',role:'Pejuang',skill:'Hujan bara',element:'fire',model:'assets/arena-heroes/bintang.glb',attack:'Unarmed_Melee_Attack_Punch_A',cast:'2H_Melee_Attack_Spin',power:[16,25,50],reach:[6,8,12],special:'burn'},
   {name:'Aegiron',role:'Tank',skill:'Benteng waja',element:'earth',model:'assets/arena-heroes/perisai.glb',attack:'Unarmed_Melee_Attack_Punch_A',cast:'Block_Attack',power:[12,20,42],reach:[5,7,10],special:'shield'},
   {name:'Pyraxis',role:'Ahli sihir',skill:'Meteor bara',element:'fire',model:'assets/arena-heroes/bara.glb',attack:'1H_Melee_Attack_Stab',cast:'Spellcast_Shoot',power:[18,27,55],reach:[5,8,11],special:'burst'},
-  {name:'Voltaris',role:'Assassin',skill:'Rantai kilat',element:'lightning',model:'assets/arena-heroes/bayang.glb',attack:'Dualwield_Melee_Attack_Slice',cast:'Dualwield_Melee_Attack_Chop',power:[15,26,50],reach:[7,10,13],special:'chain'},
+  {name:'Voltaris',role:'Assassin',skill:'Rantai kilat',element:'lightning',model:'assets/arena-heroes/bayang.glb',previewScale:.72,attack:'Dualwield_Melee_Attack_Slice',cast:'Dualwield_Melee_Attack_Chop',power:[15,26,50],reach:[7,10,13],special:'chain'},
   {name:'Zephyra',role:'Pengintai',skill:'Puting taufan',element:'wind',model:'assets/arena-heroes/taufan.glb',previewScale:.66,attack:'1H_Melee_Attack_Stab',cast:'Dodge_Forward',power:[14,24,48],reach:[8,10,14],special:'dash'},
   {name:'Sylvara',role:'Pemanah',skill:'Hujan anak panah',element:'wind',model:'assets/arena-heroes/archer.glb',previewScale:.5,previewYOffset:.38,attack:'1H_Melee_Attack_Stab',cast:'Spellcast_Shoot',power:[16,25,49],reach:[8,11,14],special:'burst'},
   {name:'Dreadmaw',role:'Pahlawan rangka',skill:'Hentak bumi',element:'earth',model:'assets/arena-heroes/skeleton-warrior.glb',attack:'2H_Melee_Attack_Chop',cast:'Block_Attack',power:[14,23,48],reach:[5,8,11],special:'shield'},
   {name:'Nyxfang',role:'Assassin rangka',skill:'Tusukan bisa',element:'lightning',model:'assets/arena-heroes/skeleton-rogue.glb',attack:'Dualwield_Melee_Attack_Slice',cast:'Dualwield_Melee_Attack_Chop',power:[16,24,50],reach:[6,9,12],special:'chain'},
   {name:'Soulhex',role:'Mage rangka',skill:'Letupan roh',element:'lightning',model:'assets/arena-heroes/skeleton-mage.glb',attack:'1H_Melee_Attack_Stab',cast:'Spellcast_Shoot',power:[18,27,55],reach:[7,9,13],special:'burst'},
-  {name:'Ravok',role:'Penjaga Rangka',skill:'Benteng tulang',element:'earth',model:'assets/arena-heroes/skeleton-minion.glb',previewScale:.58,attack:'Unarmed_Melee_Attack_Punch_A',cast:'Block_Attack',power:[13,22,46],reach:[6,9,12],special:'guard'}
+  {name:'Ravok',role:'Penjaga Rangka',skill:'Benteng tulang',element:'earth',model:'assets/arena-heroes/skeleton-minion.glb',previewScale:.45,attack:'Unarmed_Melee_Attack_Punch_A',cast:'Block_Attack',power:[13,22,46],reach:[6,9,12],special:'guard'}
 ];
 const questions=[
   {q:'Apakah maksud nombor 205 pada saiz tayar 205/55 R16?',a:['Diameter rim 205 inci','Lebar tayar 205 mm','Nisbah profil 205%','Tahun tayar dibuat'],c:1},
