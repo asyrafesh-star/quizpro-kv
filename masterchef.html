@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#172d2a"><title>QuizPro KV · MasterChef</title>
+  <link rel="stylesheet" href="masterchef.css?v=1">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<main>
+  <header><a href="index.html" class="back">← QuizPro KV</a><div><span class="eyebrow">MODE 04 · DEMO 3D</span><h1>Quiz MasterChef</h1></div><span class="live">40 MINIT</span></header>
+  <section id="join" class="card join-card">
+    <div><span class="eyebrow">GAME PIN SEDIA ADA</span><h2>Masuk ke dapur kelas</h2><p>Gunakan kod permainan, nombor pengenalan dan nama seperti mod Quiz Pro lain. Markah jawapan dihantar melalui sesi kuiz biasa.</p></div>
+    <label for="gamePin">Kod permainan</label><input id="gamePin" inputmode="numeric" maxlength="32" autocomplete="off" placeholder="Contoh: 123456">
+    <label for="studentId">Nombor pengenalan</label><input id="studentId" inputmode="numeric" maxlength="14" autocomplete="off">
+    <label for="studentName">Nama pelajar</label><input id="studentName" maxlength="80" autocomplete="name">
+    <button id="joinButton">Sambung Game PIN</button><p id="joinStatus" role="status"></p>
+    <details><summary>Demo tanpa sesi kelas</summary><p>Gunakan untuk melihat dapur dan menguji kawalan sahaja. Markah tidak dihantar ke Quiz Pro.</p><button id="demoButton" class="secondary">Buka demo tempatan</button></details>
+  </section>
+
+  <section id="setup" class="card hidden">
+    <span class="eyebrow">SETUP PASUKAN</span><h2>Susun restoran anda</h2><div class="setup-grid">
+      <label>Bilangan pasukan<select id="teamCount"><option value="2">2 pasukan</option><option value="3">3 pasukan</option><option value="4">4 pasukan</option><option value="5" selected>5 pasukan</option></select><small>2 hingga 5 pasukan satu sesi</small></label>
+      <label>Pasukan anda<select id="teamChoice"></select></label>
+      <label>Ahli pasukan<select id="teamSize"><option value="4">4 ahli</option><option value="5" selected>5 ahli</option><option value="6">6 ahli</option></select><small>4 hingga 6 ahli satu pasukan</small></label>
+    </div>
+    <div class="rule-grid"><span>⏱ 40 minit</span><span>❓ Maks. 30 soalan / pemain</span><span>🍽 6 pusingan</span><span>👥 2–5 pasukan</span><span>🤝 4–6 ahli / pasukan</span></div>
+    <button id="startButton">Mula demo restoran</button><p id="setupStatus" role="status"></p>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="game-top card"><div><span id="roundLabel" class="eyebrow">PUSINGAN 1 / 6</span><h2 id="roundName">Menu Asas</h2></div><div class="clock"><strong id="clock">40:00</strong><small id="roundTiming">Kuiz 2 min · Masak 4 min</small></div><button id="viewButton" class="secondary">↗ Fokus dapur</button></div>
+    <div class="score-strip card"><div><span>Kuiz individu</span><strong id="quizScore">0 / 30</strong><small id="quizDetail">Menunggu soalan cikgu</small></div><div><span>Restoran</span><strong id="restaurantScore">0%</strong><small>50% kuiz · 40% restoran · 10% kerjasama</small></div><div><span>Kerjasama</span><strong id="teamworkScore">0%</strong><small id="teamDetail">Pasukan belum masak</small></div><div class="total"><span>Markah pasukan</span><strong id="totalScore">0%</strong><small>dikira secara langsung</small></div></div>
+    <div class="kitchen-grid">
+      <section class="scene-card"><div id="kitchen" aria-label="Dapur MasterChef tiga dimensi" role="img"></div><div class="scene-help">Seret untuk pusing · roda/dua jari untuk zum · pilih stesen di bawah untuk memasak</div></section>
+      <aside class="card order-card"><span class="eyebrow">PESANAN AKTIF</span><h2 id="orderTitle">Burger Sayur</h2><p id="orderDescription">Sediakan bahan, masak, dan hantar sebelum pelanggan hilang sabar.</p><div class="order-progress"><div id="orderFill"></div></div><p id="orderStatus">Pilih satu stesen untuk mula.</p><div class="stations" id="stations"></div><button id="newOrder" class="secondary">Pesanan seterusnya</button></aside>
+    </div>
+    <section class="card quiz-card"><div class="quiz-heading"><div><span class="eyebrow">STESEN KUIZ · MAKS. 30</span><h2>Jawab untuk tenaga Super Chef</h2></div><span id="quizConnection">○ Menunggu Game PIN</span></div><div id="quizQuestion"><p>Apabila cikgu mula soalan dalam Quiz Pro, ia akan muncul di sini. Dapur boleh terus dimainkan semasa demo.</p></div><div id="answers" class="answers"></div><p id="quizFeedback" role="status"></p></section>
+    <section class="card rounds"><h2>Jadual 6 pusingan</h2><ol id="rounds"></ol></section>
+  </section>
+</main>
+<script src="config.js?v=8"></script><script src="firebase-live.js?v=arena-live-1"></script><script src="api.js?v=arena-live-1"></script>
+<script type="module" src="masterchef.js?v=1"></script>
+</body></html>

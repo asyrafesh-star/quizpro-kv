@@ -88,6 +88,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
     <button onclick="showView('student')">Murid — sertai kuiz</button>
     <button class="secondary" onclick="showView('adminLogin')">Cikgu — panel kuiz</button><button class="secondary" onclick="location.href='gaming.html?view=tester'">🧪 Tester — sesi ujian</button>
     <div class="piano-preview"><span>⚔️ Mode permainan ketiga</span><a class="secondary" href="arena.html" style="display:inline-block;text-decoration:none;margin:8px 0">Cuba Arena 3D (demo)</a><small>5 pasukan • joystick 360° • jawab betul untuk aktifkan skill</small></div>
+    <div class="piano-preview"><span>👨‍🍳 Mode permainan keempat</span><a class="secondary" href="masterchef.html" style="display:inline-block;text-decoration:none;margin:8px 0">Cuba MasterChef 3D (demo)</a><small>40 minit • 6 pusingan • 2–5 pasukan • Game PIN</small></div>
     <p class="muted">Untuk pelajar: masukkan kod permainan yang dipaparkan oleh cikgu atau gunakan pautan QR sesi.</p><div class="piano-preview"><span>♪ Piano lembut</span><button class="secondary" id="pianoPreview" onclick="previewPiano()">Dengar contoh</button><small>Melodi tenang sepanjang soalan.</small></div>
   </section>
 
@@ -179,7 +180,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
     </div>
     <div class="card" id="attendanceCard"><h2>Kehadiran kuiz kelas</h2><p id="attendanceStatus" class="muted">Pilih kelas untuk melihat senarai.</p><div class="attendance-grid"><div><h3 id="presentHeading">Sudah masuk kuiz (0)</h3><div id="attendancePresent"></div></div><div><h3 id="absentHeading">Belum masuk (0)</h3><div id="attendanceAbsent"></div></div></div></div>
     <div class="card" id="sessionControlsCard"><h2>5. Sesi permainan</h2>
-      <label for="sessionGameplayMode">Mod permainan</label><select id="sessionGameplayMode"><option value="classic">Kuiz asal</option><option value="gaming">Gaming · 30 saat, cuba hingga betul</option><option value="arena">Arena 3D · lima pasukan</option></select><label for="sessionOrderMode">Susunan soalan <small>· Pilih sebelum mula sesi baharu</small></label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
+      <label for="sessionGameplayMode">Mod permainan</label><select id="sessionGameplayMode"><option value="classic">Kuiz asal</option><option value="gaming">Gaming · 30 saat, cuba hingga betul</option><option value="arena">Arena 3D · lima pasukan</option><option value="masterchef">MasterChef 3D · 40 minit, 6 pusingan</option></select><label for="sessionOrderMode">Susunan soalan <small>· Pilih sebelum mula sesi baharu</small></label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
       <div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
     <div class="card">
@@ -326,7 +327,7 @@ async function startSession() {
     await call('adminSaveSettings', pin, {quizTitle:$('quizTitle').value, defaultSeconds:$('defaultSeconds').value, defaultPoints:$('defaultPoints').value, revealSeconds:$('revealSeconds').value, nextMode:$('nextMode').value});
     // Arena uses the normal class roster/session grants and question controls;
     // only its student landing page is different from the classic player.
-    const backendMode=requestedMode==='arena'?'classic':requestedMode;
+    const backendMode=['arena','masterchef'].includes(requestedMode)?'classic':requestedMode;
     const res = await call('adminStartSession', pin, cloudClass, $('sessionOrderMode').value, backendMode); sessionCode = res.code; if(cloudData)cloudData.activeGameplayMode=requestedMode; sessionStorage.setItem('quizproSessionCode', sessionCode);sessionStorage.setItem('quizproSessionMode:'+sessionCode,requestedMode);
     $('teacherLiveCard').classList.add('hidden');
     renderSession(res.status, routeUrl('student') + '&join=' + encodeURIComponent(res.code)); startAdminPolling(); await loadCloudDashboard(); notice('Sesi '+res.className+' sudah dibuat. Minta pelajar scan QR.');
@@ -337,6 +338,7 @@ function renderSession(status, url) {
   const liveMode=sessionStorage.getItem('quizproSessionMode:'+sessionCode)||cloudData?.activeGameplayMode;
   if(liveMode==='gaming')url=new URL('gaming.html?join='+encodeURIComponent(sessionCode),location.href).href;
   if(liveMode==='arena')url=new URL('arena.html?join='+encodeURIComponent(sessionCode),location.href).href;
+  if(liveMode==='masterchef')url=new URL('masterchef.html?join='+encodeURIComponent(sessionCode),location.href).href;
   const active=!['finished','idle'].includes(status);
   const panel=$('sessionPanel'),key=JSON.stringify([sessionCode,status,url]);
   if(panel.dataset.sessionRender===key)return;
