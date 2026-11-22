@@ -1,9 +1,6 @@
 # Quiz MasterChef assets
 
-This demo reuses the low-poly KayKit Adventurers models already included in
-`assets/arena-heroes/` as kitchen chefs. The models are licensed CC0 1.0 and
-their original license files remain in that source directory.
-
-Source: https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0
-
-Kitchen counters, cookware and chef hats are procedural Three.js geometry.
+The MasterChef characters, kitchen counters, cookware and chef hats are
+procedural Three.js geometry created specifically for this demo. The characters
+wear a white chef jacket, coloured apron and a traditional chef hat; no Arena
+hero models are used in this game mode.
