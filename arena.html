@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="theme-color" content="#080d18"><title>QuizPro Arena 3D</title>
-  <link rel="stylesheet" href="arena.css?v=arena19">
+  <link rel="stylesheet" href="arena.css?v=arena20">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -17,17 +17,17 @@
       <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan</button><span id="arenaConnectionNote">Lima pasukan · 6 menara setiap pasukan</span></div>
     </section>
     <section id="battle" class="battle hidden">
-      <div class="hud"><div class="hud-top"><div class="match-tag">5 PASUKAN · CORE MENANG</div><div id="clock" class="clock">∞</div><button id="pauseBtn" class="hud-button">Jeda</button></div><div id="teamBars" class="team-bars"></div><div id="playerStats" class="player-stats">❤️ 100 · ⚡ 100 · 🪙 0 · XP 0</div></div>
-      <div class="world-frame"><canvas id="world" aria-label="Arena tiga dimensi lima pasukan"></canvas><canvas id="minimap" aria-label="Peta mini lima pasukan"></canvas><div class="rotate-note">⟳ Pusing telefon melintang — game cuba kunci skrin selepas mula</div><div class="hint" id="hint">Lawan hero, minion dan menara musuh.</div><div class="feed" id="feed" aria-live="polite"></div>
+      <div class="hud"><div class="hud-top"><div class="match-tag">5 PASUKAN · CORE MENANG</div><div id="clock" class="clock">∞</div><button id="scoreToggleBtn" class="hud-button" aria-expanded="false" aria-controls="scorePanel">Markah</button><button id="fullScreenBtn" class="hud-button" aria-label="Skrin penuh, cuba melintang">⛶</button><button id="pauseBtn" class="hud-button">Jeda</button></div><div id="teamBars" class="team-bars"></div><div id="playerStats" class="player-stats">❤️ 100 · ⚡ 100 · ⭐ 0 · KUIZ 0 + GAME 0</div><section id="scorePanel" class="score-panel" hidden><div class="score-panel-head"><b>Markah kuiz + permainan</b><button id="refreshScoresBtn" class="hud-button">Kemas kini</button></div><p class="score-help">Jumlah pasukan ialah campuran markah individu. GAME: 1 mata bagi setiap HP menara dan +50 apabila menara tumbang. Markah kuiz diambil daripada leaderboard kuiz.</p><div class="score-grid"><div><b>Jumlah pasukan</b><div id="teamScoreRows"></div></div><div><b>Individu</b><div id="individualScoreRows"></div></div></div><p id="scoreStatus" role="status">Markah kuiz belum dimuatkan.</p></section></div>
+      <div class="world-frame"><canvas id="world" aria-label="Arena tiga dimensi lima pasukan"></canvas><canvas id="minimap" aria-label="Peta mini lima pasukan"></canvas><div id="rotateNote" class="rotate-note">Tekan ⛶ Skrin penuh untuk cuba putar automatik. Jika tak berjaya, pusing telefon melintang.</div><div class="hint" id="hint">Lawan hero, minion dan menara musuh.</div><div class="feed" id="feed" aria-live="polite"></div>
         <div class="controls"><div class="left-controls"><div id="joystick" class="joystick" role="application" aria-label="Joystick kawalan gerakan"><div class="joy-ring"></div><div id="knob" class="knob"></div><span class="joy-arrow up">⌃</span><span class="joy-arrow left">‹</span><span class="joy-arrow right">›</span><span class="joy-arrow down">⌄</span></div></div><div class="right-controls"><button id="attackBtn" class="attack-btn" aria-label="Serangan biasa"><span>⚔</span><b>ATTACK</b></button><button class="skill-btn" data-skill="1" aria-label="Skill 1"><span>✦</span><b>SKILL 1</b><small>4s kuiz</small></button><button class="skill-btn" data-skill="2" aria-label="Skill 2"><span>❖</span><b>SKILL 2</b><small>4s kuiz</small></button><button class="skill-btn ultimate" data-skill="3" aria-label="Ultimate"><span>✹</span><b>ULTI</b><small>4s kuiz</small></button><button class="skill-btn buff-btn" data-skill="4" aria-label="Buff hutan"><span>✚</span><b>BUFF</b><small>4s kuiz</small></button></div></div>
       </div>
       <div class="mobile-help">Jalan / serang bebas · jawab kuiz untuk skill dan buff · hero respawn jika tumbang</div>
     </section>
     <section id="questionModal" class="modal quiz-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="questionText"><div class="question-card"><div class="quiz-topline"><span class="eyebrow">JAWAB UNTUK AKTIFKAN KUASA</span><strong><span id="quizCountdown">4</span>s</strong></div><div class="quiz-timer"><div id="quizBar"></div></div><h2 id="questionText"></h2><div id="questionOptions" class="question-options"></div><p id="questionFeedback" aria-live="polite"></p></div></section>
-    <section id="endModal" class="modal hidden" role="dialog" aria-modal="true"><div class="question-card end-card"><span class="eyebrow">PERLAWANAN TAMAT</span><h2 id="winnerTitle">Pasukan menang!</h2><div id="finalTeams" class="final-teams"></div><button id="againBtn" class="primary">Main lagi</button><a class="back-link" href="index.html">Kembali ke QuizPro</a></div></section>
+    <section id="endModal" class="modal hidden" role="dialog" aria-modal="true"><div class="question-card end-card"><span class="eyebrow">PERLAWANAN TAMAT</span><h2 id="winnerTitle">Pasukan menang!</h2><div id="finalTeams" class="final-teams"></div><h3>Markah kuiz + permainan</h3><button id="refreshFinalScores" class="secondary">Kemas kini markah kuiz</button><div id="finalScoreRows" class="final-score-rows"></div><button id="againBtn" class="primary">Main lagi</button><a class="back-link" href="index.html">Kembali ke QuizPro</a></div></section>
     <footer class="arena-footer">Pilih pasukan dan hero, gerakkan watak, serang struktur secara terus dan gunakan soalan sesi kelas untuk kuasa.</footer>
   </main>
   <script src="config.js?v=8"></script><script src="firebase-live.js?v=arena-live-1"></script><script src="api.js?v=arena-live-1"></script>
-  <script type="module" src="arena.js?v=arena39"></script>
+  <script type="module" src="arena.js?v=arena40"></script>
 </body>
 </html>
