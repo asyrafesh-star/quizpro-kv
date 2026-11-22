@@ -34,7 +34,7 @@
                 "team": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
                 "hero": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"},
                 "towerTeam": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
-                "towerIndex": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
+                "towerIndex": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 5"},
                 "damage": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 1 && newData.val() <= 10"},
                 "at": {".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"},
                 "$other": {".validate": false}

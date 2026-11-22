@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="theme-color" content="#080d18"><title>QuizPro Arena 3D</title>
-  <link rel="stylesheet" href="arena.css?v=arena14">
+  <link rel="stylesheet" href="arena.css?v=arena17">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -11,14 +11,14 @@
     <header class="arena-header"><a href="index.html" class="back-link">← QuizPro KV</a><div><span class="eyebrow">MODE PERMAINAN · ARENA LIMA PASUKAN</span><h1>QuizPro Arena</h1></div><span class="live-pill">ARENA 3D</span></header>
     <section id="joinPanel" class="setup-card hidden"><div class="setup-copy"><span class="eyebrow">SESI KELAS · PELAJAR</span><h2>Masuk ke Arena</h2><p>Daftar menggunakan nombor pengenalan dan nama kelas seperti biasa. Sesi ini menggunakan sambungan langsung.</p></div><label class="nick-label" for="arenaJoinCode">Kod sesi kuiz</label><input id="arenaJoinCode" class="nick-input" inputmode="numeric" maxlength="12" autocomplete="off"><label class="nick-label" for="arenaStudentId">Nombor pengenalan</label><input id="arenaStudentId" class="nick-input" inputmode="numeric" maxlength="14" autocomplete="off"><label class="nick-label" for="arenaStudentName">Nama panggilan dalam kelas</label><input id="arenaStudentName" class="nick-input" maxlength="80" autocomplete="name" placeholder="Nama penuh pelajar"><button id="arenaJoinBtn" class="primary">Daftar & masuk</button><p id="arenaJoinStatus" role="status"></p></section>
     <section id="setup" class="setup-card">
-      <div class="setup-copy"><span class="eyebrow" id="arenaSetupEyebrow">5 PASUKAN · 10 WATAK KAYKIT</span><h2>Pilih hero dan pasukan</h2><p>Gerak 360°. Pilih daripada 6 Adventurers dan 4 Skeletons KayKit. Pukul menara untuk kurangkan nyawanya; ia tidak akan rosak sendiri.</p></div>
+      <div class="setup-copy"><span class="eyebrow" id="arenaSetupEyebrow">5 PASUKAN · 10 WATAK KAYKIT</span><h2>Pilih hero dan pasukan</h2><p>Gerak 360°. Tiga menara kecil di hadapan, dua sederhana di tengah dan TERAS besar di belakang. Hancurkan ikut turutan untuk mara ke barisan seterusnya.</p></div>
       <div class="setup-row"><div><h3>Pasukan</h3><div id="teamChoices" class="team-choices"></div></div><div><h3>Pemain setiap pasukan</h3><div class="stepper"><button id="countMinus" aria-label="Kurangkan pemain">−</button><strong id="playerCount">6</strong><button id="countPlus" aria-label="Tambah pemain">+</button><span>4–6 · bot demo isi slot</span></div><label class="nick-label" for="nickName">Nama panggilan (maksimum 6 huruf)</label><input id="nickName" class="nick-input" maxlength="6" autocomplete="off" placeholder="CONTOH" value="PELAJA"></div></div>
       <h3>Pilih hero — preview 3D</h3><div class="hero-preview"><canvas id="heroPreview" aria-label="Model hero 3D yang dipilih"></canvas><div><b id="previewName">Bintang</b><span id="previewInfo">Pejuang · Hujan bara</span></div></div><div id="heroChoices" class="hero-choices"></div>
-      <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan</button><span id="arenaConnectionNote">Lima pasukan · 5 pertahanan setiap pasukan</span></div>
+      <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan</button><span id="arenaConnectionNote">Lima pasukan · 6 menara setiap pasukan</span></div>
     </section>
     <section id="battle" class="battle hidden">
       <div class="hud"><div class="hud-top"><div class="match-tag">5 PASUKAN · CORE MENANG</div><div id="clock" class="clock">∞</div><button id="pauseBtn" class="hud-button">Jeda</button></div><div id="teamBars" class="team-bars"></div><div id="playerStats" class="player-stats">❤️ 100 · ⚡ 100 · 🪙 0 · XP 0</div></div>
-      <div class="world-frame"><canvas id="world" aria-label="Arena tiga dimensi lima pasukan"></canvas><canvas id="minimap" aria-label="Peta mini lima pasukan"></canvas><div class="rotate-note">⟳ Pusing telefon melintang untuk kawalan lebih selesa</div><div class="hint" id="hint">Lawan hero, minion dan menara musuh.</div><div class="feed" id="feed" aria-live="polite"></div>
+      <div class="world-frame"><canvas id="world" aria-label="Arena tiga dimensi lima pasukan"></canvas><canvas id="minimap" aria-label="Peta mini lima pasukan"></canvas><div class="rotate-note">⟳ Pusing telefon melintang — game cuba kunci skrin selepas mula</div><div class="hint" id="hint">Lawan hero, minion dan menara musuh.</div><div class="feed" id="feed" aria-live="polite"></div>
         <div class="controls"><div class="left-controls"><div id="joystick" class="joystick" role="application" aria-label="Joystick kawalan gerakan"><div class="joy-ring"></div><div id="knob" class="knob"></div><span class="joy-arrow up">⌃</span><span class="joy-arrow left">‹</span><span class="joy-arrow right">›</span><span class="joy-arrow down">⌄</span></div></div><div class="right-controls"><button id="attackBtn" class="attack-btn" aria-label="Serangan biasa"><span>⚔</span><b>ATTACK</b></button><button class="skill-btn" data-skill="1" aria-label="Skill 1"><span>✦</span><b>SKILL 1</b><small>4s kuiz</small></button><button class="skill-btn" data-skill="2" aria-label="Skill 2"><span>❖</span><b>SKILL 2</b><small>4s kuiz</small></button><button class="skill-btn ultimate" data-skill="3" aria-label="Ultimate"><span>✹</span><b>ULTI</b><small>4s kuiz</small></button><button class="skill-btn buff-btn" data-skill="4" aria-label="Buff hutan"><span>✚</span><b>BUFF</b><small>4s kuiz</small></button></div></div>
       </div>
       <div class="mobile-help">Jalan / serang bebas · jawab kuiz untuk skill dan buff · hero respawn jika tumbang</div>
@@ -28,6 +28,6 @@
     <footer class="arena-footer">Pilih pasukan dan hero, gerakkan watak, serang struktur secara terus dan gunakan soalan sesi kelas untuk kuasa.</footer>
   </main>
   <script src="config.js?v=8"></script><script src="firebase-live.js?v=arena-live-1"></script><script src="api.js?v=arena-live-1"></script>
-  <script type="module" src="arena.js?v=arena23"></script>
+  <script type="module" src="arena.js?v=arena28"></script>
 </body>
 </html>
