@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#08111f"><title>Pantau Arena · QuizPro KV</title>
+  <link rel="stylesheet" href="arena-watch.css?v=1">
+</head>
+<body>
+  <main class="watch-app">
+    <header class="watch-head"><a href="index.html">← QuizPro KV</a><div><span>MOD GURU · PAPARAN LANGSUNG</span><h1>Pantau Arena</h1></div><b id="liveState" class="offline">● BELUM DISAMBUNG</b></header>
+    <section id="connectCard" class="connect-card"><div><h2>Sambung ke sesi Arena</h2><p>Masukkan kod sesi dan PIN guru. Paparan ini hanya boleh dibaca.</p></div><label>Kod sesi<input id="sessionCode" inputmode="numeric" maxlength="12" autocomplete="off"></label><label>PIN guru<input id="teacherPin" type="password" inputmode="numeric" autocomplete="current-password"></label><button id="connectBtn">Sambung</button><p id="connectStatus" role="status"></p></section>
+    <section id="monitor" class="monitor" hidden>
+      <div class="toolbar"><button id="allBtn" class="active">⌖ Fokus semua</button><label>Fokus pasukan<select id="teamSelect"><option value="all">Semua pasukan</option><option value="0">Merah</option><option value="1">Biru</option><option value="2">Hijau</option><option value="3">Kuning</option><option value="4">Ungu</option></select></label><label>Fokus pemain<select id="playerSelect"><option value="all">Semua pemain</option></select></label><div class="zoom"><button id="zoomOut" aria-label="Zum keluar">−</button><input id="zoomRange" type="range" min="0.65" max="2.6" step="0.05" value="0.78" aria-label="Zum peta"><button id="zoomIn" aria-label="Zum masuk">+</button><output id="zoomLabel">78%</output></div></div>
+      <div class="view-grid"><section class="map-card"><div class="map-title"><b>PETA ARENA</b><span id="playerCount">0 pemain</span></div><div class="map-wrap"><canvas id="arenaMap" aria-label="Peta langsung pemain dalam Arena"></canvas></div><div class="map-legend"><span>● Merah</span><span>● Biru</span><span>● Hijau</span><span>● Kuning</span><span>● Ungu</span></div></section><aside class="side-card"><h2>Kedudukan langsung</h2><div id="teamScores" class="team-scores"></div><h2>Pemain</h2><div id="playersList" class="players-list"></div><p class="small-note">GAME dikira daripada serangan menara yang dihantar. Markah kuiz muncul apabila sesi kuiz selesai.</p></aside></div>
+    </section>
+  </main>
+  <script src="config.js?v=8"></script><script src="firebase-live.js?v=arena-watch-1"></script><script src="api.js?v=arena-watch-1"></script><script type="module" src="arena-watch.js?v=1"></script>
+</body>
+</html>

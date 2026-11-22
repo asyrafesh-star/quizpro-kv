@@ -343,7 +343,7 @@ function renderSession(status, url) {
   const panel=$('sessionPanel'),key=JSON.stringify([sessionCode,status,url]);
   if(panel.dataset.sessionRender===key)return;
   panel.dataset.sessionRender=key;
-  panel.innerHTML = `<div class="session-summary"><div><span class="session-status">${esc(labels[status]||status)}</span><p class="session-code-label">Kod permainan</p><strong class="session-code">${esc(sessionCode)}</strong>${active?`<p><a href="${esc(url)}">Buka halaman pelajar ↗</a></p>${cloudData?.activeGameplayMode==='gaming'?`<p><a href="gaming.html?watch=${encodeURIComponent(sessionCode)}">🏁 Pantau perlumbaan dan Top 5 ↗</a></p>`:''}`:''}</div>${active?`<div class="session-qr"><img id="qr" width="520" height="520" alt="QR sesi kuiz" src="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=${encodeURIComponent(url)}"><small>Imbas untuk masuk</small></div>`:''}</div>`;
+  panel.innerHTML = `<div class="session-summary"><div><span class="session-status">${esc(labels[status]||status)}</span><p class="session-code-label">Kod permainan</p><strong class="session-code">${esc(sessionCode)}</strong>${active?`<p><a href="${esc(url)}">Buka halaman pelajar ↗</a></p>${liveMode==='arena'?`<p><a href="arena-watch.html?watch=${encodeURIComponent(sessionCode)}">🎥 Pantau Arena · zum & fokus pemain ↗</a></p>`:''}${liveMode==='gaming'?`<p><a href="gaming.html?watch=${encodeURIComponent(sessionCode)}">🏁 Pantau perlumbaan dan Top 5 ↗</a></p>`:''}`:''}</div>${active?`<div class="session-qr"><img id="qr" width="520" height="520" alt="QR sesi kuiz" src="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=${encodeURIComponent(url)}"><small>Imbas untuk masuk</small></div>`:''}</div>`;
 }
 async function launchQuestion() {
   try {

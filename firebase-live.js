@@ -45,8 +45,9 @@ const quizRealtime=(()=>{
   async function reset(){stop();const {a}=await sdk();await a.signOut(auth);await a.signInAnonymously(auth);}
   async function arenaUid(){await sdk();return auth.currentUser.uid;}
   async function arenaWatch(code,path,callback){const {d}=await sdk();if(!active||active.code!==String(code))throw new Error('Sila daftar melalui sesi kuiz dahulu.');const root='sessions/'+String(code)+'/arena';const clean=String(path||'').split('/').filter(Boolean);const ref=d.ref(db,[root,...clean].join('/'));return d.onValue(ref,s=>callback(s.val()),e=>console.error('Sambungan Arena:',e));}
+  async function arenaObserve(code,path,callback){const {d}=await sdk();const root='sessions/'+String(code);const clean=String(path||'').split('/').filter(Boolean);const ref=d.ref(db,[root,...clean].join('/'));return d.onValue(ref,s=>callback(s.val()),e=>console.error('Paparan Arena:',e));}
   async function arenaWrite(code,path,value,disconnect=false){const {d}=await sdk();if(!active||active.code!==String(code))throw new Error('Sila daftar melalui sesi kuiz dahulu.');const root='sessions/'+String(code)+'/arena';const clean=String(path||'').split('/').filter(Boolean);const ref=d.ref(db,[root,...clean].join('/'));await d.set(ref,value);if(disconnect)await d.onDisconnect(ref).remove();return true;}
   async function arenaPush(code,path,value){const {d}=await sdk();if(!active||active.code!==String(code))throw new Error('Sila daftar melalui sesi kuiz dahulu.');const root='sessions/'+String(code)+'/arena';const clean=String(path||'').split('/').filter(Boolean);const ref=d.push(d.ref(db,[root,...clean].join('/')));await d.set(ref,value);return ref.key;}
-  return{token,attach,snapshot,submit,reset,stop,active:()=>active,arenaUid,arenaWatch,arenaWrite,arenaPush};
+  return{token,attach,snapshot,submit,reset,stop,active:()=>active,arenaUid,arenaWatch,arenaObserve,arenaWrite,arenaPush};
 })();
 window.quizRealtime=quizRealtime;

@@ -5,10 +5,10 @@
     "sessions": {
       "$code": {
         "state": {
-          ".read": "auth != null && root.child('sessions').child($code).child('grants').child(auth.uid).exists()"
+          ".read": "auth != null && (root.child('sessions').child($code).child('grants').child(auth.uid).exists() || root.child('sessions').child($code).child('observers').child(auth.uid).val() > now)"
         },
         "arena": {
-          ".read": "auth != null && root.child('sessions').child($code).child('grants').child(auth.uid).exists()",
+          ".read": "auth != null && (root.child('sessions').child($code).child('grants').child(auth.uid).exists() || root.child('sessions').child($code).child('observers').child(auth.uid).val() > now)",
           "players": {
             "$uid": {
               ".write": "auth != null && auth.uid === $uid && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
