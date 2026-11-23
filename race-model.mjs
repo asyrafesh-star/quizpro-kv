@@ -1,4 +1,5 @@
 export const REVEAL_MS = 5000;
+export const REVIEW_MS = 1000;
 
 export function orderedQuestions(questions, mode, seed) {
   const order = questions.slice();
@@ -18,7 +19,8 @@ export function orderedQuestions(questions, mode, seed) {
 export function buildAttempt(previous, question, choice, startedAt, stamp, attemptId, runMs = 0) {
   if (!previous || previous.finishedAt || previous.correct?.[question.id]) return null;
   if (previous.last?.id === attemptId) return null;
-  const openedAt = (previous.last ? previous.last.at + REVEAL_MS : startedAt) + runMs;
+  const prevCorrect = Boolean(previous.last && previous.correct?.[previous.last.qid]);
+  const openedAt = (previous.last ? previous.last.at + (prevCorrect ? REVIEW_MS : REVEAL_MS) : startedAt) + runMs;
   const correct = choice === question.correct;
   const streak = correct ? previous.streak + 1 : 0;
   const next = {

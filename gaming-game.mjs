@@ -88,7 +88,7 @@ function nextQuestion() {
   const choices = round.question.options.map((text,index) => ({ text,index }));
   round.options = solo ? shuffled(choices) : shuffled([choices[round.question.correct], ...shuffled(choices.filter(choice => choice.index !== round.question.correct)).slice(0,2)]);
   round.runMs = RUN_MS + (round.run?.collisions || 0) * FREEZE_MS;
-  round.openedAt = solo ? now() : (room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt) + round.runMs;
+  round.openedAt = solo ? now() : (room.self.last ? room.self.last.at + lastRevealMs(room.self) : room.state.startedAt) + round.runMs;
   round.phase = 'answer';round.selection = null;
   $('runControls').hidden = true;
   $('bar').max = 30;
@@ -106,7 +106,7 @@ function nextQuestion() {
 function beginRun() {
   if (solo) { nextQuestion(); return; }
   if (!round.queue.length) { finish(); return; }
-  const startedAt = room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt;
+  const startedAt = room.self.last ? room.self.last.at + lastRevealMs(room.self) : room.state.startedAt;
   const roundIndex = self()?.progress || 0;
   round.run = createRunStage(startedAt, code + ':' + room.uid + ':' + room.self.attempts, roundIndex);
   round.run.lane = round.lane;
@@ -189,7 +189,7 @@ async function answer(choice) {
     } else saved = await room.submit(round.question,choice,round.attemptId,round.runMs || RUN_MS);
     const correct = saved.last.choice === round.question.correct;
     round.phase = correct || solo ? 'feedback' : 'penalty';
-    round.nextReadyAt = saved.last.at + (solo && !correct ? 750 : REVEAL_MS);
+    round.nextReadyAt = saved.last.at + (correct ? REVIEW_MS : solo ? 750 : REVEAL_MS);
     const title = document.createElement('strong'), text = document.createElement('p');
     if (correct) {
       title.textContent = '✨ BETUL! Terus mara';text.textContent = round.question.explanation;
