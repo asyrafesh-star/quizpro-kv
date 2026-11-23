@@ -1,6 +1,6 @@
 import * as THREE from './three.module.min.js';
-import { createMiniAvatar } from './mini-avatar.mjs?v=mini20261117';
-import { HAIR_STYLES, OUTFITS, SHIRT_COLORS, readAvatar, normalizeAvatar, geometryOptions } from './avatar-options.mjs?v=mini20261117';
+import { createMiniAvatar } from './avatar-real.mjs?v=real20261123';
+import { HAIR_STYLES, OUTFITS, SHOES, SHIRT_COLORS, readAvatar, normalizeAvatar, geometryOptions } from './avatar-options.mjs?v=real20261123';
 
 const host = document.getElementById('avatarPreview');
 if (host) {
@@ -20,13 +20,23 @@ if (host) {
     const base = new THREE.Mesh(new THREE.CylinderGeometry(0.7,0.77,0.11,32),new THREE.MeshPhongMaterial({color:0x77717d,shininess:12}));
     base.position.y=-0.06;scene.add(base);
     let yaw=0,targetYaw=0,dragX=null,dirty=true,last=0;
+    function trackLoad(current){
+      host.dataset.modelState='loading';
+      current.ready.then(()=>{if(current===avatar){host.dataset.modelState='ready';dirty=true;}}).catch(()=>{if(current===avatar)host.dataset.modelState='fallback';});
+    }
+    trackLoad(avatar);
+    addEventListener('quizpro-real-avatar-ready',()=>{dirty=true;});
     const hairSelect=document.getElementById('avatarHair'),outfitSelect=document.getElementById('avatarOutfit'),palette=document.getElementById('avatarColors');
     hairSelect.replaceChildren(...HAIR_STYLES.map((label,index)=>new Option(label,index)));
     outfitSelect.replaceChildren(...OUTFITS.map((label,index)=>new Option(label,index)));
     hairSelect.value=choice.hair;outfitSelect.value=choice.outfit;
+    const shoeSelect=document.getElementById('avatarShoes');
+    shoeSelect.replaceChildren(...SHOES.map((label,index)=>new Option(label,index)));
+    shoeSelect.value=choice.shoes;shoeSelect.onchange=()=>{choice.shoes=Number(shoeSelect.value);applyChoice();};
     function applyChoice() {
       choice=normalizeAvatar(choice);
       scene.remove(avatar.group);avatar.dispose();avatar=createMiniAvatar(THREE,geometryOptions(choice));avatar.group.rotation.y=yaw;scene.add(avatar.group);dirty=true;
+      trackLoad(avatar);
       palette.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.color===choice.color)));
       try{localStorage.setItem('quizpro-avatar-v1',JSON.stringify(choice));}catch{}
       document.getElementById('avatarPreviewStatus').textContent=HAIR_STYLES[choice.hair]+' · '+OUTFITS[choice.outfit]+' · '+SHIRT_COLORS.find(color=>color.hex===choice.color).name+' · Disimpan pada peranti ini';
@@ -35,7 +45,7 @@ if (host) {
     palette.replaceChildren(...SHIRT_COLORS.map(color=>{
       const button=document.createElement('button');button.type='button';button.style.backgroundColor=color.hex;button.dataset.color=color.hex;
       button.setAttribute('aria-label','Warna baju '+color.name);button.setAttribute('aria-pressed',String(color.hex===choice.color));button.title=color.name;
-      button.onclick=()=>{choice.color=color.hex;applyChoice();};return button;
+      button.onclick=()=>{choice.color=color.hex;choice.outfit%=2;outfitSelect.value=choice.outfit;applyChoice();};return button;
     }));
     hairSelect.onchange=()=>{choice.hair=Number(hairSelect.value);applyChoice();};
     outfitSelect.onchange=()=>{choice.outfit=Number(outfitSelect.value);applyChoice();};

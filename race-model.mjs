@@ -15,10 +15,10 @@ export function orderedQuestions(questions, mode, seed) {
   return order;
 }
 
-export function buildAttempt(previous, question, choice, startedAt, stamp, attemptId) {
+export function buildAttempt(previous, question, choice, startedAt, stamp, attemptId, runMs = 0) {
   if (!previous || previous.finishedAt || previous.correct?.[question.id]) return null;
   if (previous.last?.id === attemptId) return null;
-  const openedAt = previous.last ? previous.last.at + REVEAL_MS : startedAt;
+  const openedAt = (previous.last ? previous.last.at + REVEAL_MS : startedAt) + runMs;
   const correct = choice === question.correct;
   const streak = correct ? previous.streak + 1 : 0;
   const next = {

@@ -1,5 +1,6 @@
-import { orderedQuestions, racePoints, REVEAL_MS } from './race-model.mjs?v=race20261117';
-import { connect, createTest } from './race-live.mjs?v=avatar20261117';
+import { RUN_MS, createRunStage, stepRun, steerRun, jumpRun, slideRun } from './run-stage.mjs?v=real20261123';
+import { orderedQuestions, racePoints, REVEAL_MS } from './race-model.mjs?v=run20261123';
+import { connect, createTest } from './race-live.mjs?v=run20261123';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -86,8 +87,11 @@ function nextQuestion() {
   round.attemptId = crypto.randomUUID();
   const choices = round.question.options.map((text,index) => ({ text,index }));
   round.options = solo ? shuffled(choices) : shuffled([choices[round.question.correct], ...shuffled(choices.filter(choice => choice.index !== round.question.correct)).slice(0,2)]);
-  round.openedAt = solo ? now() : room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt;
+  round.openedAt = solo ? now() : (room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt) + RUN_MS;
   round.phase = 'answer';round.selection = null;
+  $('runControls').hidden = true;
+  $('bar').setAttribute('aria-label','Baki masa soalan');
+  $('gamingQuestionImage').hidden = true;
   paintQuestion(round.question);$('feedback').replaceChildren();$('retryAnswer').hidden = true;
   $('answers').replaceChildren(...round.options.map((option,index) => {
     const button = document.createElement('button');button.type = 'button';
@@ -96,13 +100,55 @@ function nextQuestion() {
     button.onclick = () => answer(option.index);return button;
   }));
 }
+
+function beginRun() {
+  if (solo) { nextQuestion(); return; }
+  if (!round.queue.length) { finish(); return; }
+  const startedAt = room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt;
+  round.run = createRunStage(startedAt, code + ':' + room.uid + ':' + room.self.attempts);
+  round.run.lane = round.lane;
+  round.phase = 'run';
+  $('runControls').hidden = false;
+  $('bar').setAttribute('aria-label','Baki masa larian');
+  $('question').textContent = '🏃 Lari dulu, soalan muncul selepas 30 saat';
+  $('answers').replaceChildren();$('feedback').replaceChildren();$('gamingQuestionImage').hidden = true;
+  $('retryAnswer').hidden = true;
+}
+function runInput(kind) {
+  if (round?.phase !== 'run') return;
+  tick();
+  const clock = round.run.lastAt;
+  if (kind === 'jump') jumpRun(round.run, clock);
+  else if(kind === 'slide') slideRun(round.run, clock);
+  else steerRun(round.run, kind === 'left' ? -1 : 1, clock);
+  round.lane = round.run.lane;tick();
+}
+$('runLeft').onclick = () => runInput('left');
+$('runRight').onclick = () => runInput('right');
+$('runJump').onclick = () => runInput('jump');
+$('runSlide').onclick = () => runInput('slide');
+addEventListener('keydown', event => {
+  if (round?.phase !== 'run' || /INPUT|SELECT|TEXTAREA/.test(event.target.tagName)) return;
+  const kind = {ArrowLeft:'left',ArrowRight:'right',ArrowUp:'jump',ArrowDown:'slide',' ':'jump'}[event.key];
+  if (kind) { event.preventDefault(); if (!event.repeat) runInput(kind); }
+});
+let touchStart;
+$('race3d').addEventListener('touchstart', event => { const p=event.changedTouches[0];touchStart={x:p.clientX,y:p.clientY}; }, {passive:true});
+$('race3d').addEventListener('touchend', event => {
+  if (!touchStart) return;
+  const p=event.changedTouches[0], dx=p.clientX-touchStart.x, dy=p.clientY-touchStart.y;touchStart=null;
+  if (Math.max(Math.abs(dx),Math.abs(dy)) < 25) return;
+  if (Math.abs(dx)>Math.abs(dy)) runInput(dx<0?'left':'right');else runInput(dy<0?'jump':'slide');
+}, {passive:true});
+
 function self() { return solo ? round.self : room?.self; }
 function start() {
   if (!bank || (!solo && !room?.self)) return;
   audio.unlock();
   const saved = solo ? { attempts:0,progress:0,mistakes:0,streak:0,correct:{} } : room.self;
   const queue = orderedQuestions(bank.questions,bank.orderMode,room?.uid || 'preview').filter(question => !saved.correct?.[question.id]);
-  round = { queue, lane:1,phase:'waiting',self:saved,startedAt:now(),openedAt:0 };
+  round = { queue, lane:1,phase:'waiting',self:saved,startedAt:now(),openedAt:0, coins:0 };
+  try { round.coins = Number(sessionStorage.getItem('quizproRunCoins:'+code)) || 0; } catch {}
   $('intro').hidden = $('end').hidden = true;$('play').hidden = false;
   $('question').textContent = 'Menunggu cikgu memulakan perlumbaan…';$('answers').replaceChildren();$('feedback').replaceChildren();
   if (saved.finishedAt) { finish();return; }
@@ -136,7 +182,7 @@ async function answer(choice) {
       saved = round.self;saved.attempts++;saved.progress += hit ? 1 : 0;saved.mistakes += hit ? 0 : 1;
       if (hit) saved.correct[round.question.id] = { at:now(),openedAt:round.openedAt,streak:0 };
       saved.last = { choice,qid:round.question.id,at:now() };
-    } else saved = await room.submit(round.question,choice,round.attemptId);
+    } else saved = await room.submit(round.question,choice,round.attemptId,RUN_MS);
     const correct = saved.last.choice === round.question.correct;
     round.phase = correct || solo ? 'feedback' : 'penalty';
     round.nextReadyAt = saved.last.at + (solo && !correct ? 750 : REVEAL_MS);
@@ -178,12 +224,35 @@ function tick() {
     if (!solo && (!state?.startedAt || state.status === 'waiting')) { $('timer').textContent = 'Lobi · Menunggu cikgu';return; }
     const left = solo ? 0 : state.startedAt-clock;
     if (left > 0) { $('timer').textContent = '🏁 Mula dalam ' + Math.ceil(left/1000);return; }
-    nextQuestion();return;
+    beginRun();return;
   }
   if (['penalty','feedback'].includes(round.phase)) {
     $('bar').value = 0;
     $('timer').textContent = (round.phase === 'penalty' ? '❄️ Beku · ' : '✨ Semakan · ') + Math.max(0,Math.ceil((round.nextReadyAt-clock)/1000)) + ' saat';
-    if (clock >= round.nextReadyAt) nextQuestion();
+    if (clock >= round.nextReadyAt) beginRun();
+    return;
+  }
+  if (round.phase === 'run') {
+    const stage = round.run;
+    const outcome = stepRun(stage, clock);
+    if (outcome.coin) { round.coins += outcome.coin; try { sessionStorage.setItem('quizproRunCoins:'+code, String(round.coins)); } catch {} }
+    if (outcome.hit) audio.play('wrong');
+    round.lane = stage.lane;
+    const frozen = clock < stage.frozenUntil && clock < stage.until;
+    scene.dataset.phase = frozen ? 'run-penalty' : 'run';
+    scene.dataset.lane = stage.lane;
+    scene.dataset.runDistance = stage.distance;
+    scene.dataset.runStartedAt = stage.startedAt;
+    scene.dataset.jump = Math.max(0, Math.sin(Math.max(0, Math.min(1, (850-stage.jumpUntil+clock)/850))*Math.PI))*1.7;
+    scene.dataset.slide = clock < stage.slideUntil && !frozen ? '1':'0';
+    scene.dataset.runItems = JSON.stringify(stage.items.filter(item => !item.done && item.distance-stage.distance < 95));
+    $('runCoins').textContent = '🪙 ' + round.coins + ' coin';
+    $('runHint').textContent = frozen ? '❄️ Terlanggar! Beku ' + Math.ceil((stage.frozenUntil-clock)/1000) + ' saat' : 'Elak halangan · kutip coin · lompat atau tukar lorong';
+    for (const button of $('runControls').querySelectorAll('button')) button.disabled = frozen;
+    $('runner').classList.toggle('frozen', frozen);
+    $('bar').value = Math.max(0,(stage.until-clock)/1000);
+    $('timer').textContent = '🏃 Larian · ' + Math.max(0,Math.ceil((stage.until-clock)/1000)) + ' saat sebelum soalan';
+    if (clock >= stage.until) { nextQuestion(); scene.dataset.phase = round.phase; scene.dataset.jump = 0; }
     return;
   }
   if (round.phase !== 'answer') { $('timer').textContent = round.phase === 'retry' ? 'Menunggu penghantaran semula' : 'Mengesahkan jawapan…';return; }
@@ -218,7 +287,7 @@ function finish() {
   const current = self();
   $('finishHeading').textContent = solo ? 'Pratonton selesai' : current.finishedAt ? '🏁 Anda sampai ke penamat!' : 'Perlumbaan ditamatkan';
   const duration = current.finishedAt ? current.finishedAt-room.state.startedAt : now()-round.startedAt;
-  $('result').textContent = racePoints(current,bank.questions) + ' markah · ' + timeText(duration) + ' · ' + current.mistakes + ' kesilapan';
+  $('result').textContent = racePoints(current,bank.questions) + ' markah · ' + timeText(duration) + ' · ' + current.mistakes + ' kesilapan' + (solo ? '' : ' · 🪙 ' + round.coins + ' coin');
   $('record').textContent = solo ? 'Pratonton dalam pelayar ini.' : 'Keputusan perlumbaan disimpan dalam sesi ini.';
   $('restart').hidden = !solo && !tester;
   renderPodium();if (current.finishedAt || solo) { celebrate();audio.play('finish'); }

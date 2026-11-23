@@ -1,0 +1,15 @@
+Models: Quaternius — Universal Base Characters (Standard), Modular Character
+Outfits - Fantasy (Standard). Downloaded by the user from the creator's itch.io.
+License: CC0 1.0, see the included original license files.
+
+This prototype uses one male base character, four original hair meshes and
+six transformed variants, two upper-body cuts in ten preset colour choices,
+one fixed pair of trousers and one shoe mesh in three colour choices.
+It does not contain ten independently authored clothing models or shoe meshes.
+
+Changes: reduced textures to at most 512px; omitted normal/ORM maps from active
+materials; removed hidden base-body triangles to avoid clipping; combined
+head, upper clothing and fixed lower clothing; procedural bone motion.
+
+Three.js addons: GLTFLoader, SkeletonUtils and BufferGeometryUtils, r181,
+MIT license, copyright Three.js Authors. See three-LICENSE.txt in site root.

@@ -1,6 +1,6 @@
 import * as THREE from './three.module.min.js';
-import { createMiniAvatar } from './mini-avatar.mjs?v=mini20261117';
-import { readAvatar, geometryOptions } from './avatar-options.mjs?v=mini20261117';
+import { createMiniAvatar } from './avatar-real.mjs?v=real20261123';
+import { readAvatar, geometryOptions } from './avatar-options.mjs?v=real20261123';
 
 const host = document.getElementById('race3d');
 const status = document.getElementById('renderStatus');
@@ -88,20 +88,31 @@ function createRace() {
     gates.add(label);
   });
   scene.add(gates);
+  // Fixed pools: no object/geometry allocation while a pupil runs.
+  const runObstacles = Array.from({length:6}, () => {
+    const obstacle = new THREE.Group();
+    const barrier=new THREE.Group(),train=new THREE.Group(),overhead=new THREE.Group();obstacle.add(barrier,train,overhead);obstacle.userData={barrier,train,overhead};
+    box(barrier,0xf08738,[2.15,0.95,0.7],[0,0.55,0]);
+    box(barrier,0xffe6a0,[2.2,0.13,0.76],[0,0.95,0]);
+    box(train,0x416ca1,[2.4,2.5,7],[0,1.35,-3.5]);
+    box(train,0xdce4e9,[2.45,0.35,7.1],[0,2.6,-3.5]);
+    box(train,0x92dce9,[1.85,0.7,0.08],[0,2,-0.0]);
+    [-0.8,0.8].forEach(x=>box(train,0xffe1a1,[0.3,0.25,0.08],[x,0.65,0.02]));
+    [-1,1].forEach(side=>{for(let z=-1;z>-7;z-=1.6)box(train,0x92dce9,[0.06,0.7,1],[side*1.22,2,z]);});
+    box(overhead,0xffd05b,[2.8,0.55,0.5],[0,1.75,0]);
+    [-1.25,1.25].forEach(x=>box(overhead,0xf08738,[0.12,2.1,0.2],[x,1.05,0]));
+    scene.add(obstacle);obstacle.visible=false;return obstacle;
+  });
+  const coinGeometry = new THREE.TorusGeometry(0.32,0.1,5,10);
+  const runCoins = Array.from({length:36}, () => {
+    const coin = new THREE.Mesh(coinGeometry,material(0xffcf49));
+    scene.add(coin);coin.visible=false;return coin;
+  });
   const labelsObserver = new MutationObserver(() => {
     const answers = [...document.querySelectorAll('#answers button span')];
     gateLabels.forEach(({ context, texture, color, index }) => {
       context.fillStyle = '#' + color.toString(16).padStart(6, '0');context.fillRect(0,0,256,256);
       context.fillStyle = '#fff';context.textAlign = 'center';context.textBaseline = 'middle';context.font = '900 72px system-ui';context.fillText('ABC'[index],128,48);
-      context.font = '700 22px system-ui';
-      const words = (answers[index]?.textContent || '').split(/\s+/);
-      const lines = [];let line = '';
-      for (const word of words) {
-        if (context.measureText(line + ' ' + word).width > 225 && line) { lines.push(line);line = word; }
-        else line = line ? line + ' ' + word : word;
-      }
-      if (line) lines.push(line);
-      lines.slice(0,5).forEach((value,row) => context.fillText(value,128,100+row*28,225));
       texture.needsUpdate = true;
     });
   });
@@ -198,26 +209,40 @@ function createRace() {
       }
       previousPhase=phase;
     }
-    const moving = phase === 'answer' || phase === 'feedback';
-    const speed = moving && !reducedMotion ? (phase === 'feedback' ? 18 : 8) : 0;
+    const running = phase === 'run' || phase === 'run-penalty';
+    const moving = phase === 'run' || phase === 'feedback';
+    const speed = moving && !reducedMotion ? (phase === 'feedback' ? 18 : 12) : 0;
     stride += dt * speed;
     const lane = Number(host.dataset.lane ?? 1);
-    runner.position.x += ((lane - 1) * 3 - runner.position.x) * Math.min(1, dt * 9);
-    const jump=phase==='feedback'&&!reducedMotion&&feedbackAge<0.8?Math.sin(feedbackAge/0.8*Math.PI)*0.8:0;
+    runner.position.x += ((lane - 1) * 3 - runner.position.x) * Math.min(1, dt * 22);
+    const jump=running ? Number(host.dataset.jump || 0) : phase==='feedback'&&!reducedMotion&&feedbackAge<0.8?Math.sin(feedbackAge/0.8*Math.PI)*0.8:0;
     runner.position.y = jump+(moving && !reducedMotion ? Math.abs(Math.sin(stride * 2)) * 0.07 : 0);
+    runner.scale.y=host.dataset.slide==='1'&&running?0.48:1;
     limbs.forEach(({ leg, arm, knee, side }) => {
       leg.rotation.x = moving && !reducedMotion ? Math.sin(stride * 2) * 0.65 * side : 0;
       arm.rotation.x = -leg.rotation.x;
       knee.rotation.x = Math.max(0,-leg.rotation.x)*0.65;
     });
     shadow.position.x = ice.position.x = runner.position.x;
-    ice.visible = phase === 'penalty';
+    ice.visible = phase === 'penalty' || phase === 'run-penalty';
+    let runItems=[];
+    if(running){try{runItems=JSON.parse(host.dataset.runItems||'[]');}catch{}}
+    const distance=Number(host.dataset.runDistance||0);
+    let obstacleIndex=0,coinIndex=0;
+    runObstacles.forEach(item=>item.visible=false);runCoins.forEach(item=>item.visible=false);
+    for(const item of runItems){
+      const mesh=item.kind==='coin'?runCoins[coinIndex++]:runObstacles[obstacleIndex++];
+      if(!mesh)continue;
+      if(item.kind!=='coin')for(const [key,part] of Object.entries(mesh.userData))part.visible=key===(item.type||'barrier');
+      mesh.visible=true;mesh.position.set((item.lane-1)*3,item.kind==='coin'?1.15:0,1-(item.distance-distance));
+      if(item.kind==='coin')mesh.rotation.y=time*0.003;
+    }
     stripes.forEach(stripe => { stripe.position.z += dt * speed; if (stripe.position.z > 10) stripe.position.z -= 112; });
     buildings.forEach(building => { building.position.z += dt * speed; if (building.position.z > 14) building.position.z -= 126; });
     const progress = Number(host.dataset.progress || 0);
     finish.position.z = -95 + progress * 92;
     gates.position.z=phase==='feedback'?-15+Math.min(1,feedbackAge/0.9)*25:-15;
-    gates.visible = progress < 1 && !(phase==='feedback'&&feedbackAge>0.9);
+    gates.visible = !running && ['answer','feedback','submitting','retry'].includes(phase) && progress < 1 && !(phase==='feedback'&&feedbackAge>0.9);
     ribbon.visible=progress>=1&&phase==='feedback'&&feedbackAge<0.8;
     ribbon.scale.x=8.4*(1+feedbackAge*0.7);
     burstAge+=dt;burst.visible=burstAge<1.2;
@@ -243,10 +268,10 @@ function createRace() {
       }
       const target=1-Math.max(-1,Math.min(7,other.progress-progress*Number(host.dataset.total||1)))*4;
       entry.avatar.position.set(index===0?-3:index===1?3:0,0,Math.min(5,target));
-      entry.legs.forEach(({limb,arm,knee,side})=>{limb.rotation.x=moving&&!other.finished&&!reducedMotion?Math.sin(stride*2)*0.6*side:0;arm.rotation.x=-limb.rotation.x;knee.rotation.x=Math.max(0,-limb.rotation.x)*0.65;});
+      entry.model.limbs.forEach(({leg:limb,arm,knee,side})=>{limb.rotation.x=moving&&!other.finished&&!reducedMotion?Math.sin(stride*2)*0.6*side:0;arm.rotation.x=-limb.rotation.x;knee.rotation.x=Math.max(0,-limb.rotation.x)*0.65;});
       if(entry.name!==other.name){entry.name=other.name;const context=entry.canvas.getContext('2d');context.clearRect(0,0,256,64);context.fillStyle='#152039dd';context.fillRect(0,0,256,64);context.fillStyle='#fff';context.font='700 22px system-ui';context.textAlign='center';context.fillText(other.name.slice(0,27),128,39,246);entry.texture.needsUpdate=true;}
     });
-    scene.fog.color.setHex(phase === 'penalty' ? 0x244f72 : 0x192b50);
+    scene.fog.color.setHex(ice.visible ? 0x244f72 : 0x192b50);
     renderer.setClearColor(scene.fog.color);
     renderer.render(scene, camera);
   });
@@ -259,10 +284,38 @@ function createRace() {
   });
 }
 
+function simpleTrack() {
+  const track=host.closest('.race-scene').querySelector('.race-track');
+  const canvas=document.createElement('canvas');canvas.width=600;canvas.height=260;
+  canvas.style.cssText='width:100%;height:260px;display:block';
+  track.style.cssText='height:260px;margin:0';track.append(canvas);
+  const context=canvas.getContext('2d');
+  setInterval(()=>{
+    if(document.getElementById('play').hidden)return;
+    const phase=host.dataset.phase, running=phase==='run'||phase==='run-penalty';
+    canvas.hidden=!running;if(!running)return;
+    context.fillStyle='#1d2943';context.fillRect(0,0,600,260);
+    context.strokeStyle='#a89be0';context.setLineDash([12,10]);
+    [200,400].forEach(x=>{context.beginPath();context.moveTo(x,0);context.lineTo(x,260);context.stroke();});
+    let items=[];try{items=JSON.parse(host.dataset.runItems||'[]');}catch{}
+    const distance=Number(host.dataset.runDistance||0);
+    items.forEach(item=>{
+      const y=215-(item.distance-distance)*3.5;if(y < -20)return;
+      const x=100+item.lane*200;
+      context.fillStyle=item.kind==='coin'?'#ffcf49':'#f08738';
+      if(item.kind==='coin'){context.beginPath();context.arc(x,y,11,0,Math.PI*2);context.fill();}
+      else context.fillRect(x-48,y-10,96,20);
+    });
+    context.font='36px system-ui';context.textAlign='center';
+    context.fillText(phase==='run-penalty'?'❄️':'🏃',100+Number(host.dataset.lane||1)*200,235-Number(host.dataset.jump||0)*30);
+  },50);
+}
+
 try {
   createRace();
 } catch (error) {
   host.closest('.race-scene').classList.remove('has-3d');
   status.textContent = 'Paparan ringkas diaktifkan. Anda boleh terus menjawab.';
+  simpleTrack();
   console.warn('QuizPro 3D renderer unavailable', error);
 }

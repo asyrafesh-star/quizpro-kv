@@ -13,16 +13,36 @@
             "$uid": {
               ".write": "auth != null && auth.uid === $uid && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
               ".validate": "newData.hasChildren(['team','hero','nick','x','z','rotation','at'])",
-              "team": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
-              "hero": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"},
-              "nick": {".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 6"},
-              "x": {".validate": "newData.isNumber() && newData.val() >= -40 && newData.val() <= 40"},
-              "z": {".validate": "newData.isNumber() && newData.val() >= -40 && newData.val() <= 40"},
-              "rotation": {".validate": "newData.isNumber() && newData.val() >= -7 && newData.val() <= 7"},
-              "hp": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"},
-              "alive": {".validate": "newData.isBoolean()"},
-              "at": {".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"},
-              "$other": {".validate": false}
+              "team": {
+                ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"
+              },
+              "hero": {
+                ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"
+              },
+              "nick": {
+                ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 6"
+              },
+              "x": {
+                ".validate": "newData.isNumber() && newData.val() >= -40 && newData.val() <= 40"
+              },
+              "z": {
+                ".validate": "newData.isNumber() && newData.val() >= -40 && newData.val() <= 40"
+              },
+              "rotation": {
+                ".validate": "newData.isNumber() && newData.val() >= -7 && newData.val() <= 7"
+              },
+              "hp": {
+                ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+              },
+              "alive": {
+                ".validate": "newData.isBoolean()"
+              },
+              "at": {
+                ".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"
+              },
+              "$other": {
+                ".validate": false
+              }
             }
           },
           "events": {
@@ -30,14 +50,30 @@
               "$event": {
                 ".write": "auth != null && auth.uid === $uid && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && !data.exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
                 ".validate": "newData.hasChildren(['type','team','hero','towerTeam','towerIndex','damage','at'])",
-                "type": {".validate": "newData.val() === 'tower-hit'"},
-                "team": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
-                "hero": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"},
-                "towerTeam": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"},
-                "towerIndex": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 5"},
-                "damage": {".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 1 && newData.val() <= 10"},
-                "at": {".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"},
-                "$other": {".validate": false}
+                "type": {
+                  ".validate": "newData.val() === 'tower-hit'"
+                },
+                "team": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"
+                },
+                "hero": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"
+                },
+                "towerTeam": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"
+                },
+                "towerIndex": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 5"
+                },
+                "damage": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 1 && newData.val() <= 10"
+                },
+                "at": {
+                  ".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"
+                },
+                "$other": {
+                  ".validate": false
+                }
               }
             }
           }
@@ -94,13 +130,16 @@
                 ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"
               },
               "outfit": {
-                ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 2"
+                ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 9"
               },
               "color": {
                 ".validate": "newData.isString() && (newData.val() === '#f5e7cd' || newData.val() === '#e94656' || newData.val() === '#ed8c32' || newData.val() === '#ecc84b' || newData.val() === '#3ea96b' || newData.val() === '#28a8a4' || newData.val() === '#4689e6' || newData.val() === '#9964d8' || newData.val() === '#eb8fb4' || newData.val() === '#303747')"
               },
               "$other": {
                 ".validate": false
+              },
+              "shoes": {
+                ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 2"
               }
             }
           }
@@ -111,7 +150,7 @@
         "runners": {
           ".read": "auth != null && (root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() || root.child('gamingRaces').child($code).child('observers').child(auth.uid).val() === true)",
           "$uid": {
-            ".validate": "newData.hasChildren(['attempts','progress','mistakes','streak','last']) && root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).exists() && !data.child('correct').child(newData.child('last/qid').val()).exists() && newData.child('last/at').val() === now && (!data.child('last').exists() || (now >= data.child('last/at').val() + 5000 && newData.child('last/id').val() !== data.child('last/id').val())) && (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? newData.child('correct').child(newData.child('last/qid').val()).child('at').val() === now : !newData.child('correct').child(newData.child('last/qid').val()).exists()) && newData.child('attempts').val() === data.child('attempts').val() + 1 && newData.child('progress').val() === data.child('progress').val() + (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? 1 : 0) && newData.child('mistakes').val() === data.child('mistakes').val() + (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? 0 : 1) && newData.child('streak').val() === (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? data.child('streak').val() + 1 : 0) && (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? (now - (data.child('last/at').exists() ? data.child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()) < 30000) : true) && (now - (data.child('last/at').exists() ? data.child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()) >= 0) && (newData.child('progress').val() === root.child('gamingRaces').child($code).child('state').child('total').val() ? newData.child('finishedAt').val() === now : !newData.child('finishedAt').exists())",
+            ".validate": "newData.hasChildren(['attempts','progress','mistakes','streak','last']) && root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).exists() && !data.child('correct').child(newData.child('last/qid').val()).exists() && newData.child('last/at').val() === now && (!data.child('last').exists() || (now >= data.child('last/at').val() + 5000 && newData.child('last/id').val() !== data.child('last/id').val())) && (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? newData.child('correct').child(newData.child('last/qid').val()).child('at').val() === now : !newData.child('correct').child(newData.child('last/qid').val()).exists()) && newData.child('attempts').val() === data.child('attempts').val() + 1 && newData.child('progress').val() === data.child('progress').val() + (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? 1 : 0) && newData.child('mistakes').val() === data.child('mistakes').val() + (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? 0 : 1) && newData.child('streak').val() === (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? data.child('streak').val() + 1 : 0) && (newData.child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child(newData.child('last/qid').val()).val() ? (now - newData.child('correct').child(newData.child('last/qid').val()).child('openedAt').val() < 30000 && now >= newData.child('correct').child(newData.child('last/qid').val()).child('openedAt').val()) : true) && (now - (data.child('last/at').exists() ? data.child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()) >= 0) && (newData.child('progress').val() === root.child('gamingRaces').child($code).child('state').child('total').val() ? newData.child('finishedAt').val() === now : !newData.child('finishedAt').exists())",
             "attempts": {
               ".validate": "newData.isNumber()",
               ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state').child('status').val() === 'running' && now >= root.child('gamingRaces').child($code).child('state').child('startedAt').val() && !root.child('gamingRaces').child($code).child('runners').child($uid).child('finishedAt').exists() && newData.exists()"
@@ -149,7 +188,7 @@
             },
             "correct": {
               "$qid": {
-                ".validate": "data.exists() ? (newData.child('at').val() === data.child('at').val() && newData.child('openedAt').val() === data.child('openedAt').val() && newData.child('streak').val() === data.child('streak').val()) : (newData.hasChildren(['at','openedAt','streak']) && newData.parent().parent().child('last/qid').val() === $qid && newData.parent().parent().child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child($qid).val() && newData.child('at').val() === now && newData.child('openedAt').val() === (data.parent().parent().child('last/at').exists() ? data.parent().parent().child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()))",
+                ".validate": "data.exists() ? (newData.child('at').val() === data.child('at').val() && newData.child('openedAt').val() === data.child('openedAt').val() && newData.child('streak').val() === data.child('streak').val()) : (newData.hasChildren(['at','openedAt','streak']) && newData.parent().parent().child('last/qid').val() === $qid && newData.parent().parent().child('last/choice').val() === root.child('gamingRaces').child($code).child('keys').child($qid).val() && newData.child('at').val() === now && (newData.child('openedAt').val() === (data.parent().parent().child('last/at').exists() ? data.parent().parent().child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()) || newData.child('openedAt').val() === (data.parent().parent().child('last/at').exists() ? data.parent().parent().child('last/at').val() + 5000 : root.child('gamingRaces').child($code).child('state').child('startedAt').val()) + 30000))",
                 "at": {
                   ".validate": "newData.isNumber()"
                 },

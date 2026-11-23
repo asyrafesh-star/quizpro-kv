@@ -1,0 +1,5177 @@
+{
+  "at": "2026-11-17T01:26:45.456Z",
+  "session": "test-b342f37ab3a142da",
+  "scope": "28 independent authenticated Firebase SDK clients with persistent realtime transport; not 28 physical phones or rendered browser tabs",
+  "participants": 28,
+  "questions": 20,
+  "finished": 28,
+  "attempts": 568,
+  "verifiedCorrect": 560,
+  "expectedMistakes": 8,
+  "realtimeSubscribersVerified": 28,
+  "latencyMs": {
+    "min": 45,
+    "median": 857,
+    "p95": 3707,
+    "max": 16488
+  },
+  "firstWaveArrivalSpreadMs": 60,
+  "security": {
+    "beforeStartDenied": true,
+    "penaltyBypassDenied": true,
+    "otherPlayerWriteDenied": true,
+    "completedResultImmutable": true,
+    "rejoinPreserved": true
+  },
+  "top5": [
+    {
+      "rank": 1,
+      "name": "ISMAHANI RAFIQAH BINTI ABDUL RASYID",
+      "durationMs": 116978,
+      "points": 308
+    },
+    {
+      "rank": 2,
+      "name": "ADIB FAHIM BIN ABDUL JALAL",
+      "durationMs": 116981,
+      "points": 308
+    },
+    {
+      "rank": 3,
+      "name": "ADAM ISKANDAR BIN MOHD SALEHIN",
+      "durationMs": 116982,
+      "points": 308
+    },
+    {
+      "rank": 4,
+      "name": "ADAM MUKHRIZ BIN MOHD AZROL EFFENDI",
+      "durationMs": 116983,
+      "points": 308
+    },
+    {
+      "rank": 5,
+      "name": "ADAM FARIS BIN NORFAEEZ",
+      "durationMs": 116986,
+      "points": 308
+    }
+  ],
+  "results": [
+    {
+      "client": 1,
+      "turn": 1,
+      "ms": 110,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878692878,
+      "dispatchAt": 1794878692811
+    },
+    {
+      "client": 2,
+      "turn": 1,
+      "ms": 235,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692875,
+      "dispatchAt": 1794878692826
+    },
+    {
+      "client": 3,
+      "turn": 1,
+      "ms": 251,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692879,
+      "dispatchAt": 1794878692819
+    },
+    {
+      "client": 4,
+      "turn": 1,
+      "ms": 409,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692881,
+      "dispatchAt": 1794878692826
+    },
+    {
+      "client": 5,
+      "turn": 1,
+      "ms": 78,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692883,
+      "dispatchAt": 1794878692827
+    },
+    {
+      "client": 6,
+      "turn": 1,
+      "ms": 271,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692887,
+      "dispatchAt": 1794878692836
+    },
+    {
+      "client": 7,
+      "turn": 1,
+      "ms": 363,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692889,
+      "dispatchAt": 1794878692833
+    },
+    {
+      "client": 8,
+      "turn": 1,
+      "ms": 166,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878692895,
+      "dispatchAt": 1794878692834
+    },
+    {
+      "client": 9,
+      "turn": 1,
+      "ms": 262,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692893,
+      "dispatchAt": 1794878692836
+    },
+    {
+      "client": 10,
+      "turn": 1,
+      "ms": 414,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692894,
+      "dispatchAt": 1794878692838
+    },
+    {
+      "client": 11,
+      "turn": 1,
+      "ms": 329,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692900,
+      "dispatchAt": 1794878692841
+    },
+    {
+      "client": 12,
+      "turn": 1,
+      "ms": 140,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692894,
+      "dispatchAt": 1794878692836
+    },
+    {
+      "client": 13,
+      "turn": 1,
+      "ms": 271,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692892,
+      "dispatchAt": 1794878692845
+    },
+    {
+      "client": 14,
+      "turn": 1,
+      "ms": 368,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692899,
+      "dispatchAt": 1794878692842
+    },
+    {
+      "client": 15,
+      "turn": 1,
+      "ms": 420,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878692898,
+      "dispatchAt": 1794878692845
+    },
+    {
+      "client": 16,
+      "turn": 1,
+      "ms": 388,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692902,
+      "dispatchAt": 1794878692855
+    },
+    {
+      "client": 17,
+      "turn": 1,
+      "ms": 95,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692905,
+      "dispatchAt": 1794878692858
+    },
+    {
+      "client": 18,
+      "turn": 1,
+      "ms": 190,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692911,
+      "dispatchAt": 1794878692866
+    },
+    {
+      "client": 19,
+      "turn": 1,
+      "ms": 321,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692909,
+      "dispatchAt": 1794878692870
+    },
+    {
+      "client": 20,
+      "turn": 1,
+      "ms": 221,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692914,
+      "dispatchAt": 1794878692869
+    },
+    {
+      "client": 21,
+      "turn": 1,
+      "ms": 172,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692916,
+      "dispatchAt": 1794878692870
+    },
+    {
+      "client": 22,
+      "turn": 1,
+      "ms": 394,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878692917,
+      "dispatchAt": 1794878692857
+    },
+    {
+      "client": 23,
+      "turn": 1,
+      "ms": 164,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692922,
+      "dispatchAt": 1794878692873
+    },
+    {
+      "client": 24,
+      "turn": 1,
+      "ms": 332,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692930,
+      "dispatchAt": 1794878692874
+    },
+    {
+      "client": 25,
+      "turn": 1,
+      "ms": 88,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692928,
+      "dispatchAt": 1794878692884
+    },
+    {
+      "client": 26,
+      "turn": 1,
+      "ms": 93,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692934,
+      "dispatchAt": 1794878692885
+    },
+    {
+      "client": 27,
+      "turn": 1,
+      "ms": 349,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692932,
+      "dispatchAt": 1794878692885
+    },
+    {
+      "client": 28,
+      "turn": 1,
+      "ms": 189,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878692935,
+      "dispatchAt": 1794878692861
+    },
+    {
+      "client": 1,
+      "turn": 2,
+      "ms": 45,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878698199,
+      "dispatchAt": 1794878698149
+    },
+    {
+      "client": 2,
+      "turn": 2,
+      "ms": 465,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698208,
+      "dispatchAt": 1794878698157
+    },
+    {
+      "client": 3,
+      "turn": 2,
+      "ms": 1083,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698212,
+      "dispatchAt": 1794878698150
+    },
+    {
+      "client": 4,
+      "turn": 2,
+      "ms": 1166,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698222,
+      "dispatchAt": 1794878698157
+    },
+    {
+      "client": 5,
+      "turn": 2,
+      "ms": 1147,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698223,
+      "dispatchAt": 1794878698154
+    },
+    {
+      "client": 6,
+      "turn": 2,
+      "ms": 1150,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698226,
+      "dispatchAt": 1794878698162
+    },
+    {
+      "client": 7,
+      "turn": 2,
+      "ms": 760,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698219,
+      "dispatchAt": 1794878698158
+    },
+    {
+      "client": 8,
+      "turn": 2,
+      "ms": 139,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878698224,
+      "dispatchAt": 1794878698163
+    },
+    {
+      "client": 9,
+      "turn": 2,
+      "ms": 1114,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698230,
+      "dispatchAt": 1794878698168
+    },
+    {
+      "client": 10,
+      "turn": 2,
+      "ms": 177,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698231,
+      "dispatchAt": 1794878698170
+    },
+    {
+      "client": 11,
+      "turn": 2,
+      "ms": 1064,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698241,
+      "dispatchAt": 1794878698172
+    },
+    {
+      "client": 12,
+      "turn": 2,
+      "ms": 229,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698232,
+      "dispatchAt": 1794878698166
+    },
+    {
+      "client": 13,
+      "turn": 2,
+      "ms": 368,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698229,
+      "dispatchAt": 1794878698174
+    },
+    {
+      "client": 14,
+      "turn": 2,
+      "ms": 1096,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698232,
+      "dispatchAt": 1794878698165
+    },
+    {
+      "client": 15,
+      "turn": 2,
+      "ms": 315,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878698239,
+      "dispatchAt": 1794878698167
+    },
+    {
+      "client": 16,
+      "turn": 2,
+      "ms": 915,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698238,
+      "dispatchAt": 1794878698175
+    },
+    {
+      "client": 17,
+      "turn": 2,
+      "ms": 97,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698241,
+      "dispatchAt": 1794878698177
+    },
+    {
+      "client": 18,
+      "turn": 2,
+      "ms": 1099,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698240,
+      "dispatchAt": 1794878698177
+    },
+    {
+      "client": 19,
+      "turn": 2,
+      "ms": 1163,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698238,
+      "dispatchAt": 1794878698181
+    },
+    {
+      "client": 20,
+      "turn": 2,
+      "ms": 1035,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698237,
+      "dispatchAt": 1794878698181
+    },
+    {
+      "client": 21,
+      "turn": 2,
+      "ms": 1018,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698242,
+      "dispatchAt": 1794878698184
+    },
+    {
+      "client": 22,
+      "turn": 2,
+      "ms": 923,
+      "wrong": true,
+      "progress": 0,
+      "at": 1794878698248,
+      "dispatchAt": 1794878698170
+    },
+    {
+      "client": 23,
+      "turn": 2,
+      "ms": 730,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698244,
+      "dispatchAt": 1794878698185
+    },
+    {
+      "client": 24,
+      "turn": 2,
+      "ms": 1077,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698247,
+      "dispatchAt": 1794878698185
+    },
+    {
+      "client": 25,
+      "turn": 2,
+      "ms": 105,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698246,
+      "dispatchAt": 1794878698192
+    },
+    {
+      "client": 26,
+      "turn": 2,
+      "ms": 202,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698245,
+      "dispatchAt": 1794878698193
+    },
+    {
+      "client": 27,
+      "turn": 2,
+      "ms": 150,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698243,
+      "dispatchAt": 1794878698193
+    },
+    {
+      "client": 28,
+      "turn": 2,
+      "ms": 694,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878698250,
+      "dispatchAt": 1794878698168
+    },
+    {
+      "client": 1,
+      "turn": 3,
+      "ms": 1978,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878703565,
+      "dispatchAt": 1794878703459
+    },
+    {
+      "client": 2,
+      "turn": 3,
+      "ms": 110,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703564,
+      "dispatchAt": 1794878703467
+    },
+    {
+      "client": 3,
+      "turn": 3,
+      "ms": 164,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703560,
+      "dispatchAt": 1794878703460
+    },
+    {
+      "client": 4,
+      "turn": 3,
+      "ms": 514,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703568,
+      "dispatchAt": 1794878703468
+    },
+    {
+      "client": 5,
+      "turn": 3,
+      "ms": 120,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703566,
+      "dispatchAt": 1794878703464
+    },
+    {
+      "client": 6,
+      "turn": 3,
+      "ms": 2045,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703576,
+      "dispatchAt": 1794878703472
+    },
+    {
+      "client": 7,
+      "turn": 3,
+      "ms": 736,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703566,
+      "dispatchAt": 1794878703468
+    },
+    {
+      "client": 8,
+      "turn": 3,
+      "ms": 1382,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878703573,
+      "dispatchAt": 1794878703468
+    },
+    {
+      "client": 9,
+      "turn": 3,
+      "ms": 1988,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703573,
+      "dispatchAt": 1794878703470
+    },
+    {
+      "client": 10,
+      "turn": 3,
+      "ms": 1135,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703567,
+      "dispatchAt": 1794878703470
+    },
+    {
+      "client": 11,
+      "turn": 3,
+      "ms": 1734,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703581,
+      "dispatchAt": 1794878703472
+    },
+    {
+      "client": 12,
+      "turn": 3,
+      "ms": 2020,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703577,
+      "dispatchAt": 1794878703466
+    },
+    {
+      "client": 13,
+      "turn": 3,
+      "ms": 2048,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703574,
+      "dispatchAt": 1794878703474
+    },
+    {
+      "client": 14,
+      "turn": 3,
+      "ms": 209,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703578,
+      "dispatchAt": 1794878703466
+    },
+    {
+      "client": 15,
+      "turn": 3,
+      "ms": 1483,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878703577,
+      "dispatchAt": 1794878703468
+    },
+    {
+      "client": 16,
+      "turn": 3,
+      "ms": 1162,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703575,
+      "dispatchAt": 1794878703475
+    },
+    {
+      "client": 17,
+      "turn": 3,
+      "ms": 1345,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703581,
+      "dispatchAt": 1794878703477
+    },
+    {
+      "client": 18,
+      "turn": 3,
+      "ms": 2029,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703580,
+      "dispatchAt": 1794878703476
+    },
+    {
+      "client": 19,
+      "turn": 3,
+      "ms": 1759,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703579,
+      "dispatchAt": 1794878703478
+    },
+    {
+      "client": 20,
+      "turn": 3,
+      "ms": 2004,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703582,
+      "dispatchAt": 1794878703479
+    },
+    {
+      "client": 21,
+      "turn": 3,
+      "ms": 1943,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703583,
+      "dispatchAt": 1794878703480
+    },
+    {
+      "client": 22,
+      "turn": 3,
+      "ms": 1273,
+      "wrong": false,
+      "progress": 1,
+      "at": 1794878703588,
+      "dispatchAt": 1794878703467
+    },
+    {
+      "client": 23,
+      "turn": 3,
+      "ms": 1953,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703588,
+      "dispatchAt": 1794878703484
+    },
+    {
+      "client": 24,
+      "turn": 3,
+      "ms": 187,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703590,
+      "dispatchAt": 1794878703484
+    },
+    {
+      "client": 25,
+      "turn": 3,
+      "ms": 1448,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703589,
+      "dispatchAt": 1794878703491
+    },
+    {
+      "client": 26,
+      "turn": 3,
+      "ms": 1764,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703591,
+      "dispatchAt": 1794878703492
+    },
+    {
+      "client": 27,
+      "turn": 3,
+      "ms": 1912,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703591,
+      "dispatchAt": 1794878703491
+    },
+    {
+      "client": 28,
+      "turn": 3,
+      "ms": 1670,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878703592,
+      "dispatchAt": 1794878703466
+    },
+    {
+      "client": 1,
+      "turn": 4,
+      "ms": 134,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878708926,
+      "dispatchAt": 1794878708799
+    },
+    {
+      "client": 2,
+      "turn": 4,
+      "ms": 598,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708937,
+      "dispatchAt": 1794878708807
+    },
+    {
+      "client": 3,
+      "turn": 4,
+      "ms": 551,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708931,
+      "dispatchAt": 1794878708799
+    },
+    {
+      "client": 4,
+      "turn": 4,
+      "ms": 585,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708933,
+      "dispatchAt": 1794878708806
+    },
+    {
+      "client": 5,
+      "turn": 4,
+      "ms": 502,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708935,
+      "dispatchAt": 1794878708803
+    },
+    {
+      "client": 6,
+      "turn": 4,
+      "ms": 630,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708943,
+      "dispatchAt": 1794878708811
+    },
+    {
+      "client": 7,
+      "turn": 4,
+      "ms": 600,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708930,
+      "dispatchAt": 1794878708806
+    },
+    {
+      "client": 8,
+      "turn": 4,
+      "ms": 365,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878708938,
+      "dispatchAt": 1794878708807
+    },
+    {
+      "client": 9,
+      "turn": 4,
+      "ms": 330,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708937,
+      "dispatchAt": 1794878708808
+    },
+    {
+      "client": 10,
+      "turn": 4,
+      "ms": 349,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708932,
+      "dispatchAt": 1794878708809
+    },
+    {
+      "client": 11,
+      "turn": 4,
+      "ms": 266,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708946,
+      "dispatchAt": 1794878708810
+    },
+    {
+      "client": 12,
+      "turn": 4,
+      "ms": 378,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708934,
+      "dispatchAt": 1794878708808
+    },
+    {
+      "client": 13,
+      "turn": 4,
+      "ms": 467,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708931,
+      "dispatchAt": 1794878708816
+    },
+    {
+      "client": 14,
+      "turn": 4,
+      "ms": 525,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708936,
+      "dispatchAt": 1794878708809
+    },
+    {
+      "client": 15,
+      "turn": 4,
+      "ms": 604,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878708945,
+      "dispatchAt": 1794878708812
+    },
+    {
+      "client": 16,
+      "turn": 4,
+      "ms": 395,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708944,
+      "dispatchAt": 1794878708821
+    },
+    {
+      "client": 17,
+      "turn": 4,
+      "ms": 334,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708950,
+      "dispatchAt": 1794878708823
+    },
+    {
+      "client": 18,
+      "turn": 4,
+      "ms": 440,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708949,
+      "dispatchAt": 1794878708823
+    },
+    {
+      "client": 19,
+      "turn": 4,
+      "ms": 363,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708948,
+      "dispatchAt": 1794878708825
+    },
+    {
+      "client": 20,
+      "turn": 4,
+      "ms": 451,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708947,
+      "dispatchAt": 1794878708823
+    },
+    {
+      "client": 21,
+      "turn": 4,
+      "ms": 282,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708951,
+      "dispatchAt": 1794878708824
+    },
+    {
+      "client": 22,
+      "turn": 4,
+      "ms": 413,
+      "wrong": false,
+      "progress": 2,
+      "at": 1794878708952,
+      "dispatchAt": 1794878708809
+    },
+    {
+      "client": 23,
+      "turn": 4,
+      "ms": 299,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708948,
+      "dispatchAt": 1794878708825
+    },
+    {
+      "client": 24,
+      "turn": 4,
+      "ms": 564,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708956,
+      "dispatchAt": 1794878708823
+    },
+    {
+      "client": 25,
+      "turn": 4,
+      "ms": 271,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708955,
+      "dispatchAt": 1794878708830
+    },
+    {
+      "client": 26,
+      "turn": 4,
+      "ms": 472,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708956,
+      "dispatchAt": 1794878708838
+    },
+    {
+      "client": 27,
+      "turn": 4,
+      "ms": 371,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708953,
+      "dispatchAt": 1794878708839
+    },
+    {
+      "client": 28,
+      "turn": 4,
+      "ms": 570,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878708954,
+      "dispatchAt": 1794878708814
+    },
+    {
+      "client": 1,
+      "turn": 5,
+      "ms": 431,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878714219,
+      "dispatchAt": 1794878714171
+    },
+    {
+      "client": 2,
+      "turn": 5,
+      "ms": 95,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714223,
+      "dispatchAt": 1794878714179
+    },
+    {
+      "client": 3,
+      "turn": 5,
+      "ms": 393,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714227,
+      "dispatchAt": 1794878714170
+    },
+    {
+      "client": 4,
+      "turn": 5,
+      "ms": 465,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714231,
+      "dispatchAt": 1794878714177
+    },
+    {
+      "client": 5,
+      "turn": 5,
+      "ms": 322,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714230,
+      "dispatchAt": 1794878714174
+    },
+    {
+      "client": 6,
+      "turn": 5,
+      "ms": 480,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714240,
+      "dispatchAt": 1794878714184
+    },
+    {
+      "client": 7,
+      "turn": 5,
+      "ms": 417,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714234,
+      "dispatchAt": 1794878714180
+    },
+    {
+      "client": 8,
+      "turn": 5,
+      "ms": 358,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878714235,
+      "dispatchAt": 1794878714181
+    },
+    {
+      "client": 9,
+      "turn": 5,
+      "ms": 240,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714241,
+      "dispatchAt": 1794878714185
+    },
+    {
+      "client": 10,
+      "turn": 5,
+      "ms": 346,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714241,
+      "dispatchAt": 1794878714186
+    },
+    {
+      "client": 11,
+      "turn": 5,
+      "ms": 284,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714252,
+      "dispatchAt": 1794878714188
+    },
+    {
+      "client": 12,
+      "turn": 5,
+      "ms": 365,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714242,
+      "dispatchAt": 1794878714184
+    },
+    {
+      "client": 13,
+      "turn": 5,
+      "ms": 286,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714239,
+      "dispatchAt": 1794878714192
+    },
+    {
+      "client": 14,
+      "turn": 5,
+      "ms": 322,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714243,
+      "dispatchAt": 1794878714184
+    },
+    {
+      "client": 15,
+      "turn": 5,
+      "ms": 333,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878714251,
+      "dispatchAt": 1794878714186
+    },
+    {
+      "client": 16,
+      "turn": 5,
+      "ms": 510,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714246,
+      "dispatchAt": 1794878714193
+    },
+    {
+      "client": 17,
+      "turn": 5,
+      "ms": 531,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714253,
+      "dispatchAt": 1794878714195
+    },
+    {
+      "client": 18,
+      "turn": 5,
+      "ms": 432,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714254,
+      "dispatchAt": 1794878714195
+    },
+    {
+      "client": 19,
+      "turn": 5,
+      "ms": 387,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714245,
+      "dispatchAt": 1794878714198
+    },
+    {
+      "client": 20,
+      "turn": 5,
+      "ms": 417,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714244,
+      "dispatchAt": 1794878714199
+    },
+    {
+      "client": 21,
+      "turn": 5,
+      "ms": 114,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714255,
+      "dispatchAt": 1794878714200
+    },
+    {
+      "client": 22,
+      "turn": 5,
+      "ms": 490,
+      "wrong": false,
+      "progress": 3,
+      "at": 1794878714259,
+      "dispatchAt": 1794878714187
+    },
+    {
+      "client": 23,
+      "turn": 5,
+      "ms": 205,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714256,
+      "dispatchAt": 1794878714202
+    },
+    {
+      "client": 24,
+      "turn": 5,
+      "ms": 436,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714260,
+      "dispatchAt": 1794878714201
+    },
+    {
+      "client": 25,
+      "turn": 5,
+      "ms": 510,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714258,
+      "dispatchAt": 1794878714209
+    },
+    {
+      "client": 26,
+      "turn": 5,
+      "ms": 287,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714257,
+      "dispatchAt": 1794878714209
+    },
+    {
+      "client": 27,
+      "turn": 5,
+      "ms": 234,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714256,
+      "dispatchAt": 1794878714209
+    },
+    {
+      "client": 28,
+      "turn": 5,
+      "ms": 251,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878714263,
+      "dispatchAt": 1794878714184
+    },
+    {
+      "client": 1,
+      "turn": 6,
+      "ms": 1935,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878719949,
+      "dispatchAt": 1794878719469
+    },
+    {
+      "client": 2,
+      "turn": 6,
+      "ms": 566,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719919,
+      "dispatchAt": 1794878719477
+    },
+    {
+      "client": 3,
+      "turn": 6,
+      "ms": 2019,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719923,
+      "dispatchAt": 1794878719470
+    },
+    {
+      "client": 4,
+      "turn": 6,
+      "ms": 2060,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719946,
+      "dispatchAt": 1794878719477
+    },
+    {
+      "client": 5,
+      "turn": 6,
+      "ms": 1989,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719936,
+      "dispatchAt": 1794878719474
+    },
+    {
+      "client": 6,
+      "turn": 6,
+      "ms": 2038,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719917,
+      "dispatchAt": 1794878719503
+    },
+    {
+      "client": 7,
+      "turn": 6,
+      "ms": 1873,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719916,
+      "dispatchAt": 1794878719501
+    },
+    {
+      "client": 8,
+      "turn": 6,
+      "ms": 999,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878719925,
+      "dispatchAt": 1794878719502
+    },
+    {
+      "client": 9,
+      "turn": 6,
+      "ms": 412,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719904,
+      "dispatchAt": 1794878719504
+    },
+    {
+      "client": 10,
+      "turn": 6,
+      "ms": 1934,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719922,
+      "dispatchAt": 1794878719506
+    },
+    {
+      "client": 11,
+      "turn": 6,
+      "ms": 1509,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719920,
+      "dispatchAt": 1794878719509
+    },
+    {
+      "client": 12,
+      "turn": 6,
+      "ms": 495,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719928,
+      "dispatchAt": 1794878719504
+    },
+    {
+      "client": 13,
+      "turn": 6,
+      "ms": 631,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719929,
+      "dispatchAt": 1794878719512
+    },
+    {
+      "client": 14,
+      "turn": 6,
+      "ms": 1972,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719930,
+      "dispatchAt": 1794878719509
+    },
+    {
+      "client": 15,
+      "turn": 6,
+      "ms": 453,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878719932,
+      "dispatchAt": 1794878719512
+    },
+    {
+      "client": 16,
+      "turn": 6,
+      "ms": 1854,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719947,
+      "dispatchAt": 1794878719522
+    },
+    {
+      "client": 17,
+      "turn": 6,
+      "ms": 1300,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719933,
+      "dispatchAt": 1794878719525
+    },
+    {
+      "client": 18,
+      "turn": 6,
+      "ms": 1894,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719940,
+      "dispatchAt": 1794878719526
+    },
+    {
+      "client": 19,
+      "turn": 6,
+      "ms": 1809,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719921,
+      "dispatchAt": 1794878719528
+    },
+    {
+      "client": 20,
+      "turn": 6,
+      "ms": 1894,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719924,
+      "dispatchAt": 1794878719532
+    },
+    {
+      "client": 21,
+      "turn": 6,
+      "ms": 576,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719934,
+      "dispatchAt": 1794878719534
+    },
+    {
+      "client": 22,
+      "turn": 6,
+      "ms": 1824,
+      "wrong": false,
+      "progress": 4,
+      "at": 1794878719935,
+      "dispatchAt": 1794878719521
+    },
+    {
+      "client": 23,
+      "turn": 6,
+      "ms": 664,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719926,
+      "dispatchAt": 1794878719537
+    },
+    {
+      "client": 24,
+      "turn": 6,
+      "ms": 1974,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719937,
+      "dispatchAt": 1794878719539
+    },
+    {
+      "client": 25,
+      "turn": 6,
+      "ms": 897,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719938,
+      "dispatchAt": 1794878719546
+    },
+    {
+      "client": 26,
+      "turn": 6,
+      "ms": 1928,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719927,
+      "dispatchAt": 1794878719547
+    },
+    {
+      "client": 27,
+      "turn": 6,
+      "ms": 547,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719939,
+      "dispatchAt": 1794878719554
+    },
+    {
+      "client": 28,
+      "turn": 6,
+      "ms": 1657,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878719931,
+      "dispatchAt": 1794878719530
+    },
+    {
+      "client": 1,
+      "turn": 7,
+      "ms": 419,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878725251,
+      "dispatchAt": 1794878725204
+    },
+    {
+      "client": 2,
+      "turn": 7,
+      "ms": 256,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725258,
+      "dispatchAt": 1794878725214
+    },
+    {
+      "client": 3,
+      "turn": 7,
+      "ms": 799,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725272,
+      "dispatchAt": 1794878725213
+    },
+    {
+      "client": 4,
+      "turn": 7,
+      "ms": 722,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725274,
+      "dispatchAt": 1794878725220
+    },
+    {
+      "client": 5,
+      "turn": 7,
+      "ms": 751,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725277,
+      "dispatchAt": 1794878725217
+    },
+    {
+      "client": 6,
+      "turn": 7,
+      "ms": 823,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725279,
+      "dispatchAt": 1794878725225
+    },
+    {
+      "client": 7,
+      "turn": 7,
+      "ms": 643,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725281,
+      "dispatchAt": 1794878725220
+    },
+    {
+      "client": 8,
+      "turn": 7,
+      "ms": 183,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878725288,
+      "dispatchAt": 1794878725221
+    },
+    {
+      "client": 9,
+      "turn": 7,
+      "ms": 399,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725287,
+      "dispatchAt": 1794878725223
+    },
+    {
+      "client": 10,
+      "turn": 7,
+      "ms": 375,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725291,
+      "dispatchAt": 1794878725225
+    },
+    {
+      "client": 11,
+      "turn": 7,
+      "ms": 316,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725297,
+      "dispatchAt": 1794878725228
+    },
+    {
+      "client": 12,
+      "turn": 7,
+      "ms": 207,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725292,
+      "dispatchAt": 1794878725229
+    },
+    {
+      "client": 13,
+      "turn": 7,
+      "ms": 294,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725293,
+      "dispatchAt": 1794878725237
+    },
+    {
+      "client": 14,
+      "turn": 7,
+      "ms": 754,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725297,
+      "dispatchAt": 1794878725231
+    },
+    {
+      "client": 15,
+      "turn": 7,
+      "ms": 559,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878725299,
+      "dispatchAt": 1794878725234
+    },
+    {
+      "client": 16,
+      "turn": 7,
+      "ms": 124,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725298,
+      "dispatchAt": 1794878725243
+    },
+    {
+      "client": 17,
+      "turn": 7,
+      "ms": 324,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725300,
+      "dispatchAt": 1794878725245
+    },
+    {
+      "client": 18,
+      "turn": 7,
+      "ms": 790,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725300,
+      "dispatchAt": 1794878725251
+    },
+    {
+      "client": 19,
+      "turn": 7,
+      "ms": 491,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725301,
+      "dispatchAt": 1794878725253
+    },
+    {
+      "client": 20,
+      "turn": 7,
+      "ms": 403,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725305,
+      "dispatchAt": 1794878725253
+    },
+    {
+      "client": 21,
+      "turn": 7,
+      "ms": 321,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725306,
+      "dispatchAt": 1794878725254
+    },
+    {
+      "client": 22,
+      "turn": 7,
+      "ms": 116,
+      "wrong": false,
+      "progress": 5,
+      "at": 1794878725307,
+      "dispatchAt": 1794878725245
+    },
+    {
+      "client": 23,
+      "turn": 7,
+      "ms": 345,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725312,
+      "dispatchAt": 1794878725266
+    },
+    {
+      "client": 24,
+      "turn": 7,
+      "ms": 804,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725323,
+      "dispatchAt": 1794878725269
+    },
+    {
+      "client": 25,
+      "turn": 7,
+      "ms": 119,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725340,
+      "dispatchAt": 1794878725278
+    },
+    {
+      "client": 26,
+      "turn": 7,
+      "ms": 634,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725343,
+      "dispatchAt": 1794878725295
+    },
+    {
+      "client": 27,
+      "turn": 7,
+      "ms": 243,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725399,
+      "dispatchAt": 1794878725353
+    },
+    {
+      "client": 28,
+      "turn": 7,
+      "ms": 741,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878725405,
+      "dispatchAt": 1794878725330
+    },
+    {
+      "client": 1,
+      "turn": 8,
+      "ms": 893,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878730671,
+      "dispatchAt": 1794878730625
+    },
+    {
+      "client": 2,
+      "turn": 8,
+      "ms": 1319,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730710,
+      "dispatchAt": 1794878730673
+    },
+    {
+      "client": 3,
+      "turn": 8,
+      "ms": 838,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730714,
+      "dispatchAt": 1794878730666
+    },
+    {
+      "client": 4,
+      "turn": 8,
+      "ms": 1063,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730716,
+      "dispatchAt": 1794878730674
+    },
+    {
+      "client": 5,
+      "turn": 8,
+      "ms": 983,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730719,
+      "dispatchAt": 1794878730673
+    },
+    {
+      "client": 6,
+      "turn": 8,
+      "ms": 1041,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730726,
+      "dispatchAt": 1794878730687
+    },
+    {
+      "client": 7,
+      "turn": 8,
+      "ms": 1073,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730724,
+      "dispatchAt": 1794878730685
+    },
+    {
+      "client": 8,
+      "turn": 8,
+      "ms": 1266,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878730730,
+      "dispatchAt": 1794878730686
+    },
+    {
+      "client": 9,
+      "turn": 8,
+      "ms": 926,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730759,
+      "dispatchAt": 1794878730712
+    },
+    {
+      "client": 10,
+      "turn": 8,
+      "ms": 363,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730794,
+      "dispatchAt": 1794878730757
+    },
+    {
+      "client": 11,
+      "turn": 8,
+      "ms": 906,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730825,
+      "dispatchAt": 1794878730778
+    },
+    {
+      "client": 12,
+      "turn": 8,
+      "ms": 704,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730860,
+      "dispatchAt": 1794878730782
+    },
+    {
+      "client": 13,
+      "turn": 8,
+      "ms": 895,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730854,
+      "dispatchAt": 1794878730807
+    },
+    {
+      "client": 14,
+      "turn": 8,
+      "ms": 699,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730861,
+      "dispatchAt": 1794878730799
+    },
+    {
+      "client": 15,
+      "turn": 8,
+      "ms": 563,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878730859,
+      "dispatchAt": 1794878730802
+    },
+    {
+      "client": 16,
+      "turn": 8,
+      "ms": 665,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730864,
+      "dispatchAt": 1794878730812
+    },
+    {
+      "client": 17,
+      "turn": 8,
+      "ms": 646,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730865,
+      "dispatchAt": 1794878730816
+    },
+    {
+      "client": 18,
+      "turn": 8,
+      "ms": 835,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730869,
+      "dispatchAt": 1794878730820
+    },
+    {
+      "client": 19,
+      "turn": 8,
+      "ms": 930,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730869,
+      "dispatchAt": 1794878730823
+    },
+    {
+      "client": 20,
+      "turn": 8,
+      "ms": 764,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730875,
+      "dispatchAt": 1794878730829
+    },
+    {
+      "client": 21,
+      "turn": 8,
+      "ms": 774,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730877,
+      "dispatchAt": 1794878730834
+    },
+    {
+      "client": 22,
+      "turn": 8,
+      "ms": 1166,
+      "wrong": false,
+      "progress": 6,
+      "at": 1794878730886,
+      "dispatchAt": 1794878730826
+    },
+    {
+      "client": 23,
+      "turn": 8,
+      "ms": 785,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730889,
+      "dispatchAt": 1794878730848
+    },
+    {
+      "client": 24,
+      "turn": 8,
+      "ms": 807,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730928,
+      "dispatchAt": 1794878730867
+    },
+    {
+      "client": 25,
+      "turn": 8,
+      "ms": 1140,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730927,
+      "dispatchAt": 1794878730874
+    },
+    {
+      "client": 26,
+      "turn": 8,
+      "ms": 1114,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730926,
+      "dispatchAt": 1794878730874
+    },
+    {
+      "client": 27,
+      "turn": 8,
+      "ms": 751,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730922,
+      "dispatchAt": 1794878730874
+    },
+    {
+      "client": 28,
+      "turn": 8,
+      "ms": 847,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878730925,
+      "dispatchAt": 1794878730849
+    },
+    {
+      "client": 1,
+      "turn": 9,
+      "ms": 145,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878736192,
+      "dispatchAt": 1794878736137
+    },
+    {
+      "client": 2,
+      "turn": 9,
+      "ms": 434,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736191,
+      "dispatchAt": 1794878736145
+    },
+    {
+      "client": 3,
+      "turn": 9,
+      "ms": 505,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736187,
+      "dispatchAt": 1794878736137
+    },
+    {
+      "client": 4,
+      "turn": 9,
+      "ms": 583,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736190,
+      "dispatchAt": 1794878736144
+    },
+    {
+      "client": 5,
+      "turn": 9,
+      "ms": 222,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736194,
+      "dispatchAt": 1794878736141
+    },
+    {
+      "client": 6,
+      "turn": 9,
+      "ms": 387,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736209,
+      "dispatchAt": 1794878736153
+    },
+    {
+      "client": 7,
+      "turn": 9,
+      "ms": 560,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736199,
+      "dispatchAt": 1794878736150
+    },
+    {
+      "client": 8,
+      "turn": 9,
+      "ms": 116,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878736205,
+      "dispatchAt": 1794878736151
+    },
+    {
+      "client": 9,
+      "turn": 9,
+      "ms": 355,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736203,
+      "dispatchAt": 1794878736154
+    },
+    {
+      "client": 10,
+      "turn": 9,
+      "ms": 605,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736204,
+      "dispatchAt": 1794878736155
+    },
+    {
+      "client": 11,
+      "turn": 9,
+      "ms": 468,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736210,
+      "dispatchAt": 1794878736158
+    },
+    {
+      "client": 12,
+      "turn": 9,
+      "ms": 385,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736205,
+      "dispatchAt": 1794878736153
+    },
+    {
+      "client": 13,
+      "turn": 9,
+      "ms": 584,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736202,
+      "dispatchAt": 1794878736162
+    },
+    {
+      "client": 14,
+      "turn": 9,
+      "ms": 407,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736212,
+      "dispatchAt": 1794878736154
+    },
+    {
+      "client": 15,
+      "turn": 9,
+      "ms": 182,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878736211,
+      "dispatchAt": 1794878736160
+    },
+    {
+      "client": 16,
+      "turn": 9,
+      "ms": 609,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736215,
+      "dispatchAt": 1794878736168
+    },
+    {
+      "client": 17,
+      "turn": 9,
+      "ms": 621,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736216,
+      "dispatchAt": 1794878736171
+    },
+    {
+      "client": 18,
+      "turn": 9,
+      "ms": 273,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736217,
+      "dispatchAt": 1794878736172
+    },
+    {
+      "client": 19,
+      "turn": 9,
+      "ms": 534,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736221,
+      "dispatchAt": 1794878736175
+    },
+    {
+      "client": 20,
+      "turn": 9,
+      "ms": 226,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736220,
+      "dispatchAt": 1794878736174
+    },
+    {
+      "client": 21,
+      "turn": 9,
+      "ms": 297,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736221,
+      "dispatchAt": 1794878736176
+    },
+    {
+      "client": 22,
+      "turn": 9,
+      "ms": 630,
+      "wrong": false,
+      "progress": 7,
+      "at": 1794878736222,
+      "dispatchAt": 1794878736162
+    },
+    {
+      "client": 23,
+      "turn": 9,
+      "ms": 322,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736225,
+      "dispatchAt": 1794878736181
+    },
+    {
+      "client": 24,
+      "turn": 9,
+      "ms": 509,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736233,
+      "dispatchAt": 1794878736182
+    },
+    {
+      "client": 25,
+      "turn": 9,
+      "ms": 612,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736238,
+      "dispatchAt": 1794878736192
+    },
+    {
+      "client": 26,
+      "turn": 9,
+      "ms": 144,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736244,
+      "dispatchAt": 1794878736194
+    },
+    {
+      "client": 27,
+      "turn": 9,
+      "ms": 234,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736239,
+      "dispatchAt": 1794878736195
+    },
+    {
+      "client": 28,
+      "turn": 9,
+      "ms": 451,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878736243,
+      "dispatchAt": 1794878736170
+    },
+    {
+      "client": 1,
+      "turn": 10,
+      "ms": 110,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878741561,
+      "dispatchAt": 1794878741450
+    },
+    {
+      "client": 2,
+      "turn": 10,
+      "ms": 504,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741571,
+      "dispatchAt": 1794878741459
+    },
+    {
+      "client": 3,
+      "turn": 10,
+      "ms": 197,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741567,
+      "dispatchAt": 1794878741452
+    },
+    {
+      "client": 4,
+      "turn": 10,
+      "ms": 180,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741568,
+      "dispatchAt": 1794878741459
+    },
+    {
+      "client": 5,
+      "turn": 10,
+      "ms": 117,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741566,
+      "dispatchAt": 1794878741456
+    },
+    {
+      "client": 6,
+      "turn": 10,
+      "ms": 243,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741577,
+      "dispatchAt": 1794878741469
+    },
+    {
+      "client": 7,
+      "turn": 10,
+      "ms": 156,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741565,
+      "dispatchAt": 1794878741469
+    },
+    {
+      "client": 8,
+      "turn": 10,
+      "ms": 367,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878741570,
+      "dispatchAt": 1794878741470
+    },
+    {
+      "client": 9,
+      "turn": 10,
+      "ms": 220,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741568,
+      "dispatchAt": 1794878741472
+    },
+    {
+      "client": 10,
+      "turn": 10,
+      "ms": 566,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741569,
+      "dispatchAt": 1794878741473
+    },
+    {
+      "client": 11,
+      "turn": 10,
+      "ms": 261,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741580,
+      "dispatchAt": 1794878741475
+    },
+    {
+      "client": 12,
+      "turn": 10,
+      "ms": 518,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741578,
+      "dispatchAt": 1794878741471
+    },
+    {
+      "client": 13,
+      "turn": 10,
+      "ms": 594,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741576,
+      "dispatchAt": 1794878741480
+    },
+    {
+      "client": 14,
+      "turn": 10,
+      "ms": 495,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741579,
+      "dispatchAt": 1794878741475
+    },
+    {
+      "client": 15,
+      "turn": 10,
+      "ms": 335,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878741579,
+      "dispatchAt": 1794878741482
+    },
+    {
+      "client": 16,
+      "turn": 10,
+      "ms": 300,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741583,
+      "dispatchAt": 1794878741491
+    },
+    {
+      "client": 17,
+      "turn": 10,
+      "ms": 378,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741582,
+      "dispatchAt": 1794878741493
+    },
+    {
+      "client": 18,
+      "turn": 10,
+      "ms": 390,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741581,
+      "dispatchAt": 1794878741493
+    },
+    {
+      "client": 19,
+      "turn": 10,
+      "ms": 597,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741584,
+      "dispatchAt": 1794878741495
+    },
+    {
+      "client": 20,
+      "turn": 10,
+      "ms": 154,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741583,
+      "dispatchAt": 1794878741493
+    },
+    {
+      "client": 21,
+      "turn": 10,
+      "ms": 564,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741585,
+      "dispatchAt": 1794878741494
+    },
+    {
+      "client": 22,
+      "turn": 10,
+      "ms": 450,
+      "wrong": false,
+      "progress": 8,
+      "at": 1794878741587,
+      "dispatchAt": 1794878741485
+    },
+    {
+      "client": 23,
+      "turn": 10,
+      "ms": 509,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741586,
+      "dispatchAt": 1794878741502
+    },
+    {
+      "client": 24,
+      "turn": 10,
+      "ms": 223,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741587,
+      "dispatchAt": 1794878741501
+    },
+    {
+      "client": 25,
+      "turn": 10,
+      "ms": 271,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741594,
+      "dispatchAt": 1794878741508
+    },
+    {
+      "client": 26,
+      "turn": 10,
+      "ms": 304,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741594,
+      "dispatchAt": 1794878741509
+    },
+    {
+      "client": 27,
+      "turn": 10,
+      "ms": 531,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741592,
+      "dispatchAt": 1794878741508
+    },
+    {
+      "client": 28,
+      "turn": 10,
+      "ms": 249,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878741593,
+      "dispatchAt": 1794878741483
+    },
+    {
+      "client": 1,
+      "turn": 11,
+      "ms": 2951,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878747401,
+      "dispatchAt": 1794878747319
+    },
+    {
+      "client": 2,
+      "turn": 11,
+      "ms": 4666,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747405,
+      "dispatchAt": 1794878747344
+    },
+    {
+      "client": 3,
+      "turn": 11,
+      "ms": 15938,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747634,
+      "dispatchAt": 1794878747544
+    },
+    {
+      "client": 4,
+      "turn": 11,
+      "ms": 16488,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747642,
+      "dispatchAt": 1794878747554
+    },
+    {
+      "client": 5,
+      "turn": 11,
+      "ms": 3350,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747646,
+      "dispatchAt": 1794878747553
+    },
+    {
+      "client": 6,
+      "turn": 11,
+      "ms": 15269,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747648,
+      "dispatchAt": 1794878747562
+    },
+    {
+      "client": 7,
+      "turn": 11,
+      "ms": 16353,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747644,
+      "dispatchAt": 1794878747561
+    },
+    {
+      "client": 8,
+      "turn": 11,
+      "ms": 904,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878747655,
+      "dispatchAt": 1794878747563
+    },
+    {
+      "client": 9,
+      "turn": 11,
+      "ms": 8736,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747652,
+      "dispatchAt": 1794878747568
+    },
+    {
+      "client": 10,
+      "turn": 11,
+      "ms": 14662,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747651,
+      "dispatchAt": 1794878747571
+    },
+    {
+      "client": 11,
+      "turn": 11,
+      "ms": 14188,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747656,
+      "dispatchAt": 1794878747573
+    },
+    {
+      "client": 12,
+      "turn": 11,
+      "ms": 15470,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747657,
+      "dispatchAt": 1794878747569
+    },
+    {
+      "client": 13,
+      "turn": 11,
+      "ms": 15488,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747786,
+      "dispatchAt": 1794878747740
+    },
+    {
+      "client": 14,
+      "turn": 11,
+      "ms": 5196,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747792,
+      "dispatchAt": 1794878747732
+    },
+    {
+      "client": 15,
+      "turn": 11,
+      "ms": 3431,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878747840,
+      "dispatchAt": 1794878747751
+    },
+    {
+      "client": 16,
+      "turn": 11,
+      "ms": 1450,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747917,
+      "dispatchAt": 1794878747872
+    },
+    {
+      "client": 17,
+      "turn": 11,
+      "ms": 10677,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747955,
+      "dispatchAt": 1794878747908
+    },
+    {
+      "client": 18,
+      "turn": 11,
+      "ms": 5167,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878747982,
+      "dispatchAt": 1794878747940
+    },
+    {
+      "client": 19,
+      "turn": 11,
+      "ms": 15809,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748094,
+      "dispatchAt": 1794878748051
+    },
+    {
+      "client": 20,
+      "turn": 11,
+      "ms": 5277,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748099,
+      "dispatchAt": 1794878748053
+    },
+    {
+      "client": 21,
+      "turn": 11,
+      "ms": 2749,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748102,
+      "dispatchAt": 1794878748056
+    },
+    {
+      "client": 22,
+      "turn": 11,
+      "ms": 2182,
+      "wrong": false,
+      "progress": 9,
+      "at": 1794878748103,
+      "dispatchAt": 1794878748043
+    },
+    {
+      "client": 23,
+      "turn": 11,
+      "ms": 6245,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748105,
+      "dispatchAt": 1794878748060
+    },
+    {
+      "client": 24,
+      "turn": 11,
+      "ms": 15346,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748526,
+      "dispatchAt": 1794878748061
+    },
+    {
+      "client": 25,
+      "turn": 11,
+      "ms": 7104,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748534,
+      "dispatchAt": 1794878748438
+    },
+    {
+      "client": 26,
+      "turn": 11,
+      "ms": 3469,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748533,
+      "dispatchAt": 1794878748440
+    },
+    {
+      "client": 27,
+      "turn": 11,
+      "ms": 14340,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748529,
+      "dispatchAt": 1794878748441
+    },
+    {
+      "client": 28,
+      "turn": 11,
+      "ms": 13088,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878748533,
+      "dispatchAt": 1794878748417
+    },
+    {
+      "client": 1,
+      "turn": 12,
+      "ms": 2218,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878764389,
+      "dispatchAt": 1794878764297
+    },
+    {
+      "client": 2,
+      "turn": 12,
+      "ms": 2678,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764391,
+      "dispatchAt": 1794878764314
+    },
+    {
+      "client": 3,
+      "turn": 12,
+      "ms": 3869,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764394,
+      "dispatchAt": 1794878764309
+    },
+    {
+      "client": 4,
+      "turn": 12,
+      "ms": 4174,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764395,
+      "dispatchAt": 1794878764318
+    },
+    {
+      "client": 5,
+      "turn": 12,
+      "ms": 3350,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764397,
+      "dispatchAt": 1794878764323
+    },
+    {
+      "client": 6,
+      "turn": 12,
+      "ms": 4388,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764784,
+      "dispatchAt": 1794878764332
+    },
+    {
+      "client": 7,
+      "turn": 12,
+      "ms": 4022,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764399,
+      "dispatchAt": 1794878764332
+    },
+    {
+      "client": 8,
+      "turn": 12,
+      "ms": 1235,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878764402,
+      "dispatchAt": 1794878764341
+    },
+    {
+      "client": 9,
+      "turn": 12,
+      "ms": 2801,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764403,
+      "dispatchAt": 1794878764344
+    },
+    {
+      "client": 10,
+      "turn": 12,
+      "ms": 1003,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764405,
+      "dispatchAt": 1794878764348
+    },
+    {
+      "client": 11,
+      "turn": 12,
+      "ms": 4271,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764788,
+      "dispatchAt": 1794878764361
+    },
+    {
+      "client": 12,
+      "turn": 12,
+      "ms": 1746,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764427,
+      "dispatchAt": 1794878764376
+    },
+    {
+      "client": 13,
+      "turn": 12,
+      "ms": 2271,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764447,
+      "dispatchAt": 1794878764394
+    },
+    {
+      "client": 14,
+      "turn": 12,
+      "ms": 3707,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764449,
+      "dispatchAt": 1794878764396
+    },
+    {
+      "client": 15,
+      "turn": 12,
+      "ms": 2363,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878764479,
+      "dispatchAt": 1794878764409
+    },
+    {
+      "client": 16,
+      "turn": 12,
+      "ms": 487,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764477,
+      "dispatchAt": 1794878764426
+    },
+    {
+      "client": 17,
+      "turn": 12,
+      "ms": 760,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764505,
+      "dispatchAt": 1794878764436
+    },
+    {
+      "client": 18,
+      "turn": 12,
+      "ms": 2855,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764527,
+      "dispatchAt": 1794878764478
+    },
+    {
+      "client": 19,
+      "turn": 12,
+      "ms": 3845,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764530,
+      "dispatchAt": 1794878764484
+    },
+    {
+      "client": 20,
+      "turn": 12,
+      "ms": 4114,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764789,
+      "dispatchAt": 1794878764485
+    },
+    {
+      "client": 21,
+      "turn": 12,
+      "ms": 1812,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764545,
+      "dispatchAt": 1794878764499
+    },
+    {
+      "client": 22,
+      "turn": 12,
+      "ms": 557,
+      "wrong": false,
+      "progress": 10,
+      "at": 1794878764555,
+      "dispatchAt": 1794878764497
+    },
+    {
+      "client": 23,
+      "turn": 12,
+      "ms": 1976,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764572,
+      "dispatchAt": 1794878764517
+    },
+    {
+      "client": 24,
+      "turn": 12,
+      "ms": 3739,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764578,
+      "dispatchAt": 1794878764526
+    },
+    {
+      "client": 25,
+      "turn": 12,
+      "ms": 1148,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764641,
+      "dispatchAt": 1794878764591
+    },
+    {
+      "client": 26,
+      "turn": 12,
+      "ms": 1437,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764680,
+      "dispatchAt": 1794878764639
+    },
+    {
+      "client": 27,
+      "turn": 12,
+      "ms": 1344,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764731,
+      "dispatchAt": 1794878764643
+    },
+    {
+      "client": 28,
+      "turn": 12,
+      "ms": 2906,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878764823,
+      "dispatchAt": 1794878764722
+    },
+    {
+      "client": 1,
+      "turn": 13,
+      "ms": 3159,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878770289,
+      "dispatchAt": 1794878770083
+    },
+    {
+      "client": 2,
+      "turn": 13,
+      "ms": 2464,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770288,
+      "dispatchAt": 1794878770115
+    },
+    {
+      "client": 3,
+      "turn": 13,
+      "ms": 3313,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770285,
+      "dispatchAt": 1794878770110
+    },
+    {
+      "client": 4,
+      "turn": 13,
+      "ms": 2479,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770287,
+      "dispatchAt": 1794878770127
+    },
+    {
+      "client": 5,
+      "turn": 13,
+      "ms": 3208,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770286,
+      "dispatchAt": 1794878770125
+    },
+    {
+      "client": 6,
+      "turn": 13,
+      "ms": 1930,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770293,
+      "dispatchAt": 1794878770146
+    },
+    {
+      "client": 7,
+      "turn": 13,
+      "ms": 2331,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770282,
+      "dispatchAt": 1794878770144
+    },
+    {
+      "client": 8,
+      "turn": 13,
+      "ms": 2742,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878770295,
+      "dispatchAt": 1794878770149
+    },
+    {
+      "client": 9,
+      "turn": 13,
+      "ms": 1865,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770294,
+      "dispatchAt": 1794878770162
+    },
+    {
+      "client": 10,
+      "turn": 13,
+      "ms": 2859,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770294,
+      "dispatchAt": 1794878770202
+    },
+    {
+      "client": 11,
+      "turn": 13,
+      "ms": 1567,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770299,
+      "dispatchAt": 1794878770212
+    },
+    {
+      "client": 12,
+      "turn": 13,
+      "ms": 2951,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770298,
+      "dispatchAt": 1794878770221
+    },
+    {
+      "client": 13,
+      "turn": 13,
+      "ms": 1318,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770607,
+      "dispatchAt": 1794878770229
+    },
+    {
+      "client": 14,
+      "turn": 13,
+      "ms": 3119,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770613,
+      "dispatchAt": 1794878770286
+    },
+    {
+      "client": 15,
+      "turn": 13,
+      "ms": 2252,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878770614,
+      "dispatchAt": 1794878770289
+    },
+    {
+      "client": 16,
+      "turn": 13,
+      "ms": 1916,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770611,
+      "dispatchAt": 1794878770313
+    },
+    {
+      "client": 17,
+      "turn": 13,
+      "ms": 2710,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770615,
+      "dispatchAt": 1794878770318
+    },
+    {
+      "client": 18,
+      "turn": 13,
+      "ms": 2983,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770616,
+      "dispatchAt": 1794878770329
+    },
+    {
+      "client": 19,
+      "turn": 13,
+      "ms": 2096,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770612,
+      "dispatchAt": 1794878770351
+    },
+    {
+      "client": 20,
+      "turn": 13,
+      "ms": 3129,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770610,
+      "dispatchAt": 1794878770359
+    },
+    {
+      "client": 21,
+      "turn": 13,
+      "ms": 2007,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770617,
+      "dispatchAt": 1794878770366
+    },
+    {
+      "client": 22,
+      "turn": 13,
+      "ms": 1839,
+      "wrong": false,
+      "progress": 11,
+      "at": 1794878770621,
+      "dispatchAt": 1794878770354
+    },
+    {
+      "client": 23,
+      "turn": 13,
+      "ms": 1625,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878770622,
+      "dispatchAt": 1794878770385
+    },
+    {
+      "client": 24,
+      "turn": 13,
+      "ms": 1381,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878771018,
+      "dispatchAt": 1794878770592
+    },
+    {
+      "client": 25,
+      "turn": 13,
+      "ms": 2504,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878771016,
+      "dispatchAt": 1794878770610
+    },
+    {
+      "client": 26,
+      "turn": 13,
+      "ms": 2126,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878771019,
+      "dispatchAt": 1794878770614
+    },
+    {
+      "client": 27,
+      "turn": 13,
+      "ms": 2490,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878771008,
+      "dispatchAt": 1794878770645
+    },
+    {
+      "client": 28,
+      "turn": 13,
+      "ms": 1212,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878771015,
+      "dispatchAt": 1794878770651
+    },
+    {
+      "client": 1,
+      "turn": 14,
+      "ms": 272,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878776369,
+      "dispatchAt": 1794878776219
+    },
+    {
+      "client": 2,
+      "turn": 14,
+      "ms": 181,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776368,
+      "dispatchAt": 1794878776228
+    },
+    {
+      "client": 3,
+      "turn": 14,
+      "ms": 1129,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776362,
+      "dispatchAt": 1794878776221
+    },
+    {
+      "client": 4,
+      "turn": 14,
+      "ms": 1384,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776367,
+      "dispatchAt": 1794878776228
+    },
+    {
+      "client": 5,
+      "turn": 14,
+      "ms": 1189,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776366,
+      "dispatchAt": 1794878776225
+    },
+    {
+      "client": 6,
+      "turn": 14,
+      "ms": 1012,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776373,
+      "dispatchAt": 1794878776237
+    },
+    {
+      "client": 7,
+      "turn": 14,
+      "ms": 568,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776372,
+      "dispatchAt": 1794878776236
+    },
+    {
+      "client": 8,
+      "turn": 14,
+      "ms": 772,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878776374,
+      "dispatchAt": 1794878776240
+    },
+    {
+      "client": 9,
+      "turn": 14,
+      "ms": 823,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776378,
+      "dispatchAt": 1794878776244
+    },
+    {
+      "client": 10,
+      "turn": 14,
+      "ms": 150,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776377,
+      "dispatchAt": 1794878776250
+    },
+    {
+      "client": 11,
+      "turn": 14,
+      "ms": 1473,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776395,
+      "dispatchAt": 1794878776257
+    },
+    {
+      "client": 12,
+      "turn": 14,
+      "ms": 1287,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776387,
+      "dispatchAt": 1794878776253
+    },
+    {
+      "client": 13,
+      "turn": 14,
+      "ms": 395,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776382,
+      "dispatchAt": 1794878776262
+    },
+    {
+      "client": 14,
+      "turn": 14,
+      "ms": 1071,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776388,
+      "dispatchAt": 1794878776254
+    },
+    {
+      "client": 15,
+      "turn": 14,
+      "ms": 861,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878776388,
+      "dispatchAt": 1794878776261
+    },
+    {
+      "client": 16,
+      "turn": 14,
+      "ms": 1601,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776386,
+      "dispatchAt": 1794878776270
+    },
+    {
+      "client": 17,
+      "turn": 14,
+      "ms": 1739,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776390,
+      "dispatchAt": 1794878776274
+    },
+    {
+      "client": 18,
+      "turn": 14,
+      "ms": 1414,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776389,
+      "dispatchAt": 1794878776276
+    },
+    {
+      "client": 19,
+      "turn": 14,
+      "ms": 419,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776385,
+      "dispatchAt": 1794878776278
+    },
+    {
+      "client": 20,
+      "turn": 14,
+      "ms": 1319,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776395,
+      "dispatchAt": 1794878776277
+    },
+    {
+      "client": 21,
+      "turn": 14,
+      "ms": 950,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776398,
+      "dispatchAt": 1794878776278
+    },
+    {
+      "client": 22,
+      "turn": 14,
+      "ms": 260,
+      "wrong": false,
+      "progress": 12,
+      "at": 1794878776397,
+      "dispatchAt": 1794878776268
+    },
+    {
+      "client": 23,
+      "turn": 14,
+      "ms": 906,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776396,
+      "dispatchAt": 1794878776286
+    },
+    {
+      "client": 24,
+      "turn": 14,
+      "ms": 1538,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776399,
+      "dispatchAt": 1794878776287
+    },
+    {
+      "client": 25,
+      "turn": 14,
+      "ms": 1235,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776399,
+      "dispatchAt": 1794878776295
+    },
+    {
+      "client": 26,
+      "turn": 14,
+      "ms": 318,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776401,
+      "dispatchAt": 1794878776296
+    },
+    {
+      "client": 27,
+      "turn": 14,
+      "ms": 298,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776400,
+      "dispatchAt": 1794878776296
+    },
+    {
+      "client": 28,
+      "turn": 14,
+      "ms": 715,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878776402,
+      "dispatchAt": 1794878776271
+    },
+    {
+      "client": 1,
+      "turn": 15,
+      "ms": 2029,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878781721,
+      "dispatchAt": 1794878781624
+    },
+    {
+      "client": 2,
+      "turn": 15,
+      "ms": 1052,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878781725,
+      "dispatchAt": 1794878781646
+    },
+    {
+      "client": 3,
+      "turn": 15,
+      "ms": 2736,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878781857,
+      "dispatchAt": 1794878781803
+    },
+    {
+      "client": 4,
+      "turn": 15,
+      "ms": 2610,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878781874,
+      "dispatchAt": 1794878781817
+    },
+    {
+      "client": 5,
+      "turn": 15,
+      "ms": 2870,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878781872,
+      "dispatchAt": 1794878781818
+    },
+    {
+      "client": 6,
+      "turn": 15,
+      "ms": 1911,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878781882,
+      "dispatchAt": 1794878781830
+    },
+    {
+      "client": 7,
+      "turn": 15,
+      "ms": 1068,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782039,
+      "dispatchAt": 1794878781939
+    },
+    {
+      "client": 8,
+      "turn": 15,
+      "ms": 900,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878782044,
+      "dispatchAt": 1794878781970
+    },
+    {
+      "client": 9,
+      "turn": 15,
+      "ms": 1565,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782042,
+      "dispatchAt": 1794878781974
+    },
+    {
+      "client": 10,
+      "turn": 15,
+      "ms": 634,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782064,
+      "dispatchAt": 1794878782010
+    },
+    {
+      "client": 11,
+      "turn": 15,
+      "ms": 2473,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782072,
+      "dispatchAt": 1794878782023
+    },
+    {
+      "client": 12,
+      "turn": 15,
+      "ms": 2367,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782069,
+      "dispatchAt": 1794878782022
+    },
+    {
+      "client": 13,
+      "turn": 15,
+      "ms": 1446,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782096,
+      "dispatchAt": 1794878782046
+    },
+    {
+      "client": 14,
+      "turn": 15,
+      "ms": 2555,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782112,
+      "dispatchAt": 1794878782047
+    },
+    {
+      "client": 15,
+      "turn": 15,
+      "ms": 2191,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878782124,
+      "dispatchAt": 1794878782055
+    },
+    {
+      "client": 16,
+      "turn": 15,
+      "ms": 452,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782122,
+      "dispatchAt": 1794878782074
+    },
+    {
+      "client": 17,
+      "turn": 15,
+      "ms": 364,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782126,
+      "dispatchAt": 1794878782080
+    },
+    {
+      "client": 18,
+      "turn": 15,
+      "ms": 2837,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782137,
+      "dispatchAt": 1794878782091
+    },
+    {
+      "client": 19,
+      "turn": 15,
+      "ms": 873,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782144,
+      "dispatchAt": 1794878782103
+    },
+    {
+      "client": 20,
+      "turn": 15,
+      "ms": 2031,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782162,
+      "dispatchAt": 1794878782110
+    },
+    {
+      "client": 21,
+      "turn": 15,
+      "ms": 2070,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782164,
+      "dispatchAt": 1794878782119
+    },
+    {
+      "client": 22,
+      "turn": 15,
+      "ms": 1309,
+      "wrong": false,
+      "progress": 13,
+      "at": 1794878782172,
+      "dispatchAt": 1794878782112
+    },
+    {
+      "client": 23,
+      "turn": 15,
+      "ms": 2231,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782182,
+      "dispatchAt": 1794878782140
+    },
+    {
+      "client": 24,
+      "turn": 15,
+      "ms": 2841,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782208,
+      "dispatchAt": 1794878782152
+    },
+    {
+      "client": 25,
+      "turn": 15,
+      "ms": 1472,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782223,
+      "dispatchAt": 1794878782178
+    },
+    {
+      "client": 26,
+      "turn": 15,
+      "ms": 389,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782283,
+      "dispatchAt": 1794878782241
+    },
+    {
+      "client": 27,
+      "turn": 15,
+      "ms": 448,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782330,
+      "dispatchAt": 1794878782247
+    },
+    {
+      "client": 28,
+      "turn": 15,
+      "ms": 2382,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878782355,
+      "dispatchAt": 1794878782278
+    },
+    {
+      "client": 1,
+      "turn": 16,
+      "ms": 139,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878787678,
+      "dispatchAt": 1794878787558
+    },
+    {
+      "client": 2,
+      "turn": 16,
+      "ms": 1932,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787775,
+      "dispatchAt": 1794878787568
+    },
+    {
+      "client": 3,
+      "turn": 16,
+      "ms": 543,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787675,
+      "dispatchAt": 1794878787567
+    },
+    {
+      "client": 4,
+      "turn": 16,
+      "ms": 736,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787677,
+      "dispatchAt": 1794878787575
+    },
+    {
+      "client": 5,
+      "turn": 16,
+      "ms": 516,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787676,
+      "dispatchAt": 1794878787572
+    },
+    {
+      "client": 6,
+      "turn": 16,
+      "ms": 351,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787681,
+      "dispatchAt": 1794878787581
+    },
+    {
+      "client": 7,
+      "turn": 16,
+      "ms": 387,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787671,
+      "dispatchAt": 1794878787577
+    },
+    {
+      "client": 8,
+      "turn": 16,
+      "ms": 1879,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878787778,
+      "dispatchAt": 1794878787579
+    },
+    {
+      "client": 9,
+      "turn": 16,
+      "ms": 313,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787683,
+      "dispatchAt": 1794878787586
+    },
+    {
+      "client": 10,
+      "turn": 16,
+      "ms": 1605,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787682,
+      "dispatchAt": 1794878787589
+    },
+    {
+      "client": 11,
+      "turn": 16,
+      "ms": 803,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787702,
+      "dispatchAt": 1794878787591
+    },
+    {
+      "client": 12,
+      "turn": 16,
+      "ms": 667,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787695,
+      "dispatchAt": 1794878787586
+    },
+    {
+      "client": 13,
+      "turn": 16,
+      "ms": 204,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787692,
+      "dispatchAt": 1794878787594
+    },
+    {
+      "client": 14,
+      "turn": 16,
+      "ms": 471,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787697,
+      "dispatchAt": 1794878787586
+    },
+    {
+      "client": 15,
+      "turn": 16,
+      "ms": 752,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878787696,
+      "dispatchAt": 1794878787588
+    },
+    {
+      "client": 16,
+      "turn": 16,
+      "ms": 1130,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787696,
+      "dispatchAt": 1794878787597
+    },
+    {
+      "client": 17,
+      "turn": 16,
+      "ms": 1561,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787715,
+      "dispatchAt": 1794878787601
+    },
+    {
+      "client": 18,
+      "turn": 16,
+      "ms": 948,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787706,
+      "dispatchAt": 1794878787607
+    },
+    {
+      "client": 19,
+      "turn": 16,
+      "ms": 145,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787704,
+      "dispatchAt": 1794878787609
+    },
+    {
+      "client": 20,
+      "turn": 16,
+      "ms": 588,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787703,
+      "dispatchAt": 1794878787609
+    },
+    {
+      "client": 21,
+      "turn": 16,
+      "ms": 695,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787713,
+      "dispatchAt": 1794878787610
+    },
+    {
+      "client": 22,
+      "turn": 16,
+      "ms": 1283,
+      "wrong": false,
+      "progress": 14,
+      "at": 1794878787705,
+      "dispatchAt": 1794878787596
+    },
+    {
+      "client": 23,
+      "turn": 16,
+      "ms": 816,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787704,
+      "dispatchAt": 1794878787612
+    },
+    {
+      "client": 24,
+      "turn": 16,
+      "ms": 1058,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787714,
+      "dispatchAt": 1794878787613
+    },
+    {
+      "client": 25,
+      "turn": 16,
+      "ms": 618,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787713,
+      "dispatchAt": 1794878787625
+    },
+    {
+      "client": 26,
+      "turn": 16,
+      "ms": 1782,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787779,
+      "dispatchAt": 1794878787628
+    },
+    {
+      "client": 27,
+      "turn": 16,
+      "ms": 1383,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787712,
+      "dispatchAt": 1794878787628
+    },
+    {
+      "client": 28,
+      "turn": 16,
+      "ms": 549,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878787711,
+      "dispatchAt": 1794878787603
+    },
+    {
+      "client": 1,
+      "turn": 17,
+      "ms": 2742,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878793081,
+      "dispatchAt": 1794878792987
+    },
+    {
+      "client": 2,
+      "turn": 17,
+      "ms": 1069,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793089,
+      "dispatchAt": 1794878792996
+    },
+    {
+      "client": 3,
+      "turn": 17,
+      "ms": 1575,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793087,
+      "dispatchAt": 1794878792989
+    },
+    {
+      "client": 4,
+      "turn": 17,
+      "ms": 2843,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793092,
+      "dispatchAt": 1794878792998
+    },
+    {
+      "client": 5,
+      "turn": 17,
+      "ms": 3315,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793094,
+      "dispatchAt": 1794878793000
+    },
+    {
+      "client": 6,
+      "turn": 17,
+      "ms": 2998,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793101,
+      "dispatchAt": 1794878793012
+    },
+    {
+      "client": 7,
+      "turn": 17,
+      "ms": 3638,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793243,
+      "dispatchAt": 1794878793010
+    },
+    {
+      "client": 8,
+      "turn": 17,
+      "ms": 1263,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878793099,
+      "dispatchAt": 1794878793013
+    },
+    {
+      "client": 9,
+      "turn": 17,
+      "ms": 649,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793098,
+      "dispatchAt": 1794878793021
+    },
+    {
+      "client": 10,
+      "turn": 17,
+      "ms": 970,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793106,
+      "dispatchAt": 1794878793025
+    },
+    {
+      "client": 11,
+      "turn": 17,
+      "ms": 2047,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793109,
+      "dispatchAt": 1794878793027
+    },
+    {
+      "client": 12,
+      "turn": 17,
+      "ms": 2622,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793105,
+      "dispatchAt": 1794878793023
+    },
+    {
+      "client": 13,
+      "turn": 17,
+      "ms": 2257,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793100,
+      "dispatchAt": 1794878793040
+    },
+    {
+      "client": 14,
+      "turn": 17,
+      "ms": 1477,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793108,
+      "dispatchAt": 1794878793033
+    },
+    {
+      "client": 15,
+      "turn": 17,
+      "ms": 1895,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878793107,
+      "dispatchAt": 1794878793039
+    },
+    {
+      "client": 16,
+      "turn": 17,
+      "ms": 129,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793110,
+      "dispatchAt": 1794878793060
+    },
+    {
+      "client": 17,
+      "turn": 17,
+      "ms": 177,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793119,
+      "dispatchAt": 1794878793069
+    },
+    {
+      "client": 18,
+      "turn": 17,
+      "ms": 3076,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793117,
+      "dispatchAt": 1794878793075
+    },
+    {
+      "client": 19,
+      "turn": 17,
+      "ms": 522,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793123,
+      "dispatchAt": 1794878793078
+    },
+    {
+      "client": 20,
+      "turn": 17,
+      "ms": 2851,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793121,
+      "dispatchAt": 1794878793078
+    },
+    {
+      "client": 21,
+      "turn": 17,
+      "ms": 3029,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793128,
+      "dispatchAt": 1794878793083
+    },
+    {
+      "client": 22,
+      "turn": 17,
+      "ms": 417,
+      "wrong": false,
+      "progress": 15,
+      "at": 1794878793139,
+      "dispatchAt": 1794878793075
+    },
+    {
+      "client": 23,
+      "turn": 17,
+      "ms": 839,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793144,
+      "dispatchAt": 1794878793093
+    },
+    {
+      "client": 24,
+      "turn": 17,
+      "ms": 3199,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793146,
+      "dispatchAt": 1794878793098
+    },
+    {
+      "client": 25,
+      "turn": 17,
+      "ms": 2131,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793166,
+      "dispatchAt": 1794878793106
+    },
+    {
+      "client": 26,
+      "turn": 17,
+      "ms": 2512,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793165,
+      "dispatchAt": 1794878793107
+    },
+    {
+      "client": 27,
+      "turn": 17,
+      "ms": 1649,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793162,
+      "dispatchAt": 1794878793114
+    },
+    {
+      "client": 28,
+      "turn": 17,
+      "ms": 1125,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878793169,
+      "dispatchAt": 1794878793090
+    },
+    {
+      "client": 1,
+      "turn": 18,
+      "ms": 341,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878798526,
+      "dispatchAt": 1794878798447
+    },
+    {
+      "client": 2,
+      "turn": 18,
+      "ms": 412,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798532,
+      "dispatchAt": 1794878798461
+    },
+    {
+      "client": 3,
+      "turn": 18,
+      "ms": 1696,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798530,
+      "dispatchAt": 1794878798454
+    },
+    {
+      "client": 4,
+      "turn": 18,
+      "ms": 2086,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798531,
+      "dispatchAt": 1794878798462
+    },
+    {
+      "client": 5,
+      "turn": 18,
+      "ms": 1653,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798531,
+      "dispatchAt": 1794878798459
+    },
+    {
+      "client": 6,
+      "turn": 18,
+      "ms": 1360,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798536,
+      "dispatchAt": 1794878798470
+    },
+    {
+      "client": 7,
+      "turn": 18,
+      "ms": 606,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798536,
+      "dispatchAt": 1794878798470
+    },
+    {
+      "client": 8,
+      "turn": 18,
+      "ms": 1897,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878798539,
+      "dispatchAt": 1794878798473
+    },
+    {
+      "client": 9,
+      "turn": 18,
+      "ms": 947,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798538,
+      "dispatchAt": 1794878798477
+    },
+    {
+      "client": 10,
+      "turn": 18,
+      "ms": 849,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798537,
+      "dispatchAt": 1794878798478
+    },
+    {
+      "client": 11,
+      "turn": 18,
+      "ms": 1301,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798542,
+      "dispatchAt": 1794878798484
+    },
+    {
+      "client": 12,
+      "turn": 18,
+      "ms": 2022,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798544,
+      "dispatchAt": 1794878798483
+    },
+    {
+      "client": 13,
+      "turn": 18,
+      "ms": 1506,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798543,
+      "dispatchAt": 1794878798494
+    },
+    {
+      "client": 14,
+      "turn": 18,
+      "ms": 1600,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798545,
+      "dispatchAt": 1794878798487
+    },
+    {
+      "client": 15,
+      "turn": 18,
+      "ms": 1117,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878798549,
+      "dispatchAt": 1794878798489
+    },
+    {
+      "client": 16,
+      "turn": 18,
+      "ms": 2156,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798553,
+      "dispatchAt": 1794878798502
+    },
+    {
+      "client": 17,
+      "turn": 18,
+      "ms": 884,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798555,
+      "dispatchAt": 1794878798505
+    },
+    {
+      "client": 18,
+      "turn": 18,
+      "ms": 1447,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798554,
+      "dispatchAt": 1794878798508
+    },
+    {
+      "client": 19,
+      "turn": 18,
+      "ms": 458,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798553,
+      "dispatchAt": 1794878798512
+    },
+    {
+      "client": 20,
+      "turn": 18,
+      "ms": 1400,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798556,
+      "dispatchAt": 1794878798511
+    },
+    {
+      "client": 21,
+      "turn": 18,
+      "ms": 1050,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798558,
+      "dispatchAt": 1794878798512
+    },
+    {
+      "client": 22,
+      "turn": 18,
+      "ms": 2161,
+      "wrong": false,
+      "progress": 16,
+      "at": 1794878798577,
+      "dispatchAt": 1794878798505
+    },
+    {
+      "client": 23,
+      "turn": 18,
+      "ms": 962,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798580,
+      "dispatchAt": 1794878798525
+    },
+    {
+      "client": 24,
+      "turn": 18,
+      "ms": 2103,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798581,
+      "dispatchAt": 1794878798526
+    },
+    {
+      "client": 25,
+      "turn": 18,
+      "ms": 1948,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798583,
+      "dispatchAt": 1794878798537
+    },
+    {
+      "client": 26,
+      "turn": 18,
+      "ms": 250,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798590,
+      "dispatchAt": 1794878798540
+    },
+    {
+      "client": 27,
+      "turn": 18,
+      "ms": 983,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798586,
+      "dispatchAt": 1794878798543
+    },
+    {
+      "client": 28,
+      "turn": 18,
+      "ms": 1532,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878798589,
+      "dispatchAt": 1794878798520
+    },
+    {
+      "client": 1,
+      "turn": 19,
+      "ms": 798,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878803893,
+      "dispatchAt": 1794878803803
+    },
+    {
+      "client": 2,
+      "turn": 19,
+      "ms": 1007,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803892,
+      "dispatchAt": 1794878803812
+    },
+    {
+      "client": 3,
+      "turn": 19,
+      "ms": 1364,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803890,
+      "dispatchAt": 1794878803805
+    },
+    {
+      "client": 4,
+      "turn": 19,
+      "ms": 2189,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803891,
+      "dispatchAt": 1794878803812
+    },
+    {
+      "client": 5,
+      "turn": 19,
+      "ms": 2606,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803887,
+      "dispatchAt": 1794878803809
+    },
+    {
+      "client": 6,
+      "turn": 19,
+      "ms": 1698,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803897,
+      "dispatchAt": 1794878803818
+    },
+    {
+      "client": 7,
+      "turn": 19,
+      "ms": 709,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803896,
+      "dispatchAt": 1794878803826
+    },
+    {
+      "client": 8,
+      "turn": 19,
+      "ms": 2531,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878803901,
+      "dispatchAt": 1794878803828
+    },
+    {
+      "client": 9,
+      "turn": 19,
+      "ms": 961,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803898,
+      "dispatchAt": 1794878803831
+    },
+    {
+      "client": 10,
+      "turn": 19,
+      "ms": 2389,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803903,
+      "dispatchAt": 1794878803833
+    },
+    {
+      "client": 11,
+      "turn": 19,
+      "ms": 1427,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803909,
+      "dispatchAt": 1794878803843
+    },
+    {
+      "client": 12,
+      "turn": 19,
+      "ms": 2112,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803904,
+      "dispatchAt": 1794878803839
+    },
+    {
+      "client": 13,
+      "turn": 19,
+      "ms": 1584,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803902,
+      "dispatchAt": 1794878803847
+    },
+    {
+      "client": 14,
+      "turn": 19,
+      "ms": 1278,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878803907,
+      "dispatchAt": 1794878803842
+    },
+    {
+      "client": 15,
+      "turn": 19,
+      "ms": 1351,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878803908,
+      "dispatchAt": 1794878803854
+    },
+    {
+      "client": 16,
+      "turn": 19,
+      "ms": 2745,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804228,
+      "dispatchAt": 1794878803866
+    },
+    {
+      "client": 17,
+      "turn": 19,
+      "ms": 2334,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804230,
+      "dispatchAt": 1794878803870
+    },
+    {
+      "client": 18,
+      "turn": 19,
+      "ms": 1919,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804227,
+      "dispatchAt": 1794878803878
+    },
+    {
+      "client": 19,
+      "turn": 19,
+      "ms": 1133,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804224,
+      "dispatchAt": 1794878803881
+    },
+    {
+      "client": 20,
+      "turn": 19,
+      "ms": 1831,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804220,
+      "dispatchAt": 1794878803883
+    },
+    {
+      "client": 21,
+      "turn": 19,
+      "ms": 1439,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804231,
+      "dispatchAt": 1794878803890
+    },
+    {
+      "client": 22,
+      "turn": 19,
+      "ms": 1192,
+      "wrong": false,
+      "progress": 17,
+      "at": 1794878804226,
+      "dispatchAt": 1794878803877
+    },
+    {
+      "client": 23,
+      "turn": 19,
+      "ms": 1483,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804229,
+      "dispatchAt": 1794878803895
+    },
+    {
+      "client": 24,
+      "turn": 19,
+      "ms": 1996,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804233,
+      "dispatchAt": 1794878803895
+    },
+    {
+      "client": 25,
+      "turn": 19,
+      "ms": 1512,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804232,
+      "dispatchAt": 1794878803904
+    },
+    {
+      "client": 26,
+      "turn": 19,
+      "ms": 1783,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804236,
+      "dispatchAt": 1794878803915
+    },
+    {
+      "client": 27,
+      "turn": 19,
+      "ms": 857,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804225,
+      "dispatchAt": 1794878803917
+    },
+    {
+      "client": 28,
+      "turn": 19,
+      "ms": 986,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878804232,
+      "dispatchAt": 1794878803914
+    },
+    {
+      "client": 1,
+      "turn": 20,
+      "ms": 848,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878809571,
+      "dispatchAt": 1794878809455
+    },
+    {
+      "client": 2,
+      "turn": 20,
+      "ms": 1116,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809582,
+      "dispatchAt": 1794878809466
+    },
+    {
+      "client": 3,
+      "turn": 20,
+      "ms": 701,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809578,
+      "dispatchAt": 1794878809466
+    },
+    {
+      "client": 4,
+      "turn": 20,
+      "ms": 488,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809579,
+      "dispatchAt": 1794878809475
+    },
+    {
+      "client": 5,
+      "turn": 20,
+      "ms": 144,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809577,
+      "dispatchAt": 1794878809474
+    },
+    {
+      "client": 6,
+      "turn": 20,
+      "ms": 1513,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809583,
+      "dispatchAt": 1794878809482
+    },
+    {
+      "client": 7,
+      "turn": 20,
+      "ms": 523,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809574,
+      "dispatchAt": 1794878809480
+    },
+    {
+      "client": 8,
+      "turn": 20,
+      "ms": 587,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878809595,
+      "dispatchAt": 1794878809485
+    },
+    {
+      "client": 9,
+      "turn": 20,
+      "ms": 1003,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809594,
+      "dispatchAt": 1794878809490
+    },
+    {
+      "client": 10,
+      "turn": 20,
+      "ms": 1536,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809593,
+      "dispatchAt": 1794878809492
+    },
+    {
+      "client": 11,
+      "turn": 20,
+      "ms": 633,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809598,
+      "dispatchAt": 1794878809494
+    },
+    {
+      "client": 12,
+      "turn": 20,
+      "ms": 417,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809592,
+      "dispatchAt": 1794878809489
+    },
+    {
+      "client": 13,
+      "turn": 20,
+      "ms": 320,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809589,
+      "dispatchAt": 1794878809497
+    },
+    {
+      "client": 14,
+      "turn": 20,
+      "ms": 963,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809604,
+      "dispatchAt": 1794878809492
+    },
+    {
+      "client": 15,
+      "turn": 20,
+      "ms": 174,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878809602,
+      "dispatchAt": 1794878809499
+    },
+    {
+      "client": 16,
+      "turn": 20,
+      "ms": 1671,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809600,
+      "dispatchAt": 1794878809511
+    },
+    {
+      "client": 17,
+      "turn": 20,
+      "ms": 198,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809605,
+      "dispatchAt": 1794878809516
+    },
+    {
+      "client": 18,
+      "turn": 20,
+      "ms": 1688,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809603,
+      "dispatchAt": 1794878809525
+    },
+    {
+      "client": 19,
+      "turn": 20,
+      "ms": 1381,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809601,
+      "dispatchAt": 1794878809529
+    },
+    {
+      "client": 20,
+      "turn": 20,
+      "ms": 681,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809599,
+      "dispatchAt": 1794878809536
+    },
+    {
+      "client": 21,
+      "turn": 20,
+      "ms": 1153,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809606,
+      "dispatchAt": 1794878809539
+    },
+    {
+      "client": 22,
+      "turn": 20,
+      "ms": 1213,
+      "wrong": false,
+      "progress": 18,
+      "at": 1794878809611,
+      "dispatchAt": 1794878809528
+    },
+    {
+      "client": 23,
+      "turn": 20,
+      "ms": 1111,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809610,
+      "dispatchAt": 1794878809546
+    },
+    {
+      "client": 24,
+      "turn": 20,
+      "ms": 1722,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809612,
+      "dispatchAt": 1794878809551
+    },
+    {
+      "client": 25,
+      "turn": 20,
+      "ms": 985,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809611,
+      "dispatchAt": 1794878809561
+    },
+    {
+      "client": 26,
+      "turn": 20,
+      "ms": 1331,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809624,
+      "dispatchAt": 1794878809563
+    },
+    {
+      "client": 27,
+      "turn": 20,
+      "ms": 1582,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809622,
+      "dispatchAt": 1794878809564
+    },
+    {
+      "client": 28,
+      "turn": 20,
+      "ms": 1416,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878809627,
+      "dispatchAt": 1794878809541
+    },
+    {
+      "client": 1,
+      "turn": 21,
+      "ms": 414,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878814868,
+      "dispatchAt": 1794878814812
+    },
+    {
+      "client": 8,
+      "turn": 21,
+      "ms": 176,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878814923,
+      "dispatchAt": 1794878814827
+    },
+    {
+      "client": 15,
+      "turn": 21,
+      "ms": 317,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878814930,
+      "dispatchAt": 1794878814882
+    },
+    {
+      "client": 22,
+      "turn": 21,
+      "ms": 118,
+      "wrong": false,
+      "progress": 19,
+      "at": 1794878814937,
+      "dispatchAt": 1794878814879
+    },
+    {
+      "client": 1,
+      "turn": 22,
+      "ms": 191,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878820229,
+      "dispatchAt": 1794878820146
+    },
+    {
+      "client": 8,
+      "turn": 22,
+      "ms": 124,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878820238,
+      "dispatchAt": 1794878820152
+    },
+    {
+      "client": 15,
+      "turn": 22,
+      "ms": 289,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878820247,
+      "dispatchAt": 1794878820150
+    },
+    {
+      "client": 22,
+      "turn": 22,
+      "ms": 90,
+      "wrong": false,
+      "progress": 20,
+      "at": 1794878820244,
+      "dispatchAt": 1794878820145
+    }
+  ],
+  "serverArrivalMs": {
+    "median": 77,
+    "p95": 393,
+    "max": 480
+  }
+}
