@@ -1,4 +1,4 @@
-import { RUN_MS, createRunStage, stepRun, steerRun, jumpRun, slideRun } from './run-stage.mjs?v=real20261123';
+import { RUN_MS, FREEZE_MS, createRunStage, stepRun, steerRun, jumpRun, slideRun } from './run-stage.mjs?v=real20261123';
 import { orderedQuestions, racePoints, REVEAL_MS } from './race-model.mjs?v=run20261123';
 import { connect, createTest } from './race-live.mjs?v=run20261123';
 
@@ -87,9 +87,11 @@ function nextQuestion() {
   round.attemptId = crypto.randomUUID();
   const choices = round.question.options.map((text,index) => ({ text,index }));
   round.options = solo ? shuffled(choices) : shuffled([choices[round.question.correct], ...shuffled(choices.filter(choice => choice.index !== round.question.correct)).slice(0,2)]);
-  round.openedAt = solo ? now() : (room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt) + RUN_MS;
+  round.runMs = RUN_MS + (round.run?.collisions || 0) * FREEZE_MS;
+  round.openedAt = solo ? now() : (room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt) + round.runMs;
   round.phase = 'answer';round.selection = null;
   $('runControls').hidden = true;
+  $('bar').max = 30;
   $('bar').setAttribute('aria-label','Baki masa soalan');
   $('gamingQuestionImage').hidden = true;
   paintQuestion(round.question);$('feedback').replaceChildren();$('retryAnswer').hidden = true;
@@ -105,12 +107,14 @@ function beginRun() {
   if (solo) { nextQuestion(); return; }
   if (!round.queue.length) { finish(); return; }
   const startedAt = room.self.last ? room.self.last.at + REVEAL_MS : room.state.startedAt;
-  round.run = createRunStage(startedAt, code + ':' + room.uid + ':' + room.self.attempts);
+  const roundIndex = self()?.progress || 0;
+  round.run = createRunStage(startedAt, code + ':' + room.uid + ':' + room.self.attempts, roundIndex);
   round.run.lane = round.lane;
   round.phase = 'run';
   $('runControls').hidden = false;
+  $('bar').max = RUN_MS / 1000;
   $('bar').setAttribute('aria-label','Baki masa larian');
-  $('question').textContent = '🏃 Lari dulu, soalan muncul selepas 30 saat';
+  $('question').textContent = '🏃 Larian ' + (roundIndex + 1) + ' — semakin lama semakin laju!';
   $('answers').replaceChildren();$('feedback').replaceChildren();$('gamingQuestionImage').hidden = true;
   $('retryAnswer').hidden = true;
 }
@@ -182,7 +186,7 @@ async function answer(choice) {
       saved = round.self;saved.attempts++;saved.progress += hit ? 1 : 0;saved.mistakes += hit ? 0 : 1;
       if (hit) saved.correct[round.question.id] = { at:now(),openedAt:round.openedAt,streak:0 };
       saved.last = { choice,qid:round.question.id,at:now() };
-    } else saved = await room.submit(round.question,choice,round.attemptId,RUN_MS);
+    } else saved = await room.submit(round.question,choice,round.attemptId,round.runMs || RUN_MS);
     const correct = saved.last.choice === round.question.correct;
     round.phase = correct || solo ? 'feedback' : 'penalty';
     round.nextReadyAt = saved.last.at + (solo && !correct ? 750 : REVEAL_MS);
@@ -242,6 +246,7 @@ function tick() {
     scene.dataset.phase = frozen ? 'run-penalty' : 'run';
     scene.dataset.lane = stage.lane;
     scene.dataset.runDistance = stage.distance;
+    scene.dataset.runSpeed = stage.speed.toFixed(2);
     scene.dataset.runStartedAt = stage.startedAt;
     scene.dataset.jump = Math.max(0, Math.sin(Math.max(0, Math.min(1, (850-stage.jumpUntil+clock)/850))*Math.PI))*1.7;
     scene.dataset.slide = clock < stage.slideUntil && !frozen ? '1':'0';
@@ -250,8 +255,9 @@ function tick() {
     $('runHint').textContent = frozen ? '❄️ Terlanggar! Beku ' + Math.ceil((stage.frozenUntil-clock)/1000) + ' saat' : 'Elak halangan · kutip coin · lompat atau tukar lorong';
     for (const button of $('runControls').querySelectorAll('button')) button.disabled = frozen;
     $('runner').classList.toggle('frozen', frozen);
-    $('bar').value = Math.max(0,(stage.until-clock)/1000);
-    $('timer').textContent = '🏃 Larian · ' + Math.max(0,Math.ceil((stage.until-clock)/1000)) + ' saat sebelum soalan';
+    const runLeftMs = frozen ? Math.max(0, stage.until - stage.frozenUntil) : Math.max(0, stage.until - clock);
+    $('bar').value = runLeftMs / 1000;
+    $('timer').textContent = (frozen ? '❄️ Masa dibekukan · ' : '🏃 Larian · ') + Math.ceil(runLeftMs / 1000) + ' saat sebelum soalan';
     if (clock >= stage.until) { nextQuestion(); scene.dataset.phase = round.phase; scene.dataset.jump = 0; }
     return;
   }

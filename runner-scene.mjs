@@ -211,7 +211,7 @@ function createRace() {
     }
     const running = phase === 'run' || phase === 'run-penalty';
     const moving = phase === 'run' || phase === 'feedback';
-    const speed = moving && !reducedMotion ? (phase === 'feedback' ? 18 : 12) : 0;
+    const speed = moving && !reducedMotion ? (phase === 'feedback' ? 18 : Number(host.dataset.runSpeed || 12)) : 0;
     stride += dt * speed;
     const lane = Number(host.dataset.lane ?? 1);
     runner.position.x += ((lane - 1) * 3 - runner.position.x) * Math.min(1, dt * 22);
