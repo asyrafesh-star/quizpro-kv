@@ -11,6 +11,7 @@ function layout(){
    const a=-Math.PI/2+t*Math.PI*2/5,along=x*Math.cos(a)+z*Math.sin(a),across=-x*Math.sin(a)+z*Math.cos(a);
    if(along>65&&along<79&&Math.abs(across)<9)return false;
    if(along>0&&along<91&&[-16.2,0,16.2].some(lane=>Math.abs(across-lane)<margin))return false;
+   for(const distance of [34.5,57,79.2])for(const lane of [-16.2,0,16.2])if(Math.hypot(along-distance,across-lane)<8.5)return false;
    if(Math.hypot(x-Math.cos(a)*84,z-Math.sin(a)*84)<10)return false;
    if(Math.hypot(x-Math.cos(a+.42)*39,z-Math.sin(a+.42)*39)<4)return false;
   }return true;
