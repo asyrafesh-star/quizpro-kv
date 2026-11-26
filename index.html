@@ -76,6 +76,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
 </style>
 <style id="game-mode-cards">
   .game-mode-picker{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 18px}
+  .order-mode-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:8px 0 18px;max-width:640px}
   .game-mode-card{position:relative;display:block;min-width:0;margin:0;padding:0;overflow:hidden;text-align:left;color:#fff;background:#101b2c;border:2px solid #d7dfec;border-radius:16px;box-shadow:0 8px 20px #12254c18;transition:border-color .16s,transform .16s,box-shadow .16s}
   .game-mode-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
   .game-mode-caption{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:linear-gradient(110deg,#111827,#1d2a40)}
@@ -86,8 +87,8 @@ body.apple-tv-mode .session-summary{background:#19243a}
   .game-mode-card[aria-pressed="true"]{border-color:#ff465c;box-shadow:0 0 0 3px #ff465c26,0 12px 26px #182b4a24}
   .game-mode-card[aria-pressed="true"] .game-mode-check{opacity:1;transform:scale(1);background:#ed2948}
   .game-mode-card:focus-visible{outline:3px solid #2781ff;outline-offset:3px}
-  @media(max-width:760px){.game-mode-picker{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-mode-caption{padding:9px 10px}.game-mode-caption small{font-size:10px}}
-</style><script src="mode-picker.js?v=1" defer></script></head>
+  @media(max-width:760px){.game-mode-picker{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.order-mode-picker{gap:10px}.game-mode-caption{padding:9px 10px}.game-mode-caption small{font-size:10px}}
+</style><script src="mode-picker.js?v=2" defer></script></head>
 <body>
 <div class="wrap">
   <header class="brand">
@@ -198,7 +199,7 @@ body.apple-tv-mode .session-summary{background:#19243a}
         <button type="button" class="game-mode-card" data-game-mode="arena" aria-pressed="false"><img src="assets/mode-cards/mobokv.jpg" alt=""><span class="game-mode-check" aria-hidden="true">✓</span><span class="game-mode-caption"><span><strong>MOBOKV</strong><small>Arena 3D · lima pasukan</small></span></span></button>
         <button type="button" class="game-mode-card" data-game-mode="masterchef" aria-pressed="false"><img src="assets/mode-cards/masterchef-kv.jpg" alt=""><span class="game-mode-check" aria-hidden="true">✓</span><span class="game-mode-caption"><span><strong>MASTERCHEF KV</strong><small>Cooking · 6 pusingan</small></span></span></button>
       </div>
-      <select id="sessionGameplayMode" class="hidden" aria-hidden="true" tabindex="-1"><option value="classic">KVAHOOT</option><option value="gaming">SUBWAY RUN</option><option value="arena">MOBOKV</option><option value="masterchef">MASTERCHEF KV</option></select><label for="sessionOrderMode">Susunan soalan <small>· Pilih sebelum mula sesi baharu</small></label><select id="sessionOrderMode"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak — urutan setiap pelajar</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
+      <select id="sessionGameplayMode" class="hidden" aria-hidden="true" tabindex="-1"><option value="classic">KVAHOOT</option><option value="gaming">SUBWAY RUN</option><option value="arena">MOBOKV</option><option value="masterchef">MASTERCHEF KV</option></select><label>Susunan soalan <small>· Pilih sebelum mula sesi baharu</small></label><div class="order-mode-picker" role="group" aria-label="Pilih susunan soalan"><button type="button" class="game-mode-card" data-order-mode="fixed" aria-pressed="true"><img src="assets/mode-cards/order-fixed.jpg" alt=""><span class="game-mode-check" aria-hidden="true">✓</span><span class="game-mode-caption"><span><strong>SOALAN TETAP</strong><small>Ikut urutan asal</small></span></span></button><button type="button" class="game-mode-card" data-order-mode="random" aria-pressed="false"><img src="assets/mode-cards/order-random.jpg" alt=""><span class="game-mode-check" aria-hidden="true">✓</span><span class="game-mode-caption"><span><strong>SOALAN RAWAK</strong><small>Urutan berbeza setiap pelajar</small></span></span></button></div><select id="sessionOrderMode" class="hidden" aria-hidden="true" tabindex="-1"><option value="fixed">Soalan tetap</option><option value="random">Soalan rawak</option></select><div class="adminbar"><button onclick="startSession()">Mula sesi baharu</button><button onclick="launchQuestion()">Mula kuiz</button><button id="pauseResumeBtn" class="secondary" onclick="togglePause()" disabled>Pause</button><button id="nextQuestionBtn" class="secondary" onclick="nextQuestion()" disabled>Soalan seterusnya</button><button class="secondary" onclick="showLeaderboard()">Paparkan leaderboard</button><button class="danger" onclick="endSession()">Tamatkan sesi</button></div>
       <p><a class="btn secondary" href="teacher-live.html" target="_blank" rel="noopener">🏁 Live Cikgu — kedudukan, markah dan trek peserta</a></p><div id="sessionPanel"><p class="muted">Mulakan sesi untuk jana kod dan QR.</p></div>
     </div>
     <div class="card">
