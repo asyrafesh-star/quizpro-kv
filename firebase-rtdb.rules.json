@@ -76,6 +76,77 @@
                 }
               }
             }
+          },
+          "masterchef": {
+            "meta": {
+              ".write": "auth != null && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
+              ".validate": "newData.hasChildren(['startedAt'])",
+              "startedAt": {
+                ".validate": "newData.isNumber() && newData.val() >= now - 30000 && newData.val() <= now + 5000"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "players": {
+              "$uid": {
+                ".write": "auth != null && auth.uid === $uid && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
+                ".validate": "newData.hasChildren(['team','role','nick','x','z','at'])",
+                "team": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"
+                },
+                "role": {
+                  ".validate": "newData.val() === 'prep' || newData.val() === 'cook' || newData.val() === 'plate' || newData.val() === 'serve'"
+                },
+                "nick": {
+                  ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 16"
+                },
+                "x": {
+                  ".validate": "newData.isNumber() && newData.val() >= -8 && newData.val() <= 8"
+                },
+                "z": {
+                  ".validate": "newData.isNumber() && newData.val() >= -6 && newData.val() <= 6"
+                },
+                "at": {
+                  ".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "events": {
+              "$uid": {
+                "$event": {
+                  ".write": "auth != null && auth.uid === $uid && root.child('sessions').child($code).child('grants').child(auth.uid).exists() && !data.exists() && root.child('sessions').child($code).child('state').child('status').val() !== 'finished'",
+                  ".validate": "newData.hasChildren(['type','team','order','step','role','question','at'])",
+                  "type": {
+                    ".validate": "newData.val() === 'cook' || newData.val() === 'quiz'"
+                  },
+                  "team": {
+                    ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 4"
+                  },
+                  "order": {
+                    ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 23"
+                  },
+                  "step": {
+                    ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 5"
+                  },
+                  "role": {
+                    ".validate": "newData.val() === 'prep' || newData.val() === 'cook' || newData.val() === 'plate' || newData.val() === 'serve' || newData.val() === 'quiz'"
+                  },
+                  "question": {
+                    ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 30"
+                  },
+                  "at": {
+                    ".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 10000"
+                  },
+                  "$other": {
+                    ".validate": false
+                  }
+                }
+              }
+            }
           }
         },
         "answers": {
