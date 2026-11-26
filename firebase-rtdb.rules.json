@@ -141,6 +141,10 @@
               "shoes": {
                 ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 2"
               }
+            },
+            "readyAt": {
+              ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && newData.exists() && root.child('gamingRaces').child($code).child('state/status').val() !== 'finished'",
+              ".validate": "newData.isNumber() && newData.val() === now"
             }
           }
         },
@@ -210,6 +214,27 @@
             },
             "$other": {
               ".validate": false
+            },
+            "first": {
+              "$qid": {
+                ".write": "auth != null && auth.uid === $uid && root.child('gamingRaces').child($code).child('grants').child(auth.uid).exists() && root.child('gamingRaces').child($code).child('state/status').val() === 'running' && !data.exists() && newData.exists()",
+                ".validate": "newData.hasChildren(['choice','at','openedAt','coins']) && newData.parent().parent().child('last/qid').val() === $qid && newData.child('choice').val() === newData.parent().parent().child('last/choice').val() && newData.child('at').val() === now && newData.child('openedAt').val() <= now && now-newData.child('openedAt').val() <= 300000 && (newData.child('choice').val() !== root.child('gamingRaces').child($code).child('keys').child($qid).val() || newData.child('openedAt').val() === newData.parent().parent().child('correct').child($qid).child('openedAt').val())",
+                "choice": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= -1 && newData.val() <= 3"
+                },
+                "at": {
+                  ".validate": "newData.isNumber() && newData.val() === now"
+                },
+                "openedAt": {
+                  ".validate": "newData.isNumber()"
+                },
+                "coins": {
+                  ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() <= 54"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
             }
           }
         }

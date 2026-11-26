@@ -1,6 +1,6 @@
 import { RUN_MS, FREEZE_MS, createRunStage, stepRun, steerRun, jumpRun, slideRun } from './run-stage.mjs?v=real20261123';
-import { orderedQuestions, racePoints, REVEAL_MS } from './race-model.mjs?v=run20261123';
-import { connect, createTest } from './race-live.mjs?v=run20261123';
+import { orderedQuestions, racePoints, REVEAL_MS, REVIEW_MS } from './race-model.mjs?v=competition20261125';
+import { connect, createTest } from './race-live.mjs?v=competition20261125';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -12,6 +12,7 @@ let podiumStamp = '';
 const timeText = milliseconds => (Math.max(0,milliseconds) / 1000).toFixed(1) + 's';
 const now = () => room ? room.now() : Date.now();
 const shuffled = values => orderedQuestions(values, 'random', crypto.randomUUID());
+const lastRevealMs = runner => runner.last && runner.correct?.[runner.last.qid] ? REVIEW_MS : REVEAL_MS;
 
 const audio = (() => {
   let context, enabled = false;
@@ -186,13 +187,13 @@ async function answer(choice) {
       saved = round.self;saved.attempts++;saved.progress += hit ? 1 : 0;saved.mistakes += hit ? 0 : 1;
       if (hit) saved.correct[round.question.id] = { at:now(),openedAt:round.openedAt,streak:0 };
       saved.last = { choice,qid:round.question.id,at:now() };
-    } else saved = await room.submit(round.question,choice,round.attemptId,round.runMs || RUN_MS);
+    } else saved = await room.submit(round.question,choice,round.attemptId,round.runMs || RUN_MS,round.run?.coins||0);
     const correct = saved.last.choice === round.question.correct;
     round.phase = correct || solo ? 'feedback' : 'penalty';
     round.nextReadyAt = saved.last.at + (correct ? REVIEW_MS : solo ? 750 : REVEAL_MS);
     const title = document.createElement('strong'), text = document.createElement('p');
     if (correct) {
-      title.textContent = '✨ BETUL! Terus mara';text.textContent = round.question.explanation;
+      title.textContent = !solo && saved.first?.[round.question.id]?.choice !== round.question.correct ? '✨ BETUL! Dilepasi · 0 markah (cubaan semula)' : '✨ BETUL! Markah cubaan pertama';text.textContent = round.question.explanation;
       const selected = $('answers').children[lane];if (selected) selected.classList.add('correct');
       audio.play('correct');
     } else {
@@ -221,7 +222,7 @@ function tick() {
   $('runner').style.left = current.progress / bank.questions.length * 100 + '%';
   $('progress').textContent = current.progress + '/' + bank.questions.length + ' betul';
   $('score').textContent = racePoints(current,bank.questions) + ' markah';
-  $('streak').textContent = '🔥 ' + current.streak + ' berturut';
+  $('streak').textContent = '🎯 ' + Object.keys(current.first||{}).length + ' cubaan pertama direkod';
   $('elapsed').textContent = '⏱ ' + timeText(solo ? clock-round.startedAt : Math.max(0,clock-(state?.startedAt || clock)));
   $('raceDistance').textContent = current.progress + '/' + bank.questions.length + ' halangan dilepasi';
   if (round.phase === 'waiting') {
@@ -251,7 +252,7 @@ function tick() {
     scene.dataset.jump = Math.max(0, Math.sin(Math.max(0, Math.min(1, (850-stage.jumpUntil+clock)/850))*Math.PI))*1.7;
     scene.dataset.slide = clock < stage.slideUntil && !frozen ? '1':'0';
     scene.dataset.runItems = JSON.stringify(stage.items.filter(item => !item.done && item.distance-stage.distance < 95));
-    $('runCoins').textContent = '🪙 ' + round.coins + ' coin';
+    $('runCoins').textContent = '🪙 ' + round.coins + ' coin game · ' + Object.values(current.first||{}).reduce((sum,a)=>sum+(a.coins||0),0) + ' coin ranking disahkan';
     $('runHint').textContent = frozen ? '❄️ Terlanggar! Beku ' + Math.ceil((stage.frozenUntil-clock)/1000) + ' saat' : 'Elak halangan · kutip coin · lompat atau tukar lorong';
     for (const button of $('runControls').querySelectorAll('button')) button.disabled = frozen;
     $('runner').classList.toggle('frozen', frozen);
@@ -326,7 +327,7 @@ $('loadBank').onclick = async () => {
     }
     if (!bank?.questions?.length) throw Error('Set soalan kosong.');
     message(bank.title + ' · ' + bank.questions.length + ' soalan' + (solo ? '' : ' · ' + bank.name));
-    $('start').disabled = false;$('start').textContent = solo ? 'Mula pratonton' : 'Masuk / Sambung perlumbaan';
+    $('start').disabled = false;$('start').textContent = solo ? 'Mula pratonton' : 'Bersedia / Sambung permainan';
   } catch (error) { message(error.message); }
   finally { $('loadBank').disabled = false; }
 };
@@ -334,6 +335,7 @@ $('start').onclick = async () => {
   $('start').disabled = true;
   try {
     if (tester && !solo && room.state.status === 'waiting') await legacyCall('adminRaceStart',$('testerPin').value,code);
+    if(!solo)await room.markReady();
     start();
   } catch (error) { message(error.message); }
   finally { $('start').disabled = false; }

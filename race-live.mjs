@@ -1,5 +1,6 @@
+import {firstAttempt} from './competition-model.mjs?v=competition20261125';
 import { readAvatar, normalizeAvatar } from './avatar-options.mjs?v=real20261123';
-import { buildAttempt, rankRunners } from './race-model.mjs?v=run20261123';
+import { buildAttempt, rankRunners } from './race-model.mjs?v=competition20261125';
 
 const config = { apiKey:'AIzaSyDsLcMZtnge0eLl9IX2ZUIXaRXnfixg70M', authDomain:'quizpro-kv.firebaseapp.com', projectId:'quizpro-kv', databaseURL:'https://quizpro-kv-default-rtdb.asia-southeast1.firebasedatabase.app', appId:'1:897822705409:web:2147b1d6720e80c5357d00' };
 let sdkPromise;
@@ -29,11 +30,12 @@ export async function connect(code, ic, name, onUpdate, observerPin) {
   const stops = [];
   const room = { bank, code, uid:auth.currentUser.uid, state:null, runners:{}, profiles:{}, connected:false, offset:0, error:'', closed:false };
   room.now = () => Date.now() + room.offset;
+  room.markReady = () => d.set(d.ref(db,root+'/profiles/'+room.uid+'/readyAt'),d.serverTimestamp());
   room.saveAppearance = choice => d.set(d.ref(db,root+'/profiles/'+room.uid+'/appearance'),normalizeAvatar(choice));
   const notify = () => {
     if (room.closed) return;
     room.self = room.runners[room.uid];
-    room.ranking = rankRunners(room.runners, room.profiles, room.state?.startedAt || 0);
+    room.ranking = rankRunners(room.runners, room.profiles, room.state?.startedAt || 0,bank.questions||[]);
     onUpdate(room);
   };
   const listen = (path, callback) => stops.push(d.onValue(d.ref(db,path), snapshot => { callback(snapshot.val()); notify(); }, error => { room.error = error.message; notify(); }));
@@ -49,7 +51,7 @@ export async function connect(code, ic, name, onUpdate, observerPin) {
   const [state, runners, profiles] = await Promise.all(['state','runners','profiles'].map(path => d.get(d.ref(db,root+'/'+path))));
   room.state = state.val();room.runners = runners.val() || {};room.profiles = profiles.val() || {};
   room.close = () => { room.closed = true; stops.forEach(stop => stop()); };
-  room.submit = async (question, choice, attemptId, runMs = 0) => {
+  room.submit = async (question, choice, attemptId, runMs = 0, stageCoins = 0) => {
     if (room.self?.last?.id === attemptId) return room.self;
     if (!room.connected) throw Error('Internet terputus. Sambung semula dan cuba hantar lagi.');
     const target = d.ref(db,root+'/runners/'+room.uid);
@@ -58,6 +60,8 @@ export async function connect(code, ic, name, onUpdate, observerPin) {
     const next = buildAttempt(previous, question, choice, room.state.startedAt, d.serverTimestamp(), attemptId, runMs);
     if (!next) throw Error('Soalan ini sudah disahkan. Muat semula untuk sambung.');
     const changes = { attempts:next.attempts,progress:next.progress,mistakes:next.mistakes,streak:next.streak,last:next.last };
+    const first=firstAttempt(previous.first||{},question,choice,d.serverTimestamp(),(previous.last?previous.last.at+(previous.correct?.[previous.last.qid]?1000:5000):room.state.startedAt)+runMs,stageCoins);
+    if(first)changes['first/'+question.id]=first;
     if (next.correct[question.id]) changes['correct/'+question.id] = next.correct[question.id];
     if (next.progress === room.state.total) changes.finishedAt = d.serverTimestamp();
     room.confirmed = previous;room.pending = true;

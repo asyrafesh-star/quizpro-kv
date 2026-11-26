@@ -1,3 +1,4 @@
+import {questionResult,competitionRows} from './competition-model.mjs?v=competition20261125';
 export const REVEAL_MS = 5000;
 export const REVIEW_MS = 1000;
 
@@ -36,6 +37,7 @@ export function buildAttempt(previous, question, choice, startedAt, stamp, attem
 }
 
 export function racePoints(runner, questions) {
+  if(runner?.first)return questions.reduce((sum,q)=>sum+questionResult(q,runner.first[q.id]).quizPoints,0);
   const bank = new Map(questions.map(question => [question.id, question]));
   return Object.entries(runner?.correct || {}).reduce((total, [id, answer]) => {
     const maximum = Number(bank.get(id)?.points) || 5;
@@ -45,7 +47,8 @@ export function racePoints(runner, questions) {
   }, 0);
 }
 
-export function rankRunners(runners, profiles, startedAt) {
+export function rankRunners(runners, profiles, startedAt, questions = []) {
+  if(questions.length&&Object.values(runners||{}).some(r=>r.first))return competitionRows(runners,profiles,questions).map(row=>({...runners[row.uid],...row,duration:row.finishedAt?row.finishedAt-startedAt:null}));
   const list = Object.entries(runners || {}).map(([uid, runner]) => ({
     uid, ...runner, name: profiles?.[uid]?.name || 'Pelari',
     duration: runner.finishedAt ? Math.max(0, runner.finishedAt - startedAt) : null
