@@ -15,13 +15,11 @@ function layout(){
    if(Math.hypot(x-Math.cos(a+.42)*39,z-Math.sin(a+.42)*39)<4)return false;
   }return true;
  }
- for(let i=0;i<12000&&(trees.length<680||rocks.length<90||bushes.length<100);i++){
-  const a=random()*Math.PI*2,r=30+Math.sqrt(random())*74,x=Math.cos(a)*r,z=Math.sin(a)*r;
-  if(!clear(x,z,4.6))continue;
-  if(trees.length<680)trees.push({x,z,height:3+random()*2.8,rotation:random()*Math.PI*2,pine:random()>.5,radius:.5});
-  if(rocks.length<90&&i%5===0){const radius=1+random()*1.3;rocks.push({x,z,radius,height:1.3+random()*1.5,rotation:random()*6.28});}
-  if(bushes.length<100&&i%3===0)bushes.push({x:x+2,z:z+1,radius:2.6+random()*.8});
- }
+  const point=()=>{const a=random()*Math.PI*2,r=30+Math.sqrt(random())*74;return{x:Math.cos(a)*r,z:Math.sin(a)*r};};
+  const spaced=(list,x,z,margin)=>list.every(o=>Math.hypot(x-o.x,z-o.z)>margin+(o.radius||0));
+  for(let i=0;i<32000&&trees.length<900;i++){const{x,z}=point();if(!clear(x,z,4.6)||!spaced(trees,x,z,2.6))continue;trees.push({x,z,height:3+random()*2.8,rotation:random()*Math.PI*2,pine:random()>.5,radius:.5});}
+  for(let i=0;i<60000&&rocks.length<150;i++){const{x,z}=point(),radius=1+random()*1.3;if(!clear(x,z,4.5)||!spaced(trees,x,z,1.1)||!spaced(rocks,x,z,1.8))continue;rocks.push({x,z,radius,height:1.3+random()*1.5,rotation:random()*6.28});}
+  for(let i=0;i<42000&&bushes.length<180;i++){const{x,z}=point(),radius=2.6+random()*.8;if(!clear(x,z,6)||!spaced(trees,x,z,2.6)||!spaced(rocks,x,z,2.2)||!spaced(bushes,x,z,3.2))continue;bushes.push({x,z,radius});}
  cached={trees,rocks,bushes};return cached;
 }
 export const forestLayout=()=>layout().trees;
