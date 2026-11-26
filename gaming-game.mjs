@@ -37,6 +37,7 @@ const audio = (() => {
 })();
 
 function message(text) { $('bankStatus').textContent = text; }
+function cleanQuestionSet(questions){return questions.map((question,index)=>{const source=Array.isArray(question.options)?question.options:[],correctValue=question.correct,correctSource=Number.isInteger(correctValue)?correctValue:/^[A-D]$/i.test(String(correctValue))?'ABCD'.indexOf(String(correctValue).toUpperCase()):Number(correctValue),options=source.map((value,sourceIndex)=>({text:String(value??'').trim(),sourceIndex})).filter(option=>option.text&&!/^[-‐‑‒–—−]+$/.test(option.text));if(options.length<2)throw Error(`Soalan ${index+1} perlu sekurang-kurangnya dua pilihan jawapan.`);const correct=options.findIndex(option=>option.sourceIndex===correctSource);if(correct<0)throw Error(`Jawapan betul soalan ${index+1} kosong atau tidak sah.`);return{...question,id:question.id||`q${index+1}`,options:options.map(option=>option.text),correct};});}
 function shareRace() {
   $('raceShare').hidden = false;
   const url = new URL('gaming.html',location.href);url.searchParams.set('join',code);
@@ -317,7 +318,7 @@ $('loadBank').onclick = async () => {
     solo = tester && $('testerMode').value === 'classic';
     if (solo) {
       bank = await legacyCall('adminTesterBank',$('testerPin').value,$('testerSet').value);
-      bank.questions = bank.questions.map((question,index) => ({...question,id:'q'+(index+1)}));bank.orderMode = $('testerOrder').value;
+      bank.orderMode = $('testerOrder').value;
     } else {
       if (tester) { const test = await createTest($('testerPin').value,$('testerSet').value,$('testerOrder').value);code = test.code;shareRace(); }
       else code = $('gamingJoin').value.trim();
@@ -325,7 +326,8 @@ $('loadBank').onclick = async () => {
       room = joined;bank = joined.bank;$('studentName').value = bank.name;
       if(!bank.test){try{localStorage.setItem('quizproResume',JSON.stringify({code,playerId:bank.playerId,name:bank.name,gameplayMode:'gaming'}));sessionStorage.removeItem('quizproRaceIC:'+code);}catch{}}
     }
-    if (!bank?.questions?.length) throw Error('Set soalan kosong.');
+    if (!Array.isArray(bank?.questions)||!bank.questions.length) throw Error('Set soalan kosong.');
+    bank.questions=cleanQuestionSet(bank.questions).map((question,index)=>({...question,id:solo?`q${index+1}`:question.id}));
     message(bank.title + ' · ' + bank.questions.length + ' soalan' + (solo ? '' : ' · ' + bank.name));
     $('start').disabled = false;$('start').textContent = solo ? 'Mula pratonton' : 'Bersedia / Sambung permainan';
   } catch (error) { message(error.message); }
