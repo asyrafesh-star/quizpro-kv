@@ -1,5 +1,5 @@
 import {firstAttempt} from './competition-model.mjs?v=competition20261125';
-import { readAvatar, normalizeAvatar } from './avatar-options.mjs?v=real20261123';
+import { readAvatar, normalizeAvatar, SHIRT_COLORS } from './avatar-options.mjs?v=real20261123';
 import { buildAttempt, rankRunners } from './race-model.mjs?v=competition20261125';
 
 const config = { apiKey:'AIzaSyDsLcMZtnge0eLl9IX2ZUIXaRXnfixg70M', authDomain:'quizpro-kv.firebaseapp.com', projectId:'quizpro-kv', databaseURL:'https://quizpro-kv-default-rtdb.asia-southeast1.firebasedatabase.app', appId:'1:897822705409:web:2147b1d6720e80c5357d00' };
@@ -26,7 +26,10 @@ export async function connect(code, ic, name, onUpdate, observerPin) {
   const token = await auth.currentUser.getIdToken();
   const bank = observerPin ? await legacyCall('adminRaceWatch', observerPin, code, token) : await legacyCall('raceJoin', code, ic, name, token);
   const root = 'gamingRaces/' + code;
-  if(!observerPin)await d.set(d.ref(db,root+'/profiles/'+auth.currentUser.uid+'/appearance'),readAvatar());
+  if(!observerPin){
+    const profileRef=d.ref(db,root+'/profiles/'+auth.currentUser.uid+'/appearance'),saved=(await d.get(profileRef)).val(),current=normalizeAvatar(saved),defaultAvatar=normalizeAvatar(null),isDefault=!saved||JSON.stringify(current)===JSON.stringify(defaultAvatar);
+    if(isDefault){let hash=0;for(const char of auth.currentUser.uid)hash=(Math.imul(hash,31)+char.charCodeAt(0))|0;const n=hash>>>0,appearance={hair:n%10,outfit:2+n%8,color:SHIRT_COLORS[(n>>>4)%SHIRT_COLORS.length].hex,shoes:(n>>>8)%3};await d.set(profileRef,appearance);}
+  }
   const stops = [];
   const room = { bank, code, uid:auth.currentUser.uid, state:null, runners:{}, profiles:{}, connected:false, offset:0, error:'', closed:false };
   room.now = () => Date.now() + room.offset;

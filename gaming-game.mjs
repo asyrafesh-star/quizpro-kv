@@ -1,6 +1,6 @@
 import { RUN_MS, FREEZE_MS, createRunStage, stepRun, steerRun, jumpRun, slideRun } from './run-stage.mjs?v=real20261123';
 import { orderedQuestions, racePoints, REVEAL_MS, REVIEW_MS } from './race-model.mjs?v=competition20261125';
-import { connect, createTest } from './race-live.mjs?v=competition20261125';
+import { connect, createTest } from './race-live.mjs?v=different-defaults-20261126';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);

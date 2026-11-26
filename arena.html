@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="theme-color" content="#080d18"><title>QuizPro KV · MOBOKV</title>
-  <link rel="stylesheet" href="arena.css?v=mobokv-forest-openmap-20261126">
+  <link rel="stylesheet" href="arena.css?v=mobokv-tester-20261126">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
   <main class="arena-app">
-    <header class="arena-header"><a href="index.html" class="back-link">← QuizPro KV</a><div><span class="eyebrow">MODE PERMAINAN · ARENA LIMA PASUKAN</span><h1>MOBOKV</h1></div><span class="live-pill">ARENA 3D</span></header>
+    <header class="arena-header"><a href="index.html" class="back-link">← QuizPro KV</a><div><span class="eyebrow">MODE PERMAINAN · ARENA LIMA PASUKAN</span><h1>MOBOKV</h1></div><span class="live-pill">ARENA 3D</span></header><p id="arenaTestBanner" hidden style="margin:12px 0;padding:10px 14px;border:1px solid #78d9bb88;border-radius:12px;background:#12372c;color:#d7fff2;font-weight:800">🧪 TESTER LOKAL · 30 watak demo + 75 askar kawalan. Tiada rekod kelas dihantar.</p>
     <section id="joinPanel" class="setup-card hidden"><div class="setup-copy"><span class="eyebrow">SESI KELAS · PELAJAR</span><h2>Masuk ke Arena</h2><p>Daftar menggunakan nombor pengenalan dan nama kelas seperti biasa. Sesi ini menggunakan sambungan langsung.</p></div><label class="nick-label" for="arenaJoinCode">Kod sesi kuiz</label><input id="arenaJoinCode" class="nick-input" inputmode="numeric" maxlength="12" autocomplete="off"><label class="nick-label" for="arenaStudentId">Nombor pengenalan</label><input id="arenaStudentId" class="nick-input" inputmode="numeric" maxlength="14" autocomplete="off"><label class="nick-label" for="arenaStudentName">Nama panggilan dalam kelas</label><input id="arenaStudentName" class="nick-input" maxlength="80" autocomplete="name" placeholder="Nama penuh pelajar"><button id="arenaJoinBtn" class="primary">Daftar & masuk</button><p id="arenaJoinStatus" role="status"></p></section>
     <section id="setup" class="setup-card">
-      <div class="setup-copy"><span class="eyebrow" id="arenaSetupEyebrow">5 PASUKAN · 10 WATAK KAYKIT</span><h2>Pilih hero dan pasukan</h2><p>Peta luas untuk 28 pemain · kamera ikut hero · Batu dan pokok menghalang laluan. Masuk semak untuk bersembunyi. Tiga menara kecil di hadapan, dua sederhana di tengah dan TERAS besar di belakang. Hancurkan ikut turutan untuk mara ke barisan seterusnya.</p></div>
+      <div class="setup-copy"><span class="eyebrow" id="arenaSetupEyebrow">5 PASUKAN · 10 WATAK KAYKIT</span><h2>Pilih hero dan pasukan</h2><p>Peta luas untuk 28 pemain · kamera ikut hero · Batu dan pokok menghalang laluan. Masuk semak untuk bersembunyi. Tiga menara kecil di hadapan, dua sederhana di tengah dan TERAS besar di belakang. Setiap pasukan ada 15 askar kecil yang berkawal di menara.</p></div>
       <div class="setup-row"><div><h3>Pasukan</h3><div id="teamChoices" class="team-choices"></div></div><div><h3>Pemain setiap pasukan</h3><div class="stepper"><button id="countMinus" aria-label="Kurangkan pemain">−</button><strong id="playerCount">6</strong><button id="countPlus" aria-label="Tambah pemain">+</button><span>4–6 · bot demo isi slot</span></div><label class="nick-label" for="nickName">Nama panggilan (maksimum 6 huruf)</label><input id="nickName" class="nick-input" maxlength="6" autocomplete="off" placeholder="CONTOH" value="PELAJA"></div></div>
       <h3>Pilih hero — preview 3D</h3><div class="hero-preview"><canvas id="heroPreview" aria-label="Model hero 3D yang dipilih"></canvas><div><b id="previewName">Bintang</b><span id="previewInfo">Pejuang · Hujan bara</span></div></div><div id="heroChoices" class="hero-choices"></div>
       <div class="setup-actions"><button id="startBtn" class="primary">Mula perlawanan</button><span id="arenaConnectionNote">Lima pasukan · 6 menara setiap pasukan</span></div>
@@ -28,6 +28,6 @@
     <footer class="arena-footer">Pilih pasukan dan hero, gerakkan watak, serang struktur secara terus dan gunakan soalan sesi kelas untuk kuasa.</footer>
   </main>
   <script src="config.js?v=8"></script><script src="firebase-live.js?v=arena-live-1"></script><script src="api.js?v=arena-live-1"></script>
-  <script type="module" src="arena.js?v=mobokv-forest-openmap-20261126"></script>
+  <script type="module" src="arena.js?v=mobokv-tester-20261126"></script>
 </body>
 </html>
